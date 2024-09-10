@@ -28,6 +28,8 @@ class EmployeeController extends Controller
             'address'=>$request->address
 
         ]);
+
+        return redirect()->route('index');
     }
 
     public function update(Request $request , string $id){
