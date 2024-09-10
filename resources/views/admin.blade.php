@@ -3,10 +3,10 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Laravel</title>
 
-        {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
+
         @vite([ 'resources/css/app.css', 'resources/js/app.js'])
 
     </head>
@@ -46,14 +46,13 @@
             </div>
           </div>
 
+
         <div class="cards d-flex flex-wrap justify-content-center  mx-auto gap-3">
 
         </div>
 
-       
+
         <script type="module">
-
-
 
             function loadEmployeeData() {
                 $.ajax({
@@ -62,8 +61,6 @@
                     success: function (response) {
                         const $arrayResponse = JSON.parse(response)
                         $arrayResponse.forEach(employee => {
-                            console.log(employee);
-
                             fillCardWithData(employee)
 
                         });
@@ -85,8 +82,8 @@
 
 
 
-                const $editButton = $('<button>', { class: 'btn btn-primary mb-2', text: 'Edit' });
-                const $deleteButton = $('<button>', { class: 'btn btn-danger', text: 'Delete' });
+                const $editButton = $('<button>', { id:'btn-edit', class: 'btn btn-primary mb-2', text: 'Edit' }).data("id" , $response.id);
+                const $deleteButton = $('<button>', { id:'btn-dlt',class: 'btn btn-danger', text: 'Delete' }).data("id" , $response.id);
 
                 $cardBody.append($cardTitle, $cardSubtitle, $dateDiv, $emailDiv, $phoneDiv, $addressDiv, $editButton, $deleteButton);
                 $card.append($cardBody);
@@ -97,6 +94,31 @@
             }
 
             $(document).ready(loadEmployeeData);
+
+
+
+            $(".cards").on("click", "#btn-edit", function (e) {
+
+
+            });
+
+            $(".cards").on("click", "#btn-dlt", (e) => deleteEmployee(e));
+
+
+            function deleteEmployee(e){
+                const $id = $(e.target).data('id');
+                $.ajax({
+                    method: "DELETE",
+                    url: "employee/" + $id,
+                    
+                    success: function (response) {
+                        console.log("deleted", response );
+
+                    }
+                });
+            }
+
+
         </script>
     </body>
 </html>
