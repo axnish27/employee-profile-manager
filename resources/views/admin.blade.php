@@ -6,7 +6,7 @@
 
         <title>Laravel</title>
 
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
         @vite([ 'resources/css/app.css', 'resources/js/app.js'])
 
     </head>
@@ -184,6 +184,20 @@
 
         </div>
 
+        <button id="load"> Load Data</button>
+        <script type="module">
+
+            $("#load").click(loadEmployeeData);
+            function loadEmployeeData() {
+                $.ajax({
+                    type: "GET",
+                    url: "employee",
+                    success: function (response) {
+                        console.log(response);
+                    }
+                });
+            }
+        </script>
     </body>
 </html>
 

@@ -10,10 +10,10 @@ use function Pest\Laravel\json;
 class EmployeeController extends Controller
 {
     public function index(){
-        return response()->json([
-            'name' => 'Abigail',
-            'state' => 'CA',
-        ]);
+
+        $employees = Employee::all()->toJson();
+
+        return response($employees);
     }
 
     public function store(Request $request){
