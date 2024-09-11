@@ -46,98 +46,126 @@
             </div>
           </div>
 
-          <table id="myTable" class="table table-striped mt-2" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>DOB</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Address</th>
-                    <th></th>
-
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-
-                </tr>
-            </tbody>
+          <table id="myTable" class="table table-striped mt-2 " >
         </table>
 
         <div class="cards d-flex flex-wrap justify-content-center  mx-auto gap-3">
 
         </div>
 
+        <div class="modal fade" id="modal-task-create" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <button type="button" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h3 class="text-center text-dark">Edit Employee</h3>
+                <div class="modal-body">
+                    {{-- <form
+                        action="{{ route('employee' , $project->id) }}"
+                        method="POST"
+                        enctype="multipart/form-data"
+                        class="d-flex justify-content-start flex-column  "
+                        >
+                        @csrf
+                        @method('PUT')
+
+                        <label class="text-start  form-label " for="title">Title</label>
+                        <input class="form-control m-2" type="text" name="title" id="title" value="{{ $project->title }} " required >
+                        <label class="form-label text-start" for="description">Description</label>
+                        <input class="form-control m-2" type="text" name="description" id="description" value="{{ $project->description }}" required >
+                        <button class="btn btn-primary align-self-center"> Edit </button>
+                </form> --}}
+                </div>
+
+              </div>
+            </div>
+          </div>
+
 
         <script type="module">
 
             $(function(){
 
-                loadEmployeeData()
+                let table ;
+                axios.get('employee')
+                .then(function (response) {
 
-                function loadEmployeeData() {
-                    axios.get('employee')
-                        .then(function (response) {
-                            $('#myTable').DataTable({
-                                data: response.data,
-                                columns: [
-                                    { data: 'name' },
-                                    { data: 'position' },
-                                    { data: 'dob' },
-                                    { data: 'email' },
-                                    { data: 'phone' },
-                                    { data: 'address' },
-                                    { data: null },
+                    table =  $('#myTable').DataTable({
+                        data: response.data,
+                        columns: [
+                            { data: 'name', title:'name' },
+                            { data: 'position' ,title:'posi' },
+                            { data: 'dob', title:'dob' },
+                            { data: 'email' },
+                            { data: 'phone' },
+                            { data: 'address' },
+                            { data: null },
 
-                                ],
-                                columnDefs: [
-                                    {
-                                        defaultContent: '<button id="btn-edit" class="btn btn-primary">Edit</button> <button id="btn-dlt" class="btn btn-danger">Delete</button>',
-                                        targets: -1
-                                    }
-                                ]
-                            });
-                        }) // <-- Corrected this part
-                        .catch(function (error) {
-                            console.log(error);
-                        })
-                        .finally(function () {
+                        ],
+                        columnDefs: [
+                            {
+
+                                render: function (data, type, row) {
+                                    return `<button id="btn-edit-${row.id}" class="btn btn-primary" data-id="${row.id}" data-bs-toggle="modal" data-bs-target="#modal-task-create">Edit</button>
+                                            <button id="btn-dlt-${row.id}" class="btn btn-danger" data-id="${row.id}" >Delete</button>`;
+                                },
+                                targets: -1,
+                            }
+                        ]
+                    });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+                .finally(function () {
+
+                });
+
+
+                        $('#myTable tbody').on('click', 'button[id^="btn-edit"]', function (e) {
+
+                        let id = $(this).data('id');
+                            console.log('Edit button clicked, ID:', id);
 
                         });
-}
 
+                        $('#myTable tbody').on('click', 'button[id^="btn-dlt"]', function (e) {
 
+                            let id = $(this).data('id');
+                            deleteEmployee(id)
+                            console.log('delete button clicked, ID:', id);
 
+                        });
 
             // $(document).ready(loadEmployeeData);
 
-            let $table = $('#myTable')
-            $table.on('click', 'button', function (e) {
-                let data = $table.row(e.target.closest('tr')).data();
 
-                alert(data[0] + "'s salary is: " + data[5]);
-            });
+            $('#myTable tbody').on('click', '#btn-edit', function (e) {
+                let data = e.currentTarget
 
-
-            $(".cards").on("click", "#btn-edit", function (e) {
-                console.log(e.currentTarget);
-
+                console.log(data);
 
             });
+
+
+
+
+//                     $('#myTable tbody').on('click', 'button[id^="btn-edit"]', function (e) {
+//     let dataId = $(this).data('id'); // Get the data-id of the clicked row
+//     console.log('Edit button clicked, ID:', dataId);
+// });
+
+
 
             $(".cards").on("click", "#btn-dlt", (e) => deleteEmployee(e));
 
 
-            function deleteEmployee(e){
-                const $id = $(e.target).data('id');
+            function deleteEmployee(id){
 
-                axios.delete(`employee/${$id}`)
+
+                axios.delete(`employee/${id}`)
                 .then(function (response){
                     if (response.status == 200){
-
-                        alert("Delete Success")
+                        window.location.reload();
                     }
                 })
                 .catch(function (error){
@@ -146,6 +174,44 @@
                 .finally(function (){
 
                 });
+            }
+
+            function deleteEmployee(id){
+
+
+                axios.delete(`employee/${id}`)
+                .then(function (response){
+                    if (response.status == 200){
+                        window.location.reload();
+                    }
+                })
+                .catch(function (error){
+
+                })
+                .finally(function (){
+
+                });
+            }
+
+            function editEmployee(id){
+
+
+                axios.get(`employee/${id}`)
+                .then(function (response){
+                    if (response.status == 200){
+                        fillModal(response)
+                    }
+                })
+                .catch(function (error){
+
+                })
+                .finally(function (){
+
+                });
+            }
+
+            function fillModal(response){
+
             }
 
 
