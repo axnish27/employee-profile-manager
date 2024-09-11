@@ -45,7 +45,7 @@
               </div>
             </div>
           </div>
-
+          
 
         <div class="cards d-flex flex-wrap justify-content-center  mx-auto gap-3">
 
@@ -54,50 +54,59 @@
 
         <script type="module">
 
-            function loadEmployeeData() {
-                $.ajax({
-                    type: "GET",
-                    url: "employee",
-                    success: function (response) {
-                        const $arrayResponse = JSON.parse(response)
-                        $arrayResponse.forEach(employee => {
-                            fillCardWithData(employee)
+            $(function(){
+
+
+                loadEmployeeData()
+
+                function loadEmployeeData() {
+                    axios.get('employee')
+                        .then(function (response){
+                            response.data.forEach(employee => {
+                                fillCardWithData(employee)
+                                console.log("hiya");
+
+                            });
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        })
+                        .finally(function (){
 
                         });
-                    }
-                });
-            }
-
-            function fillCardWithData($response){
-
-                const $card = $('<div>', { class: 'card w-25 h-25 mt-3' });
-                const $cardBody = $('<div>', { class: 'card-body d-flex justify-content-evenly flex-column' });
-                const $cardTitle = $('<h4>', { class: 'card-title'}).text($response.title);
-                const $cardSubtitle = $('<h5>', { class: 'card-subtitle'}).text($response.position);
-
-                const $dateDiv = $('<div>', { class: 'mt-2'}).text($response.dob);
-                const $emailDiv = $('<div>', { class: 'mt-2'}).text($response.email);
-                const $phoneDiv = $('<div>', { class: 'mt-2'}).text($response.phone);
-                const $addressDiv = $('<div>', { class: 'mt-2 mb-2'}).text($response.address);
 
 
+                };
 
-                const $editButton = $('<button>', { id:'btn-edit', class: 'btn btn-primary mb-2', text: 'Edit' }).data("id" , $response.id);
-                const $deleteButton = $('<button>', { id:'btn-dlt',class: 'btn btn-danger', text: 'Delete' }).data("id" , $response.id);
+                function fillCardWithData($response){
 
-                $cardBody.append($cardTitle, $cardSubtitle, $dateDiv, $emailDiv, $phoneDiv, $addressDiv, $editButton, $deleteButton);
-                $card.append($cardBody);
+                    const $card = $('<div>', { id:$response.id, class: 'card w-25 h-25 mt-3' });
+                    const $cardBody = $('<div>', { class: 'card-body d-flex justify-content-evenly flex-column' });
+                    const $cardTitle = $('<h4>', { class: 'card-title'}).text($response.title);
+                    const $cardSubtitle = $('<h5>', { class: 'card-subtitle'}).text($response.position);
 
-                $(".cards").append($card);
+                    const $dateDiv = $('<div>', { class: 'mt-2'}).text($response.dob);
+                    const $emailDiv = $('<div>', { class: 'mt-2'}).text($response.email);
+                    const $phoneDiv = $('<div>', { class: 'mt-2'}).text($response.phone);
+                    const $addressDiv = $('<div>', { class: 'mt-2 mb-2'}).text($response.address);
 
 
-            }
 
-            $(document).ready(loadEmployeeData);
+                    const $editButton = $('<button>', { id:'btn-edit', class: 'btn btn-primary mb-2', text: 'Edit' }).data("id" , $response.id);
+                    const $deleteButton = $('<button>', { id:'btn-dlt',class: 'btn btn-danger', text: 'Delete' }).data("id" , $response.id);
+
+                    $cardBody.append($cardTitle, $cardSubtitle, $dateDiv, $emailDiv, $phoneDiv, $addressDiv, $editButton, $deleteButton);
+                    $card.append($cardBody);
+
+                    $(".cards").append($card);
+                }
+
+            // $(document).ready(loadEmployeeData);
 
 
 
             $(".cards").on("click", "#btn-edit", function (e) {
+                console.log(e.currentTarget);
 
 
             });
@@ -107,16 +116,41 @@
 
             function deleteEmployee(e){
                 const $id = $(e.target).data('id');
-                $.ajax({
-                    method: "DELETE",
-                    url: "employee/" + $id,
-                    
-                    success: function (response) {
-                        console.log("deleted", response );
 
+                axios.delete(`employee/${$id}`)
+                .then(function (response){
+                    if (response.status == 200){
+
+                        deleteCard($id)
                     }
+                })
+                .catch(function (error){
+
+                })
+                .finally(function (){
+
                 });
+
+
+
+                function deleteCard($id){
+
+                }
+
+
+                // const token = $("meta[name='csrf-token']").attr("content");
+
+                // $.ajax({
+                //     type: "POST",
+                //     data: {_token: token, id: $id, _method: 'DELETE'},
+                //     url: "employee/" + $id,
+                //     success: function (response) {
+                //         console.log("deleted", response );
+                //     }
+                // });
             }
+
+            })
 
 
         </script>

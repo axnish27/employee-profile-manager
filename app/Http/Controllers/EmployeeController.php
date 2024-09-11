@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use League\CommonMark\Extension\CommonMark\Delimiter\Processor\EmphasisDelimiterProcessor;
 
 use function Pest\Laravel\json;
@@ -11,6 +12,8 @@ class EmployeeController extends Controller
 {
     public function index(){
         $employees = Employee::all()->toJson();
+        // $employees = Employee::all();
+        // return Response::json($employees);
         return response($employees);
     }
 
@@ -36,8 +39,9 @@ class EmployeeController extends Controller
 
     public function destroy(string $id){
 
+    
         Employee::where('id',$id)->delete();
-        return redirect()->route('index');
+        return response(200);
 
     }
 }
