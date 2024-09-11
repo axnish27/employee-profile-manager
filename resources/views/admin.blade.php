@@ -45,7 +45,26 @@
               </div>
             </div>
           </div>
-          
+
+          <table id="myTable" class="table table-striped mt-2" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>DOB</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th></th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+
+                </tr>
+            </tbody>
+        </table>
 
         <div class="cards d-flex flex-wrap justify-content-center  mx-auto gap-3">
 
@@ -56,53 +75,50 @@
 
             $(function(){
 
-
                 loadEmployeeData()
 
                 function loadEmployeeData() {
                     axios.get('employee')
-                        .then(function (response){
-                            response.data.forEach(employee => {
-                                fillCardWithData(employee)
-                                console.log("hiya");
+                        .then(function (response) {
+                            $('#myTable').DataTable({
+                                data: response.data,
+                                columns: [
+                                    { data: 'name' },
+                                    { data: 'position' },
+                                    { data: 'dob' },
+                                    { data: 'email' },
+                                    { data: 'phone' },
+                                    { data: 'address' },
+                                    { data: null },
 
+                                ],
+                                columnDefs: [
+                                    {
+                                        defaultContent: '<button id="btn-edit" class="btn btn-primary">Edit</button> <button id="btn-dlt" class="btn btn-danger">Delete</button>',
+                                        targets: -1
+                                    }
+                                ]
                             });
-                        })
+                        }) // <-- Corrected this part
                         .catch(function (error) {
                             console.log(error);
                         })
-                        .finally(function (){
+                        .finally(function () {
 
                         });
-
-
-                };
-
-                function fillCardWithData($response){
-
-                    const $card = $('<div>', { id:$response.id, class: 'card w-25 h-25 mt-3' });
-                    const $cardBody = $('<div>', { class: 'card-body d-flex justify-content-evenly flex-column' });
-                    const $cardTitle = $('<h4>', { class: 'card-title'}).text($response.title);
-                    const $cardSubtitle = $('<h5>', { class: 'card-subtitle'}).text($response.position);
-
-                    const $dateDiv = $('<div>', { class: 'mt-2'}).text($response.dob);
-                    const $emailDiv = $('<div>', { class: 'mt-2'}).text($response.email);
-                    const $phoneDiv = $('<div>', { class: 'mt-2'}).text($response.phone);
-                    const $addressDiv = $('<div>', { class: 'mt-2 mb-2'}).text($response.address);
+}
 
 
 
-                    const $editButton = $('<button>', { id:'btn-edit', class: 'btn btn-primary mb-2', text: 'Edit' }).data("id" , $response.id);
-                    const $deleteButton = $('<button>', { id:'btn-dlt',class: 'btn btn-danger', text: 'Delete' }).data("id" , $response.id);
-
-                    $cardBody.append($cardTitle, $cardSubtitle, $dateDiv, $emailDiv, $phoneDiv, $addressDiv, $editButton, $deleteButton);
-                    $card.append($cardBody);
-
-                    $(".cards").append($card);
-                }
 
             // $(document).ready(loadEmployeeData);
 
+            let $table = $('#myTable')
+            $table.on('click', 'button', function (e) {
+                let data = $table.row(e.target.closest('tr')).data();
+
+                alert(data[0] + "'s salary is: " + data[5]);
+            });
 
 
             $(".cards").on("click", "#btn-edit", function (e) {
@@ -121,7 +137,7 @@
                 .then(function (response){
                     if (response.status == 200){
 
-                        deleteCard($id)
+                        alert("Delete Success")
                     }
                 })
                 .catch(function (error){
@@ -130,12 +146,11 @@
                 .finally(function (){
 
                 });
+            }
 
 
 
-                function deleteCard($id){
 
-                }
 
 
                 // const token = $("meta[name='csrf-token']").attr("content");
@@ -148,9 +163,11 @@
                 //         console.log("deleted", response );
                 //     }
                 // });
-            }
 
-            })
+
+
+
+            });
 
 
         </script>
