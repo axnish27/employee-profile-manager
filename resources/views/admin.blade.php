@@ -6,10 +6,13 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Employee Manager</title>
 
+
         @vite([ 'resources/css/app.css', 'resources/js/app.js', ])
 
+
+
     </head>
-    <body class="container.fluid w-100 ">
+    <body class="container.fluid w-100 " style="background-color: whitesmoke">
 
         <nav class="navbar bg-dark border-bottom border-body w-100 text-light" data-bs-theme="dark">
             <div class="container">
@@ -24,9 +27,9 @@
             </div>
         </nav>
 
-        <main class="container">
-            <h1 class="h1 text-center" >Manage Employee Profiles</h1>
-            <button class=" btn btn-primary" style="margin-left: 11% " data-bs-toggle="modal" data-bs-target="#modal-employee-create">New Employee</button>
+        <main class="container" >
+            <h1 class="h1 text-center mt-5" >Manage Employee Profiles</h1>
+            <button class=" btn btn-primary mt-3"  data-bs-toggle="modal" data-bs-target="#modal-employee-create">New Employee</button>
             <div class="modal fade" id="modal-employee-create" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
@@ -50,7 +53,7 @@
                   </div>
                 </div>
               </div>
-            <table id="myTable" class="table table-striped mt-2 " >
+            <table id="myTable" class="table table-striped table-dark table-hover  " style="width: 100%">
 
             </table>
         </main>
@@ -98,6 +101,12 @@
                 }
             });
         </script>
+
+
+
+
+
+
     </body>
 </html>
 
