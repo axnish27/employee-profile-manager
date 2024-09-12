@@ -29,12 +29,10 @@
 
         <main class="container" >
             <h1 class="h1 text-center mt-5" >Manage Employee Profiles</h1>
-
             <button class="btn btn-primary rounded-circle p-0 mt-2 mb-2 "  data-bs-toggle="modal" data-bs-target="#modal-employee-create"  >
                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
                   </svg>
-
             </button>
 
             <div class="modal fade" id="modal-employee-create" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -61,7 +59,6 @@
                 </div>
               </div>
             <table id="myTable" class="table table-striped table-dark table-hover  " style="width: 100%">
-
             </table>
         </main>
 
@@ -70,11 +67,11 @@
                 $('#myTable').DataTable({
                     serverSide: true,
                     processing: true,
-                    fixedHeader: true,
                     ajax: {
                         url: 'employee',
                         dataSrc: ''
                     },
+                   
                     columns: [
                         { data: 'name' , title: 'Name' ,},
                         { data: 'position' ,title:'Position' },
@@ -101,11 +98,6 @@
                     ]
                 });
 
-
-
-
-
-
                 // Delete Employee
                 $('#myTable tbody').on('click', 'button[id^="btn-dlt"]', function (e) {
                     let id = $(this).data('id');
@@ -122,12 +114,6 @@
                 }
             });
         </script>
-
-
-
-
-
-
     </body>
 </html>
 
