@@ -64,14 +64,12 @@
 
         <script type="module">
             $(function(){
-                $('#myTable').DataTable({
+                let table= $('#myTable').DataTable({
                     serverSide: true,
                     processing: true,
                     ajax: {
                         url: 'employee',
-                        dataSrc: ''
                     },
-                   
                     columns: [
                         { data: 'name' , title: 'Name' ,},
                         { data: 'position' ,title:'Position' },
@@ -95,7 +93,9 @@
                                         </button> `
                             }
                         },
-                    ]
+                    ],
+
+
                 });
 
                 // Delete Employee

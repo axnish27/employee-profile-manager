@@ -10,12 +10,42 @@ use function Pest\Laravel\json;
 
 class EmployeeController extends Controller
 {
-    public function index(){
-        $employees = Employee::all()->toJson();
-        // $employees = Employee::all();
-        // return Response::json($employees);
-        
-        return response($employees);
+    public function index(Request $request){
+
+        //SERVER SIDE RENDERING HANDLE FOR data table
+
+
+                $start = $request->query('start', 0);
+                $length = $request->query('length', 10);
+                $draw = $request->query('draw', 1);
+                $sortColIndex = $request->query('order.0.column', 0);
+                $order = $request->query('order.0.dir', 'asc');
+                $col0DataAttrName = $request->query('columns.0.data', 'name'); // Assuming 'name' is default column
+
+
+                $totalEmployees = Employee::count();
+
+
+                $employees = Employee::orderBy($col0DataAttrName, $order)
+                    ->skip($start)
+                    ->take($length)
+                    ->get();
+
+
+                $response = [
+                    'draw' => intval($draw),
+                    'recordsTotal' => $totalEmployees,
+                    'recordsFiltered' => $totalEmployees,
+                    'data' => $employees
+                ];
+                return Response::json($response);
+
+
+        // $employees = Employee::all()->toJson();
+        //  $employees = Employee::all();
+
+
+        // return response($employees);
     }
 
     public function store(Request $request){
