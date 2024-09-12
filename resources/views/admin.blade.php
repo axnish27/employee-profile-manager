@@ -63,8 +63,9 @@
                   </div>
                 </div>
               </div>
-              <table id="myTable" class="table table-striped mt-2 " > </table>
-            <div class="modal fade" id="modal-task-create" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+
+              <div class="modal fade" id="modal-task-create" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
                     <button type="button" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -88,7 +89,10 @@
                   </div>
                 </div>
               </div>
-        </main>
+
+              <table id="myTable" class="table table-striped mt-2 " > </table>
+
+            </main>
 
 
         <script type="module">
@@ -102,12 +106,12 @@
                     table =  $('#myTable').DataTable({
                         data: response.data,
                         columns: [
-                            { data: 'name', title:'name' },
-                            { data: 'position' ,title:'posi' },
-                            { data: 'dob', title:'dob' },
-                            { data: 'email' },
-                            { data: 'phone' },
-                            { data: 'address' },
+                            { data: 'name', title:'Name' },
+                            { data: 'position' ,title:'Position' },
+                            { data: 'dob', title:'DOB' },
+                            { data: 'email' , title: 'Email' },
+                            { data: 'phone' , title: 'Phone' },
+                            { data: 'address' , title: 'Address' },
                             { data: null },
 
                         ],
