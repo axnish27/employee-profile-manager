@@ -13,27 +13,15 @@
 
         <nav class="navbar bg-dark border-bottom border-body w-100 text-light" data-bs-theme="dark">
             <div class="container">
-                <a class="navbar-brand" href="#">
-                    Vista G
-                </a>
-
-                    <div class="nav navbar">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-
-
-                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link">Logout</a>
-
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form>
-                    </div>
-
+                <a class="navbar-brand" href="#"> Vista G </a>
+                <div class="nav navbar">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link">Logout</a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                </div>
             </div>
-
-
-
-
-
         </nav>
 
         <main class="container">
@@ -62,13 +50,10 @@
                   </div>
                 </div>
               </div>
-              <table id="myTable" class="table table-striped mt-2 " > </table>
-
+            <table id="myTable" class="table table-striped mt-2 " > </table>
         </main>
 
-
         <script type="module">
-            // $(document).ready(loadEmployeeData); below is the shortand for this...
             $(function(){
                 let table ;
                 axios.get('employee')
@@ -91,19 +76,11 @@
                         ]
                     });
                 })
-                .catch(function (error) {
-                    console.log(error);
-                })
-                .finally(function () {
-
-                });
-
 
                 // Delete Employee
                 $('#myTable tbody').on('click', 'button[id^="btn-dlt"]', function (e) {
                     let id = $(this).data('id');
                     deleteEmployee(id)
-
                 });
 
                 function deleteEmployee(id){
@@ -112,15 +89,9 @@
                         if (response.status == 200){
                             window.location.reload();
                         }
-                    })
-                    .catch(function (error){
-                    })
-                    .finally(function (){
                     });
                 }
             });
-
-
         </script>
     </body>
 </html>
