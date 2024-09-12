@@ -147,7 +147,7 @@
         </div>
 
 
-    <main class="form-signin w-100 m-auto">
+    <main class="form-signin w-100 m-auto" >
         <form method="POST" action="{{ route('login') }}">
 
               @csrf
