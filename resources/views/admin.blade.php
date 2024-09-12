@@ -10,75 +10,85 @@
         @vite([ 'resources/css/app.css', 'resources/js/app.js'])
 
     </head>
-    <body class="container ">
-        <h1 class="h1 text-center" >Manage Employee Profiles</h1>
-        <button class=" btn btn-primary" style="margin-left: 11% " data-bs-toggle="modal" data-bs-target="#modal-employee-create">New Employee</button>
+    <body class="container.fluid w-100 ">
 
-        <div class="modal fade" id="modal-employee-create" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <button type="button" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
-                <h3 class="text-center text-dark">New Employee Details</h3>
-                <div class="modal-body">
-                    <form
-                    action="{{ route('employee.store') }}"
-                    method="POST"
-                    enctype="multipart/form-data">
-                    @csrf
+        <nav class="navbar bg-dark border-bottom border-body w-100 text-light" data-bs-theme="dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                  Vista G
+                </a>
+
+                    <div class="nav navbar">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
 
 
-                    <input type="text" class=" form-control m-2" name="name" placeholder="Full Name" required>
-                    <input type="text" class=" form-control m-2" name="position" placeholder="Position" required>
-                    <input type="date" class=" form-control m-2" name="dob" placeholder="DOB" required>
-                    <input type="email" class=" form-control m-2" name="email" placeholder="Email" required>
-                    <input type="phone" class=" form-control m-2" name="phone" placeholder="Phone" required>
-                    <input type="text" class=" form-control m-2" name="address" placeholder="Address" required>
+                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link">Logout</a>
 
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    </div>
 
-                    <button type="submit" class="btn btn-primary m-2"> Add </button>
-                </form>
-
-
-
-                </div>
-
-              </div>
             </div>
-          </div>
 
-          <table id="myTable" class="table table-striped mt-2 " >
-        </table>
 
-        <div class="cards d-flex flex-wrap justify-content-center  mx-auto gap-3">
 
-        </div>
 
-        <div class="modal fade" id="modal-task-create" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <button type="button" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
-                <h3 class="text-center text-dark">Edit Employee</h3>
-                <div class="modal-body">
-                    {{-- <form
-                        action="{{ route('employee' , $project->id) }}"
+
+        </nav>
+
+        <main class="container">
+            <h1 class="h1 text-center" >Manage Employee Profiles</h1>
+            <button class=" btn btn-primary" style="margin-left: 11% " data-bs-toggle="modal" data-bs-target="#modal-employee-create">New Employee</button>
+            <div class="modal fade" id="modal-employee-create" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <button type="button" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h3 class="text-center text-dark">New Employee Details</h3>
+                    <div class="modal-body">
+                        <form
+                        action="{{ route('employee.store') }}"
                         method="POST"
-                        enctype="multipart/form-data"
-                        class="d-flex justify-content-start flex-column  "
-                        >
+                        enctype="multipart/form-data">
                         @csrf
-                        @method('PUT')
-
-                        <label class="text-start  form-label " for="title">Title</label>
-                        <input class="form-control m-2" type="text" name="title" id="title" value="{{ $project->title }} " required >
-                        <label class="form-label text-start" for="description">Description</label>
-                        <input class="form-control m-2" type="text" name="description" id="description" value="{{ $project->description }}" required >
-                        <button class="btn btn-primary align-self-center"> Edit </button>
-                </form> --}}
+                        <input type="text" class=" form-control m-2" name="name" placeholder="Full Name" required>
+                        <input type="text" class=" form-control m-2" name="position" placeholder="Position" required>
+                        <input type="date" class=" form-control m-2" name="dob" placeholder="DOB" required>
+                        <input type="email" class=" form-control m-2" name="email" placeholder="Email" required>
+                        <input type="phone" class=" form-control m-2" name="phone" placeholder="Phone" required>
+                        <input type="text" class=" form-control m-2" name="address" placeholder="Address" required>
+                        <button type="submit" class="btn btn-primary m-2"> Add </button>
+                    </form>
+                    </div>
+                  </div>
                 </div>
-
               </div>
-            </div>
-          </div>
+              <table id="myTable" class="table table-striped mt-2 " > </table>
+            <div class="modal fade" id="modal-task-create" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <button type="button" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h3 class="text-center text-dark">Edit Employee</h3>
+                    <div class="modal-body">
+                        {{-- <form
+                            action="{{ route('employee' , $project->id) }}"
+                            method="POST"
+                            enctype="multipart/form-data"
+                            class="d-flex justify-content-start flex-column  "
+                            >
+                            @csrf
+                            @method('PUT')
+                            <label class="text-start  form-label " for="title">Title</label>
+                            <input class="form-control m-2" type="text" name="title" id="title" value="{{ $project->title }} " required >
+                            <label class="form-label text-start" for="description">Description</label>
+                            <input class="form-control m-2" type="text" name="description" id="description" value="{{ $project->description }}" required >
+                            <button class="btn btn-primary align-self-center"> Edit </button>
+                    </form> --}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </main>
 
 
         <script type="module">
@@ -149,10 +159,10 @@
 
 
 
-//                     $('#myTable tbody').on('click', 'button[id^="btn-edit"]', function (e) {
-//     let dataId = $(this).data('id'); // Get the data-id of the clicked row
-//     console.log('Edit button clicked, ID:', dataId);
-// });
+            //                     $('#myTable tbody').on('click', 'button[id^="btn-edit"]', function (e) {
+            //     let dataId = $(this).data('id'); // Get the data-id of the clicked row
+            //     console.log('Edit button clicked, ID:', dataId);
+            // });
 
 
 
