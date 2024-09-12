@@ -50,32 +50,37 @@
                   </div>
                 </div>
               </div>
-            <table id="myTable" class="table table-striped mt-2 " > </table>
+            <table id="myTable" class="table table-striped mt-2 " >
+
+            </table>
         </main>
 
         <script type="module">
             $(function(){
-                let table ;
-                axios.get('employee')
-                .then(function (response) {
-                    table =  $('#myTable').DataTable({
-                        data: response.data,
-                        columns: [
-                            { data: 'name', title:'name' },
-                            { data: 'position' ,title:'posi' },
-                            { data: 'dob', title:'dob' },
-                            { data: 'email' },
-                            { data: 'phone' },
-                            { data: 'address'},
-                            { data: null ,
-                                render: function (data, type, row) {
-                                    return `<button id="btn-edit-${row.id}" class="btn btn-primary" data-id="${row.id}" data-bs-toggle="modal" data-bs-target="#modal-task-create">Edit</button>
-                                            <button id="btn-dlt-${row.id}" class="btn btn-danger" data-id="${row.id}" >Delete</button>`;
-                                }
-                             },
-                        ]
-                    });
-                })
+                $('#myTable').DataTable({
+                    serverSide: true,
+                    processing: true,
+                    ajax: {
+                        url: 'employee',
+                        dataSrc: ''
+                    },
+                    columns: [
+                        { data: 'name' , title: 'Name' ,},
+                        { data: 'position' ,title:'Position' },
+                        { data: 'dob', title:'DOB' },
+                        { data: 'email' , title:'Email'},
+                        { data: 'phone', title:'Phone' },
+                        { data: 'address' , title:'Address'},
+                        { data: null ,
+                            render: function (data, type, row) {
+                                return `<button id="btn-edit-${row.id}" class="btn btn-primary" data-id="${row.id}" data-bs-toggle="modal" data-bs-target="#modal-task-create">Edit</button>
+                                        <button id="btn-dlt-${row.id}" class="btn btn-danger" data-id="${row.id}" >Delete</button>`;
+                            }
+                        },
+                    ]
+                });
+
+
 
                 // Delete Employee
                 $('#myTable tbody').on('click', 'button[id^="btn-dlt"]', function (e) {

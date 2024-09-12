@@ -14,6 +14,7 @@ class EmployeeController extends Controller
         $employees = Employee::all()->toJson();
         // $employees = Employee::all();
         // return Response::json($employees);
+        
         return response($employees);
     }
 
@@ -39,7 +40,7 @@ class EmployeeController extends Controller
 
     public function destroy(string $id){
 
-    
+
         Employee::where('id',$id)->delete();
         return response(200);
 
