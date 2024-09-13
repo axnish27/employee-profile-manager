@@ -38,13 +38,8 @@
                     <button type="button" id="btn-modal-close" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
                     <h3 class="text-center text-dark">New Employee Details</h3>
                     <div class="modal-body">
-                        <form
-
-
-                            id="createForm"
-                            >
+                        <form id="createForm">
                             @csrf
-
                             <input type="text" class=" form-control m-2" name="name" placeholder="Full Name" required>
                             <input type="text" class=" form-control m-2" name="position" placeholder="Position" required>
                             <input type="date" class=" form-control m-2" name="dob" placeholder="DOB" required>
@@ -110,7 +105,6 @@
                     });
                 }
 
-
                 //Create Employee Axios
                 $('#createForm').submit(function (e) {
 
@@ -122,26 +116,8 @@
                         $('#createForm').trigger("reset");
                         $('#btn-modal-close').click();
                         table.draw();
-                        // console.log($dataArray[1].value);
-
-
-                        //     table.row.add([
-                        //         $dataArray[1].value,
-                        //         $dataArray[2].value,
-                        //         $dataArray[3].value,
-                        //         $dataArray[4].value,
-                        //         $dataArray[5].value,
-                        //         $dataArray[6].value
-                        //     ])
-
                     });
-
                 });
-
-                function createEmploye(){
-
-                }
-
             });
         </script>
     </body>
