@@ -64,14 +64,12 @@
 
         <script type="module">
             $(function(){
-                $('#myTable').DataTable({
+                let table= $('#myTable').DataTable({
                     serverSide: true,
                     processing: true,
                     ajax: {
                         url: 'employee',
-                        dataSrc: ''
                     },
-                   
                     columns: [
                         { data: 'name' , title: 'Name' ,},
                         { data: 'position' ,title:'Position' },
@@ -95,21 +93,24 @@
                                         </button> `
                             }
                         },
-                    ]
+                    ],
+
+
                 });
 
                 // Delete Employee
                 $('#myTable tbody').on('click', 'button[id^="btn-dlt"]', function (e) {
                     let id = $(this).data('id');
                     deleteEmployee(id)
+                    let $button = $(this)
+                    table.row($button.parents('tr') ).remove().draw();
+
                 });
 
                 function deleteEmployee(id){
                     axios.delete(`employee/${id}`)
                     .then(function (response){
-                        if (response.status == 200){
-                            window.location.reload();
-                        }
+                        console.log("Delted");
                     });
                 }
             });
