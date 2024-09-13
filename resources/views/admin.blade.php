@@ -115,11 +115,25 @@
                 $('#createForm').submit(function (e) {
 
                     e.preventDefault();
-
                     let $data = $('#createForm').serialize()
+                    let $dataArray = $('#createForm').serializeArray()
                     axios.post('employee', $data )
                     .then(function (response){
+                        $('#createForm').trigger("reset");
                         $('#btn-modal-close').click();
+                        table.draw();
+                        // console.log($dataArray[1].value);
+
+
+                        //     table.row.add([
+                        //         $dataArray[1].value,
+                        //         $dataArray[2].value,
+                        //         $dataArray[3].value,
+                        //         $dataArray[4].value,
+                        //         $dataArray[5].value,
+                        //         $dataArray[6].value
+                        //     ])
+
                     });
 
                 });
