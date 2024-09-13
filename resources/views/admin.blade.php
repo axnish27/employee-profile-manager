@@ -8,13 +8,11 @@
 
 
         @vite([ 'resources/css/app.css', 'resources/js/app.js', ])
-
-
-
     </head>
+
     <body class="container.fluid w-100 " style="background-color: whitesmoke">
 
-        <nav class="navbar bg-dark border-bottom border-body w-100 text-light" data-bs-theme="dark">
+        <nav class="navbar bg-dark border-bottom border-body w-100 text-light py-0"  data-bs-theme="dark">
             <div class="container">
                 <a class="navbar-brand" href="#"> Vista G </a>
                 <div class="nav navbar">
@@ -28,7 +26,7 @@
         </nav>
 
         <main class="container" >
-            <h1 class="h1 text-center mt-5" >Manage Employee Profiles</h1>
+            <h1 class="h1 text-center mt-4" >Manage Employee Profiles</h1>
             <button class="btn btn-primary rounded-circle p-0 mt-2 mb-2 "  data-bs-toggle="modal" data-bs-target="#modal-employee-create"  >
                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
@@ -38,13 +36,10 @@
             <div class="modal fade" id="modal-employee-create" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
-                    <button type="button" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" id="btn-modal-close" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
                     <h3 class="text-center text-dark">New Employee Details</h3>
                     <div class="modal-body">
-                        <form
-                            action="{{ route('employee.store') }}"
-                            method="POST"
-                            enctype="multipart/form-data">
+                        <form id="createForm">
                             @csrf
                             <input type="text" class=" form-control m-2" name="name" placeholder="Full Name" required>
                             <input type="text" class=" form-control m-2" name="position" placeholder="Position" required>
@@ -94,8 +89,6 @@
                             }
                         },
                     ],
-
-
                 });
 
                 // Delete Employee
@@ -113,6 +106,20 @@
                         console.log("Delted");
                     });
                 }
+
+                //Create Employee Axios
+                $('#createForm').submit(function (e) {
+
+                    e.preventDefault();
+                    let $data = $('#createForm').serialize()
+                    let $dataArray = $('#createForm').serializeArray()
+                    axios.post('employee', $data )
+                    .then(function (response){
+                        $('#createForm').trigger("reset");
+                        $('#btn-modal-close').click();
+                        table.draw();
+                    });
+                });
             });
         </script>
     </body>
