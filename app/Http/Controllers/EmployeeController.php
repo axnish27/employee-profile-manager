@@ -14,65 +14,56 @@ class EmployeeController extends Controller
     public function index(Request $request){
 
         //SERVER SIDE RENDERING HANDLE FOR data table
-
         $search = $request->query('search');
         $search = $search['value'];
+        $draw = $request->query('draw', 1);
+        $totalEmployees =   Employee::count();
 
         if(!$search){
-                $start = $request->query('start', 0);
-                $length = $request->query('length', 10);
-                $draw = $request->query('draw', 1);
-                $sortColIndex = $request->query('order.0.column', 0);
-                $order = $request->query('order.0.dir', 'asc');
-                $col0DataAttrName = $request->query('columns.0.data', 'name'); // Assuming 'name' is default column
-                $totalEmployees = Employee::count();
 
-                $employees = Employee::orderBy($col0DataAttrName, $order)
-                    ->skip($start)
-                    ->take($length)
-                    ->get();
+            $start = $request->query('start', 0);
+            $length = $request->query('length', 10);
+            $order = $request->query('order.0.dir', 'asc');
+            $col0DataAttrName = $request->query('columns.0.data', 'name');
 
-                $response = [
-                    'draw' => intval($draw),
-                    'recordsTotal' => $totalEmployees,
-                    'recordsFiltered' => $totalEmployees,
-                    'search' => $search,
-                    'data' => $employees
+            $employees = Employee::orderBy($col0DataAttrName, $order)
+                ->skip($start)
+                ->take($length)
+                ->get();
 
-                ];
-                    return Response::json($response);
-            } else {
-                // search if the keyword is presnt in any column
-                $employees = Employee::where('name' , $search)
-                ->orWhere('position' ,$search)
-                ->orWhere('email' ,$search)
-                ->orWhere('address' ,$search)
-                ->orWhere('dob' ,$search)
-                ->orWhere('phone' ,$search)->get();
+            $response = [
+                'draw' => intval($draw),
+                'recordsTotal' => $totalEmployees,
+                'recordsFiltered' => $totalEmployees,
+                'data' => $employees
+            ];
 
-                $totalEmployees =   Employee::count();
-                $filteredEmployees = $employees->count();
-                $draw = $request->query('draw', 1);
+            return Response::json($response);
+        }
+        else{
+            
+            $employees = Employee::where('name' , $search)
+            ->orWhere('position' ,$search)
+            ->orWhere('email' ,$search)
+            ->orWhere('address' ,$search)
+            ->orWhere('dob' ,$search)
+            ->orWhere('phone' ,$search)->get();
 
+            $filteredEmployees = $employees->count();
+            $response = [
+                'draw' => intval($draw),
+                'recordsTotal' => $totalEmployees,
+                'recordsFiltered' => $filteredEmployees,
+                'data' => $employees
+            ];
 
-                $response = [
-                    'draw' => intval($draw),
-                    'recordsTotal' => $totalEmployees,
-                    'recordsFiltered' => $filteredEmployees,
-                    'search' => $search,
-                    'data' => $employees
-
-                ];
-                    return Response::json($response);
-            }
-
-
+            return Response::json($response);
+        }
     }
 
     public function store(Request $request){
 
         Employee::create([
-
             'name'=>$request->name,
             'position'=>$request->position,
             'dob'=>$request->dob,
@@ -88,7 +79,6 @@ class EmployeeController extends Controller
     }
 
     public function destroy(string $id){
-
         Employee::where('id',$id)->delete();
         return response(200);
     }
