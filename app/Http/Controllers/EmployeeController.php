@@ -14,51 +14,32 @@ class EmployeeController extends Controller
     public function index(Request $request){
 
         //SERVER SIDE RENDERING HANDLE FOR data table
-        $search = $request->query('search');
-        $search = $search['value'];
+        $search = $request->query('search')['value'];
         $draw = $request->query('draw', 1);
+        $start = $request->query('start', 0);
+        $length = $request->query('length', 10);
         $totalEmployees =   Employee::count();
 
-        if(!$search){
+        $employees = Employee::where('name' , 'like' , "%".$search."%")
+                            ->orWhere('position' ,'like' , "%".$search."%")
+                            ->orWhere('email', 'like' , "%".$search."%")
+                            ->orWhere('address' ,'like' , "%".$search."%")
+                            ->orWhere('dob' ,'like' , "%".$search."%")
+                            ->orWhere('phone' ,'like' , "%".$search."%");
 
-            $start = $request->query('start', 0);
-            $length = $request->query('length', 10);
-            $order = $request->query('order.0.dir', 'asc');
-            $col0DataAttrName = $request->query('columns.0.data', 'name');
+        $filteredEmployees = $search ? $employees->count() : $totalEmployees;
+        $employees = $employees->skip($start)
+                                ->take($length)
+                                ->get();
 
-            $employees = Employee::orderBy($col0DataAttrName, $order)
-                ->skip($start)
-                ->take($length)
-                ->get();
+        $response = [
+            'draw' => intval($draw),
+            'recordsTotal' => intval($totalEmployees),
+            'recordsFiltered' => $filteredEmployees,
+            'data' => $employees
+        ];
 
-            $response = [
-                'draw' => intval($draw),
-                'recordsTotal' => $totalEmployees,
-                'recordsFiltered' => $totalEmployees,
-                'data' => $employees
-            ];
-
-            return Response::json($response);
-        }
-        else{
-            
-            $employees = Employee::where('name' , $search)
-            ->orWhere('position' ,$search)
-            ->orWhere('email' ,$search)
-            ->orWhere('address' ,$search)
-            ->orWhere('dob' ,$search)
-            ->orWhere('phone' ,$search)->get();
-
-            $filteredEmployees = $employees->count();
-            $response = [
-                'draw' => intval($draw),
-                'recordsTotal' => $totalEmployees,
-                'recordsFiltered' => $filteredEmployees,
-                'data' => $employees
-            ];
-
-            return Response::json($response);
-        }
+        return Response::json($response);
     }
 
     public function store(Request $request){
