@@ -8,9 +8,6 @@
 
 
         @vite([ 'resources/css/app.css', 'resources/js/app.js', ])
-
-
-
     </head>
 
     <body class="container.fluid w-100 " style="background-color: whitesmoke">
@@ -92,8 +89,6 @@
                             }
                         },
                     ],
-
-
                 });
 
                 // Delete Employee
