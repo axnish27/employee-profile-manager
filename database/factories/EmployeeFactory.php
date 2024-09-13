@@ -24,6 +24,7 @@ class EmployeeFactory extends Factory
             'dob' => fake()->unique()->date(),
             'address' => fake()->unique()->address(),
             'phone' => fake()->unique()->e164PhoneNumber(),
+
         ];
     }
 }

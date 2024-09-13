@@ -14,11 +14,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        Employee::factory(50)->create();
         User::factory()->create([
             'name' => 'admin',
             'email' => 'admin@example.com',
             'password' =>  Hash::make('password')
         ]);
-        Employee::factory(50)->create();
     }
 }

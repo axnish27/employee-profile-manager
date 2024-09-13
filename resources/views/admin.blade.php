@@ -6,7 +6,11 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Employee Manager</title>
 
+
         @vite([ 'resources/css/app.css', 'resources/js/app.js', ])
+
+
+
     </head>
 
     <body class="container.fluid w-100 " style="background-color: whitesmoke">
@@ -88,6 +92,8 @@
                             }
                         },
                     ],
+
+
                 });
 
                 // Delete Employee
@@ -96,6 +102,7 @@
                     deleteEmployee(id)
                     let $button = $(this)
                     table.row($button.parents('tr') ).remove().draw();
+
                 });
 
                 function deleteEmployee(id){
