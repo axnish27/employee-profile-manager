@@ -8,6 +8,7 @@
 
         @vite([ 'resources/css/app.css', 'resources/js/app.js', ])
     </head>
+
     <body class="container.fluid w-100 " style="background-color: whitesmoke">
 
         <nav class="navbar bg-dark border-bottom border-body w-100 text-light" data-bs-theme="dark">
@@ -34,14 +35,16 @@
             <div class="modal fade" id="modal-employee-create" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
-                    <button type="button" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" id="btn-modal-close" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
                     <h3 class="text-center text-dark">New Employee Details</h3>
                     <div class="modal-body">
                         <form
-                            action="{{ route('employee.store') }}"
-                            method="POST"
-                            enctype="multipart/form-data">
+
+
+                            id="createForm"
+                            >
                             @csrf
+
                             <input type="text" class=" form-control m-2" name="name" placeholder="Full Name" required>
                             <input type="text" class=" form-control m-2" name="position" placeholder="Position" required>
                             <input type="date" class=" form-control m-2" name="dob" placeholder="DOB" required>
@@ -106,6 +109,25 @@
                         console.log("Delted");
                     });
                 }
+
+
+                //Create Employee Axios
+                $('#createForm').submit(function (e) {
+
+                    e.preventDefault();
+
+                    let $data = $('#createForm').serialize()
+                    axios.post('employee', $data )
+                    .then(function (response){
+                        $('#btn-modal-close').click();
+                    });
+
+                });
+
+                function createEmploye(){
+
+                }
+
             });
         </script>
     </body>

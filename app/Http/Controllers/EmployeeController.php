@@ -45,7 +45,7 @@ class EmployeeController extends Controller
             'phone'=>$request->phone,
             'address'=>$request->address
         ]);
-        return redirect()->route('index');
+        return response(200);
     }
 
     public function update(Request $request , string $id){
