@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Employee;
+use Dotenv\Parser\Value;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use League\CommonMark\Extension\CommonMark\Delimiter\Processor\EmphasisDelimiterProcessor;
@@ -13,26 +14,59 @@ class EmployeeController extends Controller
     public function index(Request $request){
 
         //SERVER SIDE RENDERING HANDLE FOR data table
-        $start = $request->query('start', 0);
-        $length = $request->query('length', 10);
-        $draw = $request->query('draw', 1);
-        $sortColIndex = $request->query('order.0.column', 0);
-        $order = $request->query('order.0.dir', 'asc');
-        $col0DataAttrName = $request->query('columns.0.data', 'name'); // Assuming 'name' is default column
-        $totalEmployees = Employee::count();
 
-        $employees = Employee::orderBy($col0DataAttrName, $order)
-            ->skip($start)
-            ->take($length)
-            ->get();
+        $search = $request->query('search');
+        $search = $search['value'];
 
-        $response = [
-            'draw' => intval($draw),
-            'recordsTotal' => $totalEmployees,
-            'recordsFiltered' => $totalEmployees,
-            'data' => $employees
-        ];
-        return Response::json($response);
+        if(!$search){
+                $start = $request->query('start', 0);
+                $length = $request->query('length', 10);
+                $draw = $request->query('draw', 1);
+                $sortColIndex = $request->query('order.0.column', 0);
+                $order = $request->query('order.0.dir', 'asc');
+                $col0DataAttrName = $request->query('columns.0.data', 'name'); // Assuming 'name' is default column
+                $totalEmployees = Employee::count();
+
+                $employees = Employee::orderBy($col0DataAttrName, $order)
+                    ->skip($start)
+                    ->take($length)
+                    ->get();
+
+                $response = [
+                    'draw' => intval($draw),
+                    'recordsTotal' => $totalEmployees,
+                    'recordsFiltered' => $totalEmployees,
+                    'search' => $search,
+                    'data' => $employees
+
+                ];
+                    return Response::json($response);
+            } else {
+                // search if the keyword is presnt in any column
+                $employees = Employee::where('name' , $search)
+                ->orWhere('position' ,$search)
+                ->orWhere('email' ,$search)
+                ->orWhere('address' ,$search)
+                ->orWhere('dob' ,$search)
+                ->orWhere('phone' ,$search)->get();
+
+                $totalEmployees =   Employee::count();
+                $filteredEmployees = $employees->count();
+                $draw = $request->query('draw', 1);
+
+
+                $response = [
+                    'draw' => intval($draw),
+                    'recordsTotal' => $totalEmployees,
+                    'recordsFiltered' => $filteredEmployees,
+                    'search' => $search,
+                    'data' => $employees
+
+                ];
+                    return Response::json($response);
+            }
+
+
     }
 
     public function store(Request $request){
