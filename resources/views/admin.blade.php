@@ -27,19 +27,19 @@
 
         <main class="container" >
             <h1 class="h1 text-center mt-4" >Manage Employee Profiles</h1>
-            <button class="btn btn-primary rounded-circle p-0 mt-2 mb-2 "  data-bs-toggle="modal" data-bs-target="#modal-employee-create"  >
+            <button class="btn btn-primary rounded-circle p-0 mt-2 mb-2 "  data-bs-toggle="modal" data-bs-target="#modal-employee"  >
                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
                   </svg>
             </button>
 
-            <div class="modal fade" id="modal-employee-create" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal fade" id="modal-employee" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
                     <button type="button" id="btn-modal-close" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <h3 class="text-center text-dark">New Employee Details</h3>
+                    <h3 class="text-center text-dark"   id="form-title">New Employee Details</h3>
                     <div class="modal-body">
-                        <form id="createForm">
+                        <form id="modal-form">
                             @csrf
                             <input type="text" class=" form-control m-2" name="name" placeholder="Full Name" required>
                             <input type="text" class=" form-control m-2" name="position" placeholder="Position" required>
@@ -53,6 +53,32 @@
                   </div>
                 </div>
               </div>
+
+              <div class="modal fade edit " id="modal-employee-edit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <button type="button" id="btn-modal-close-edit" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h3 class="text-center text-dark"   id="form-title">Edit Employee</h3>
+                    <div class="modal-body">
+                        <form id="modal-edit">
+                            @csrf
+                            <input type="text" class=" form-control m-2" name="name" placeholder="Full Name" required>
+                            <input type="text" class=" form-control m-2" name="position" placeholder="Position" required>
+                            <input type="date" class=" form-control m-2" name="dob" placeholder="DOB" required>
+                            <input type="email" class=" form-control m-2" name="email" placeholder="Email" required>
+                            <input type="phone" class=" form-control m-2" name="phone" placeholder="Phone" required>
+                            <input type="text" class=" form-control m-2" name="address" placeholder="Address" required>
+                            <button type="submit" class="btn btn-primary m-2"> Add </button>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+
+
             <table id="myTable" class="table table-striped table-dark table-hover  " style="width: 100%">
             </table>
         </main>
@@ -74,7 +100,7 @@
                         { data: 'address' , title:'Address'},
                         { data: null ,
                             render: function (data, type, row) {
-                                return `  <button class="d-inline btn  edit p-0 " id="btn-edit-${row.id}" data-id="${row.id}" >
+                                return `  <button class="d-inline btn  edit p-0 " id="btn-edit-${row.id}" data-id="${row.id}" data-bs-toggle="modal" data-bs-target="#modal-employee-edit" >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="dodgerblue" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                                 <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
@@ -108,17 +134,46 @@
                 }
 
                 //Create Employee Axios
-                $('#createForm').submit(function (e) {
+                $('#modal-form').submit(function (e) {
 
                     e.preventDefault();
-                    let $data = $('#createForm').serialize()
-                    let $dataArray = $('#createForm').serializeArray()
+                    let $data = $('#modal-form').serialize()
                     axios.post('employee', $data )
                     .then(function (response){
-                        $('#createForm').trigger("reset");
+                        $('#modal-form').trigger("reset");
                         $('#btn-modal-close').click();
                         table.draw();
                     });
+                });
+
+                let $id = null
+
+                //Edit Employee
+                $('#myTable tbody').on('click', 'button[id^="btn-edit"]', function (e) {
+                    const $data =  table.row( $(this).parents('tr') ).data();
+                    $id  = $data.id
+                    
+                    $('#modal-edit').each(function (){
+                        const $inputs =  $(this).find(':input');
+                        $($inputs[1]).val($data.name);
+                        $($inputs[2]).val($data.position);
+                        $($inputs[3]).val($data.dob);
+                        $($inputs[4]).val($data.email);
+                        $($inputs[5]).val($data.phone);
+                        $($inputs[6]).val($data.address);
+                    })
+                });
+
+                $('#modal-edit').submit(function(e){
+                        e.preventDefault();
+                        let $dataSubmit = $('#modal-edit').serialize()
+                        axios.patch(`employee/${$id}`, $dataSubmit )
+                        .then(function (response){
+                        $('#modal-edit').trigger("reset");
+                        $('#btn-modal-close-edit').click();
+                        table.draw();
+                    });
+
                 });
             });
         </script>

@@ -53,7 +53,17 @@ class EmployeeController extends Controller
     }
 
     public function update(Request $request , string $id){
-        return('admin');
+
+        Employee::find($id)->update([
+            'name'=>$request->name,
+            'position'=>$request->position,
+            'dob'=>$request->dob,
+            'email'=>$request->email,
+            'phone'=>$request->phone,
+            'address'=>$request->address
+        ]);
+        return(response(200));
+
     }
 
     public function destroy(string $id){
