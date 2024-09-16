@@ -62,12 +62,12 @@
                     <div class="modal-body">
                         <form id="modal-edit">
                             @csrf
-                            <input type="text" class=" form-control m-2" name="name" placeholder="Full Name" required>
-                            <input type="text" class=" form-control m-2" name="position" placeholder="Position" required>
-                            <input type="date" class=" form-control m-2" name="dob" placeholder="DOB" required>
-                            <input type="email" class=" form-control m-2" name="email" placeholder="Email" required>
-                            <input type="phone" class=" form-control m-2" name="phone" placeholder="Phone" required>
-                            <input type="text" class=" form-control m-2" name="address" placeholder="Address" required>
+                            <input type="text" class=" form-control m-2 " id="name" name="name" placeholder="Full Name" required>
+                            <input type="text" class=" form-control m-2" id="position" name="position" placeholder="Position" required>
+                            <input type="date" class=" form-control m-2" id="dob" name="dob" placeholder="DOB" required>
+                            <input type="email" class=" form-control m-2" id="email" name="email" placeholder="Email" required>
+                            <input type="phone" class=" form-control m-2" id="phone" name="phone" placeholder="Phone" required>
+                            <input type="text" class=" form-control m-2" id="address" name="address" placeholder="Address" required>
                             <button type="submit" class="btn btn-primary m-2"> Add </button>
                         </form>
                     </div>
@@ -146,22 +146,19 @@
                     });
                 });
 
-                let $id = null
 
                 //Edit Employee
+                let $id = null
                 $('#myTable tbody').on('click', 'button[id^="btn-edit"]', function (e) {
                     const $data =  table.row( $(this).parents('tr') ).data();
                     $id  = $data.id
-                    
-                    $('#modal-edit').each(function (){
-                        const $inputs =  $(this).find(':input');
-                        $($inputs[1]).val($data.name);
-                        $($inputs[2]).val($data.position);
-                        $($inputs[3]).val($data.dob);
-                        $($inputs[4]).val($data.email);
-                        $($inputs[5]).val($data.phone);
-                        $($inputs[6]).val($data.address);
-                    })
+                    $('#name').val($data.name)
+                    $('#position').val($data.position)
+                    $('#dob').val($data.dob)
+                    $('#email').val($data.email)
+                    $('#phone').val($data.phone)
+                    $('#address').val($data.address)
+
                 });
 
                 $('#modal-edit').submit(function(e){
@@ -173,7 +170,6 @@
                         $('#btn-modal-close-edit').click();
                         table.draw();
                     });
-
                 });
             });
         </script>
