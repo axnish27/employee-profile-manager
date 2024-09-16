@@ -45,8 +45,8 @@ class EmployeeController extends Controller
             'name' => 'required|max:50|',
             'position' => 'required|max:50|',
             'dob' => 'required|date',
-            'email' => 'required|unique|email',
-            'phone' => 'required|unique|max:13',
+            'email' => 'required|unique:employees|email',
+            'phone' => 'required|max:13',
              'address' => 'required|max:255'
             ]
         );
