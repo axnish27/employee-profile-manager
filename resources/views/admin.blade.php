@@ -36,7 +36,7 @@
             </button>
 
             <div class="modal fade" id="modal-employee" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div id="validation-errors" role="alert" style="display: none" >
+                <div id="validation-errors-create" style="display: none;" role="alert">
 
                 </div>
                 <div class="modal-dialog modal-dialog-centered">
@@ -60,7 +60,7 @@
               </div>
 
               <div class="modal fade edit " id="modal-employee-edit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-
+                <div id="validation-errors-edit" style="display: none;" role="alert"></div>
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                     <button type="button" id="btn-modal-close-edit" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -152,21 +152,7 @@
                         table.draw();
                     })
                     .catch(function (response){
-
-                        const errors = response.response.data.errors
-                        const valErrorDiv = $('#validation-errors')
-                        valErrorDiv.empty();
-
-                        for (const field in errors) {
-                            errors[field].forEach(error => {
-                                const alertDiv = $('<div></div>')
-                                alertDiv.addClass("alert alert-danger m-2")
-                                alertDiv.text(error);
-                                console.log(error);
-                                valErrorDiv.append(alertDiv);
-                            });
-                        }
-                        valErrorDiv.fadeIn("slow").delay(5000).fadeOut("slow");
+                        displayError(response , "create")
                     });
                 });
 
@@ -192,8 +178,29 @@
                         $('#modal-edit').trigger("reset");
                         $('#btn-modal-close-edit').click();
                         table.draw();
-                    });
+                    })
+                    .catch(function (response){
+                        displayError(response , "edit")
+                    })
+                    ;
                 });
+
+
+                function displayError(response , modal){
+                    const errors = response.response.data.errors
+                    const valErrorDiv = $('#validation-errors-'+ modal)
+                    valErrorDiv.empty();
+                        for (const field in errors) {
+                            errors[field].forEach(error => {
+                                const alertDiv = $('<div></div>')
+                                alertDiv.addClass("alert alert-danger m-2")
+                                alertDiv.text(error);
+                                console.log(error);
+                                valErrorDiv.append(alertDiv);
+                            });
+                        }
+                    valErrorDiv.fadeIn("slow").delay(5000).fadeOut("slow");
+                }
             });
         </script>
     </body>
