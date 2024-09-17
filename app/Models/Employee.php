@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+
 class Employee extends Model
 {
     use HasFactory;
@@ -17,6 +18,7 @@ class Employee extends Model
         'dob',
         'phone',
         'address',
+        'company_id'
     ];
 
     public function company():BelongsTo
