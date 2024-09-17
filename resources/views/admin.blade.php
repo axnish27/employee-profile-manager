@@ -36,9 +36,7 @@
             </button>
 
             <div class="modal fade" id="modal-employee" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div id="validation-errors-create" style="display: none;" role="alert">
-
-                </div>
+                <div id="validation-errors-create" style="display: none;" role="alert"></div>
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
                     <button type="button" id="btn-modal-close" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -81,12 +79,7 @@
                 </div>
               </div>
 
-
-
-
-
-            <table id="myTable" class="table table-striped table-dark table-hover  " style="width: 100%">
-            </table>
+            <table id="myTable" class="table table-striped table-dark table-hover  " style="width: 100%"></table>
         </main>
 
         <script type="module">
@@ -141,12 +134,11 @@
 
                 //Create Employee Axios
                 $('#modal-form').submit(function (e) {
-
                     e.preventDefault();
                     let $data = $('#modal-form').serialize()
+
                     axios.post('employee', $data )
                     .then(function (response){
-
                         $('#modal-form').trigger("reset");
                         $('#btn-modal-close').click();
                         table.draw();
@@ -181,8 +173,7 @@
                     })
                     .catch(function (response){
                         displayError(response , "edit")
-                    })
-                    ;
+                    });
                 });
 
 
@@ -190,15 +181,15 @@
                     const errors = response.response.data.errors
                     const valErrorDiv = $('#validation-errors-'+ modal)
                     valErrorDiv.empty();
-                        for (const field in errors) {
-                            errors[field].forEach(error => {
-                                const alertDiv = $('<div></div>')
-                                alertDiv.addClass("alert alert-danger m-2")
-                                alertDiv.text(error);
-                                console.log(error);
-                                valErrorDiv.append(alertDiv);
-                            });
-                        }
+                    for (const field in errors) {
+                        errors[field].forEach(error => {
+                            const alertDiv = $('<div></div>')
+                            alertDiv.addClass("alert alert-danger m-2")
+                            alertDiv.text(error);
+                            console.log(error);
+                            valErrorDiv.append(alertDiv);
+                        });
+                    }
                     valErrorDiv.fadeIn("slow").delay(5000).fadeOut("slow");
                 }
             });
