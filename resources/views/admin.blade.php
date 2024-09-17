@@ -12,6 +12,8 @@
 
     <body class="container.fluid w-100 " style="background-color: whitesmoke">
 
+
+
         <nav class="navbar bg-dark border-bottom border-body w-100 text-light py-0"  data-bs-theme="dark">
             <div class="container">
                 <a class="navbar-brand" href="#"> Vista G </a>
@@ -34,6 +36,9 @@
             </button>
 
             <div class="modal fade" id="modal-employee" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div id="validation-errors" role="alert" style="display: none" >
+
+                </div>
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
                     <button type="button" id="btn-modal-close" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -55,8 +60,9 @@
               </div>
 
               <div class="modal fade edit " id="modal-employee-edit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
                 <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
+                    <div class="modal-content">
                     <button type="button" id="btn-modal-close-edit" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
                     <h3 class="text-center text-dark"   id="form-title">Edit Employee</h3>
                     <div class="modal-body">
@@ -140,12 +146,29 @@
                     let $data = $('#modal-form').serialize()
                     axios.post('employee', $data )
                     .then(function (response){
+
                         $('#modal-form').trigger("reset");
                         $('#btn-modal-close').click();
                         table.draw();
+                    })
+                    .catch(function (response){
+
+                        const errors = response.response.data.errors
+                        const valErrorDiv = $('#validation-errors')
+                        valErrorDiv.empty();
+
+                        for (const field in errors) {
+                            errors[field].forEach(error => {
+                                const alertDiv = $('<div></div>')
+                                alertDiv.addClass("alert alert-danger m-2")
+                                alertDiv.text(error);
+                                console.log(error);
+                                valErrorDiv.append(alertDiv);
+                            });
+                        }
+                        valErrorDiv.fadeIn("slow").delay(5000).fadeOut("slow");
                     });
                 });
-
 
                 //Edit Employee
                 let $id = null
@@ -162,10 +185,10 @@
                 });
 
                 $('#modal-edit').submit(function(e){
-                        e.preventDefault();
-                        let $dataSubmit = $('#modal-edit').serialize()
-                        axios.patch(`employee/${$id}`, $dataSubmit )
-                        .then(function (response){
+                    e.preventDefault();
+                    let $dataSubmit = $('#modal-edit').serialize()
+                    axios.patch(`employee/${$id}`, $dataSubmit )
+                    .then(function (response){
                         $('#modal-edit').trigger("reset");
                         $('#btn-modal-close-edit').click();
                         table.draw();
