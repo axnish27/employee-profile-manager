@@ -10,7 +10,7 @@ class BankAccount extends Model
 {
     use HasFactory;
 
-    public function user(): BelongsTo
+    public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
     }

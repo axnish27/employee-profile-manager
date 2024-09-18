@@ -11,7 +11,7 @@ class Project extends Model
 {
     use HasFactory;
 
-    public function roles(): BelongsToMany
+    public function employees(): BelongsToMany
     {
         return $this->belongsToMany(Employee::class);
     }

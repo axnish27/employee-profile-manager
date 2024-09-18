@@ -32,7 +32,7 @@ class Employee extends Model
         return $this->belongsToMany(Project::class);
     }
 
-    public function phone(): HasOne
+    public function bankAccount(): HasOne
     {
         return $this->hasOne(BankAccount::class);
     }
