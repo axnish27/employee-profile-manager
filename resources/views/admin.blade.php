@@ -117,7 +117,7 @@
                 });
 
                 // Delete Employee
-                $('#myTable tbody').on('click', 'button[id^="btn-dlt"]', function (e) {
+                $('#myTable tbody').on('click', '[id^="btn-dlt"]', function (e) {
                     let id = $(this).data('id');
                     deleteEmployee(id)
                     let $button = $(this)
@@ -150,7 +150,7 @@
 
                 //Edit Employee
                 let $id = null
-                $('#myTable tbody').on('click', 'button[id^="btn-edit"]', function (e) {
+                $('#myTable tbody').on('click', '[id^="btn-edit"]', function (e) {
                     const $data =  table.row( $(this).parents('tr') ).data();
                     $id  = $data.id
                     $('#name').val($data.name)
