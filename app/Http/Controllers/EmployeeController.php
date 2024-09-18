@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
-
+use Illuminate\Validation\Rule;
 
 class EmployeeController extends Controller
 {
@@ -35,25 +35,42 @@ class EmployeeController extends Controller
             'recordsFiltered' => $filteredEmployees,
             'data' => $employees
         ];
-
+        
         return Response::json($response);
     }
 
     public function store(Request $request){
 
-        Employee::create([
-            'name'=>$request->name,
-            'position'=>$request->position,
-            'dob'=>$request->dob,
-            'email'=>$request->email,
-            'phone'=>$request->phone,
-            'address'=>$request->address
-        ]);
+        $validated = $request->validate([
+            'name' => 'required|max:50|',
+            'position' => 'required|max:50|',
+            'dob' => 'required|date',
+            'email' => 'required|unique:employees|email',
+            'phone' => 'required|max:13',
+             'address' => 'required|max:255'
+            ]
+        );
+
+        Employee::create($validated);
         return response(200);
     }
 
     public function update(Request $request , string $id){
-        return('admin');
+
+        $validated = $request->validate([
+            'name' => 'required|max:50',
+            'position' => 'required|max:50',
+            'dob' => 'required|date',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('employees', 'email')->ignore($id),
+            ],
+            'phone' => 'required|max:13',
+            'address' => 'required|max:255'
+        ]);
+        Employee::find($id)->update($validated);
+        return response(null, 200);
     }
 
     public function destroy(string $id){
