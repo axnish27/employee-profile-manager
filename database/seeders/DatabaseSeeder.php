@@ -19,11 +19,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         Company::factory(20)->create();
-        Employee::factory()
-        ->has(BankAccount::factory())
-        ->count(200)
-        ->create();
-
+        Employee::factory(200)->create();
+        BankAccount::factory(200)->create();
         Project::factory(60)->create();
         User::factory()->create([
             'name' => 'admin',
@@ -36,9 +33,6 @@ class DatabaseSeeder extends Seeder
                 'project_id' => fake()->numberBetween(1,60),
                 'employee_id' => fake()->numberBetween(1,200)
             ]);
-           
         }
-
-
     }
 }
