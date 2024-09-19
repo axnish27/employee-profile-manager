@@ -27,7 +27,7 @@
 
         <main class="container" >
             <h1 class="h1 text-center mt-4" >Manage Employee Profiles</h1>
-            <button class="btn btn-primary rounded-circle p-0 mt-2 mb-2 "  data-bs-toggle="modal" data-bs-target="#modal-employee"  >
+            <button id="btn-add-employee" class="btn btn-primary rounded-circle p-0 mt-2 mb-2 "  data-bs-toggle="modal" data-bs-target="#modal-employee"  >
                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
                   </svg>
@@ -52,18 +52,10 @@
                             <input type="text" class=" form-control m-2" name="address" placeholder="Address" required>
 
                             <label class="form-label m-2 fw-bold" >Company Details</label>
-                            <select class="form-select form-control m-2" aria-label="Default select example">
+                            <select id="select-create" class="form-select form-control m-2 " aria-label="Default select example">
                                 <option value="" disabled selected>Company</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
                             </select>
-                            <select id="branch" class="form-select form-control m-2" aria-label="Default select example">
-                                <option value="" disabled selected>Branch</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </select>
+                            <input type="text" class=" form-control m-2" id="company-branch" name="companyBranch" placeholder="Branch" required disabled>
 
                             <label class="form-label m-2 fw-bold" >Bank Details</label>
                             <input type="text" class=" form-control m-2" id="beneficiary-name" name="beneficiaryName" placeholder="Beneficiary Name" required>
@@ -98,15 +90,11 @@
                             <label class="form-label m-2 fw-bold" >Company Details</label>
                             <select class="form-select form-control m-2" id="edit-company" aria-label="Default select example">
                                 <option value="" disabled selected>Company</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+
                             </select>
                             <select id="editBranch" class="form-select form-control m-2" aria-label="Default select example">
                                 <option value="" disabled selected>Branch</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+
                             </select>
 
                             <label class="form-label m-2 fw-bold" >Bank Details</label>
@@ -179,6 +167,28 @@
                 }
 
                 //Create Employee Axios
+                $('#btn-add-employee').click(function (e) {
+                    axios.get('employee/create')
+                    .then(function (response){
+                        const companies = response.data
+                        const select = $('#select-create')
+                        companies.forEach(company => {
+                            select.append(`<option value="${company.id}" class="create-option" data-branch="${company.branch}">${company.name}</option>`)
+                        });
+                    });
+                });
+
+                $('#select-create').on('click' , function (e) {
+                    const selectedOption = $(this).find(':selected');
+                    $('#company-branch').val(selectedOption.data('branch'))
+                });
+
+
+
+
+
+
+                //Store Employee Axios
                 $('#modal-form').submit(function (e) {
                     e.preventDefault();
                     let $data = $('#modal-form').serialize()

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\Company;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -29,7 +29,9 @@ class EmployeeController extends Controller
                             function ($q) use ($search) {
                                 $q->where('account_no', 'like', "%".$search."%")->select('branch'); })
                             ->orWhereHas('company', function ($q) use ($search) {
-                                $q->where('name', 'like', "%".$search."%"); });
+                                $q->where('name', 'like', "%".$search."%"); })
+                            ->orWhereHas('company', function ($q) use ($search) {
+                                $q->where('branch', 'like', "%".$search."%"); });
 
         $filteredEmployees = $search ? $employees->count() : $totalEmployees;
         $employees = $employees->skip($start)
@@ -46,6 +48,11 @@ class EmployeeController extends Controller
         return Response::json($response);
     }
 
+    public function create(){
+        $companies = Company::all();
+        return Response::json($companies);
+    }
+
     public function store(Request $request){
 
         $validated = $request->validate([
@@ -54,13 +61,15 @@ class EmployeeController extends Controller
             'dob' => 'required|date',
             'email' => 'required|unique:employees|email',
             'phone' => 'required|max:13',
-             'address' => 'required|max:255'
+             'address' => 'required|max:255',
+             'employee_id' => 'required',
             ]
         );
 
         Employee::create($validated);
         return response(200);
     }
+
 
     public function update(Request $request , string $id){
 
