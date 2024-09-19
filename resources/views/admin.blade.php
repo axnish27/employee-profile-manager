@@ -66,6 +66,7 @@
                             </select>
 
                             <label class="form-label m-2 fw-bold" >Bank Details</label>
+                            <input type="text" class=" form-control m-2" id="beneficiary-name" name="beneficiaryName" placeholder="Beneficiary Name" required>
                             <input type="text" class=" form-control m-2" name="bankName" placeholder="Bank Name" required>
                             <input type="phone" class=" form-control m-2" name="bankBranch" placeholder="Branch" required>
                             <input type="number" class=" form-control m-2" name="accountNo" placeholder="Account No" required>
@@ -109,6 +110,7 @@
                             </select>
 
                             <label class="form-label m-2 fw-bold" >Bank Details</label>
+                            <input type="text" class=" form-control m-2" id="beneficiary-name" name="beneficiaryName" placeholder="Beneficiary Name" required>
                             <input type="text" class=" form-control m-2" id="bank-name" name="bankName" placeholder="Bank Name" required>
                             <input type="phone" class=" form-control m-2" id="bank-branch" name="bankBranch" placeholder="Branch" required>
                             <input type="number" class=" form-control m-2" id="account-no" name="accountNo" placeholder="Account No" required>
