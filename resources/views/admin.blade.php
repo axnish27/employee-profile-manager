@@ -12,8 +12,6 @@
 
     <body class="container.fluid w-100 " style="background-color: whitesmoke">
 
-
-
         <nav class="navbar bg-dark border-bottom border-body w-100 text-light py-0"  data-bs-theme="dark">
             <div class="container">
                 <a class="navbar-brand" href="#"> Vista G </a>
@@ -91,12 +89,15 @@
                         url: 'employee',
                     },
                     columns: [
+                        { data: 'company.name', title:'Company' },
+                        { data: 'company.branch', title:'Branch'},
                         { data: 'name' , title: 'Name' ,},
                         { data: 'position' ,title:'Position' },
                         { data: 'dob', title:'DOB' },
                         { data: 'email' , title:'Email'},
                         { data: 'phone', title:'Phone' },
                         { data: 'address' , title:'Address'},
+                        { data: 'bank_account.account_no', title:'Bank Acc' },
                         { data: null ,
                             render: function (data, type, row) {
                                 return `  <button class="d-inline btn  btn-edit p-0 " id="btn-edit-${row.id}" data-id="${row.id}" data-bs-toggle="modal" data-bs-target="#modal-employee-edit" >
