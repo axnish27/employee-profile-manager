@@ -33,22 +33,44 @@
                   </svg>
             </button>
 
-            <div class="modal fade" id="modal-employee" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal fade " id="modal-employee" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div id="validation-errors-create" style="display: none;" role="alert"></div>
-                <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
+                <div class="modal-dialog modal-dialog-centered ">
+                  <div class="modal-content ">
                     <button type="button" id="btn-modal-close" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <h3 class="text-center text-dark"   id="form-title">New Employee Details</h3>
-                    <div class="modal-body">
-                        <form id="modal-form">
+                    <h3 class="text-center text-dark m-0" id="form-title">New Employee Details</h3>
+                    <div class="modal-body m-0">
+                        <form id="modal-form" class="">
                             @csrf
+
+                            <label class="form-label m-2 fw-bold">Personal Details</label>
                             <input type="text" class=" form-control m-2" name="name" placeholder="Full Name" required>
                             <input type="text" class=" form-control m-2" name="position" placeholder="Position" required>
                             <input type="date" class=" form-control m-2" name="dob" placeholder="DOB" required>
                             <input type="email" class=" form-control m-2" name="email" placeholder="Email" required>
                             <input type="phone" class=" form-control m-2" name="phone" placeholder="Phone" required>
                             <input type="text" class=" form-control m-2" name="address" placeholder="Address" required>
-                            <button type="submit" class="btn btn-primary m-2"> Add </button>
+
+                            <label class="form-label m-2 fw-bold" >Company Details</label>
+                            <select class="form-select form-control m-2" aria-label="Default select example">
+                                <option value="" disabled selected>Company</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                            <select id="branch" class="form-select form-control m-2" aria-label="Default select example">
+                                <option value="" disabled selected>Branch</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+
+                            <label class="form-label m-2 fw-bold" >Bank Details</label>
+                            <input type="text" class=" form-control m-2" name="bankName" placeholder="Bank Name" required>
+                            <input type="phone" class=" form-control m-2" name="bankBranch" placeholder="Branch" required>
+                            <input type="number" class=" form-control m-2" name="accountNo" placeholder="Account No" required>
+
+                            <button type="submit" class="btn btn-primary m-2"> New Employee </button>
                         </form>
                     </div>
                   </div>
@@ -60,16 +82,37 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                     <button type="button" id="btn-modal-close-edit" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <h3 class="text-center text-dark"   id="form-title">Edit Employee</h3>
+                    <h3 class="text-center text-dark m-0"   id="form-title">Edit Employee</h3>
                     <div class="modal-body">
                         <form id="modal-edit">
                             @csrf
+                            <label class="form-label m-2 fw-bold">Personal Details</label>
                             <input type="text" class=" form-control m-2 " id="name" name="name" placeholder="Full Name" required>
                             <input type="text" class=" form-control m-2" id="position" name="position" placeholder="Position" required>
                             <input type="date" class=" form-control m-2" id="dob" name="dob" placeholder="DOB" required>
                             <input type="email" class=" form-control m-2" id="email" name="email" placeholder="Email" required>
                             <input type="phone" class=" form-control m-2" id="phone" name="phone" placeholder="Phone" required>
                             <input type="text" class=" form-control m-2" id="address" name="address" placeholder="Address" required>
+
+                            <label class="form-label m-2 fw-bold" >Company Details</label>
+                            <select class="form-select form-control m-2" id="edit-company" aria-label="Default select example">
+                                <option value="" disabled selected>Company</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                            <select id="editBranch" class="form-select form-control m-2" aria-label="Default select example">
+                                <option value="" disabled selected>Branch</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+
+                            <label class="form-label m-2 fw-bold" >Bank Details</label>
+                            <input type="text" class=" form-control m-2" id="bank-name" name="bankName" placeholder="Bank Name" required>
+                            <input type="phone" class=" form-control m-2" id="bank-branch" name="bankBranch" placeholder="Branch" required>
+                            <input type="number" class=" form-control m-2" id="account-no" name="accountNo" placeholder="Account No" required>
+
                             <button type="submit" class="btn btn-primary m-2"> Add </button>
                         </form>
                     </div>
