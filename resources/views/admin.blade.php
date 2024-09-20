@@ -55,12 +55,12 @@
                             <select id="select-create" name="company_id" class="form-select form-control m-2 " aria-label="Default select example">
                                 <option value="" disabled selected>Company</option>
                             </select>
-                            <input type="text" class=" form-control m-2" id="company-branch" name="companyBranch" placeholder="Branch" required disabled>
+                            <input type="text" class=" form-control m-2" id="company-branch" name="company_branch" placeholder="Branch" required disabled>
 
                             <label class="form-label m-2 fw-bold" >Bank Details</label>
                             <input type="text" class=" form-control m-2" id="beneficiary-name" name="beneficiary_name" placeholder="Beneficiary Name" required>
                             <input type="text" class=" form-control m-2" name="bank_name" placeholder="Bank Name" required>
-                            <input type="phone" class=" form-control m-2" name="branch" placeholder="Branch" required>
+                            <input type="phone" class=" form-control m-2" name="bank_branch" placeholder="Branch" required>
                             <input type="number" class=" form-control m-2" name="account_no" placeholder="Account No" required>
 
                             <button type="submit" class="btn btn-primary m-2"> New Employee </button>

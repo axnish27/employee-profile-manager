@@ -56,11 +56,6 @@ class EmployeeController extends Controller
 
     public function store(Request $request){
 
-        #start here
-        #putt all validation under one then
-        #create empleye
-        #create bank acc with the employee_id
-
         $validatedEmployee = $request->validate([
             'name' => 'required|max:50|',
             'position' => 'required|max:50|',
@@ -71,15 +66,29 @@ class EmployeeController extends Controller
              'company_id' => 'required',
              'beneficiary_name' => 'required',
              'bank_name' => 'required',
-             'branch' => 'required',
+             'bank_branch' => 'required',
              'account_no' => 'required|max:9',
             ]
         );
 
+        $employee = Employee::create([
+            'name' => $validatedEmployee['name'],
+            'position' => $validatedEmployee['position'],
+            'dob' => $validatedEmployee['dob'],
+            'email' => $validatedEmployee['email'],
+            'phone' => $validatedEmployee['phone'],
+            'address' => $validatedEmployee['address'],
+            'company_id' => $validatedEmployee['company_id'],
+        ]);
 
-        $employee = Employee::create($validatedEmployee);
-        $validatedBankAcc["employee_id"] =  $employee->id;
-        BankAccount::create($validatedBankAcc);
+        BankAccount::create([
+            'beneficiary_name' => $validatedEmployee['beneficiary_name'],
+            'bank_name' => $validatedEmployee['bank_name'],
+            'branch' => $validatedEmployee['bank_branch'],
+            'account_no' => $validatedEmployee['account_no'],
+            'employee_id' => $employee->id
+        ]);
+
         return response(200);
     }
 
