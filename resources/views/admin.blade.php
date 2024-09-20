@@ -71,7 +71,7 @@
               </div>
 
               <div class="modal fade edit " id="modal-employee-edit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div id="validation-errors-edit" style="display: none;" role="alert"></div>
+                <div id="validation-errors-edit" style="display: none;" class=" position-absolute top-0 end-0  w-25" role="alert"></div>
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                     <button type="button" id="btn-modal-close-edit" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -209,7 +209,7 @@
 
                 let id = null
                 $('#myTable tbody').on('click', '.btn-edit', function (e) {
-                    const id =  table.row( $(this).parents('tr') ).data().id;
+                    id =  table.row( $(this).parents('tr') ).data().id;
                     axios.get(`employee/${id}`)
                     .then(function (response){
                         const data = response.data[0][0];

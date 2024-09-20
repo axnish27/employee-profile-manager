@@ -56,7 +56,7 @@ class EmployeeController extends Controller
 
     public function store(Request $request){
 
-        $validatedEmployee = $request->validate([
+        $validated = $request->validate([
             'name' => 'required|max:50|',
             'position' => 'required|max:50|',
             'dob' => 'required|date',
@@ -72,20 +72,20 @@ class EmployeeController extends Controller
         );
 
         $employee = Employee::create([
-            'name' => $validatedEmployee['name'],
-            'position' => $validatedEmployee['position'],
-            'dob' => $validatedEmployee['dob'],
-            'email' => $validatedEmployee['email'],
-            'phone' => $validatedEmployee['phone'],
-            'address' => $validatedEmployee['address'],
-            'company_id' => $validatedEmployee['company_id'],
+            'name' => $validated['name'],
+            'position' => $validated['position'],
+            'dob' => $validated['dob'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'address' => $validated['address'],
+            'company_id' => $validated['company_id'],
         ]);
 
         BankAccount::create([
-            'beneficiary_name' => $validatedEmployee['beneficiary_name'],
-            'bank_name' => $validatedEmployee['bank_name'],
-            'branch' => $validatedEmployee['bank_branch'],
-            'account_no' => $validatedEmployee['account_no'],
+            'beneficiary_name' => $validated['beneficiary_name'],
+            'bank_name' => $validated['bank_name'],
+            'branch' => $validated['bank_branch'],
+            'account_no' => $validated['account_no'],
             'employee_id' => $employee->id
         ]);
 
@@ -111,10 +111,32 @@ class EmployeeController extends Controller
                 Rule::unique('employees', 'email')->ignore($id),
             ],
             'phone' => 'required|max:13',
-            'address' => 'required|max:255'
+            'address' => 'required|max:255',
+            'company_id' => 'required',
+            'beneficiary_name' => 'required',
+            'bank_name' => 'required',
+            'bank_branch' => 'required',
+            'account_no' => 'required|max:9',
+            'bank_id' => 'required'
         ]);
-        Employee::find($id)->update($validated);
-        return response(null, 200);
+
+        Employee::find($id)->update([
+            'name' => $validated['name'],
+            'position' => $validated['position'],
+            'dob' => $validated['dob'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'address' => $validated['address'],
+            'company_id' => $validated['company_id'],
+        ]);
+
+        BankAccount::find($validated['bank_id'])->update([
+            'beneficiary_name' => $validated['beneficiary_name'],
+            'bank_name' => $validated['bank_name'],
+            'branch' => $validated['bank_branch'],
+            'account_no' => $validated['account_no'],
+        ]);
+        return response(200);
     }
 
     public function destroy(string $id){
