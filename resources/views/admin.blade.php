@@ -58,7 +58,7 @@
                             <input type="text" class=" form-control m-2" id="company-branch" name="company_branch" placeholder="Branch" required disabled>
 
                             <label class="form-label m-2 fw-bold" >Bank Details</label>
-                            <input type="text" class=" form-control m-2" id="beneficiary-name" name="beneficiary_name" placeholder="Beneficiary Name" required>
+                            <input type="text" class=" form-control m-2"  name="beneficiary_name" placeholder="Beneficiary Name" required>
                             <input type="text" class=" form-control m-2" name="bank_name" placeholder="Bank Name" required>
                             <input type="phone" class=" form-control m-2" name="bank_branch" placeholder="Branch" required>
                             <input type="number" class=" form-control m-2" name="account_no" placeholder="Account No" required>
@@ -88,18 +88,16 @@
                             <input type="text" class=" form-control m-2" id="address" name="address" placeholder="Address" required>
 
                             <label class="form-label m-2 fw-bold" >Company Details</label>
-                            <select class="form-select form-control m-2" id="edit-company" aria-label="Default select example">
-                                <option value="" disabled selected>Company</option>
+                            <select class="form-select form-control m-2" id="select-edit" name="company_id" aria-label="Default select example">
 
                             </select>
-                            <select id="editBranch" class="form-select form-control m-2" aria-label="Default select example">
-                                <option value="" disabled selected>Branch</option>
-                            </select>
+                            <input type="text" class=" form-control m-2" id="company-branch-edit" name="company_branch" placeholder="Branch" required disabled>
 
                             <label class="form-label m-2 fw-bold" >Bank Details</label>
-                            <input type="text" class=" form-control m-2" id="beneficiary-name" name="beneficiary_name" placeholder="Beneficiary Name" required>
+                            <input type="hidden" name="bank_id" id="bank-id">
+                            <input type="text" class=" form-control m-2" id="beneficiary-name" name="beneficiary_name" required>
                             <input type="text" class=" form-control m-2" id="bank-name" name="bank_name" placeholder="Bank Name" required>
-                            <input type="phone" class=" form-control m-2" id="bank-branch" name="branch" placeholder="Branch" required>
+                            <input type="phone" class=" form-control m-2" id="bank-branch" name="bank_branch" placeholder="Branch" required>
                             <input type="number" class=" form-control m-2" id="account-no" name="account_no" placeholder="Account No" required>
 
                             <button type="submit" class="btn btn-primary m-2"> Add </button>
@@ -179,8 +177,15 @@
 
                 $('#select-create').on('click' , function (e) {
                     const selectedOption = $(this).find(':selected');
-                    $('#company-branch').val(selectedOption.data('branch'))
+                    $('#company-branch-create').val(selectedOption.data('branch'))
                 });
+
+                $('#select-edit').on('click' , function (e) {
+                    const selectedOption = $(this).find(':selected');
+                    $('#company-branch-edit').val(selectedOption.data('branch'))
+                });
+
+
 
                 //Store Employee Axios
                 $('#form-create').submit(function (e) {
@@ -199,23 +204,40 @@
                 });
 
                 //Edit Employee
-                let $id = null
-                $('#myTable tbody').on('click', '.btn-edit', function (e) {
-                    const $data =  table.row( $(this).parents('tr') ).data();
-                    $id  = $data.id
-                    $('#name').val($data.name)
-                    $('#position').val($data.position)
-                    $('#dob').val($data.dob)
-                    $('#email').val($data.email)
-                    $('#phone').val($data.phone)
-                    $('#address').val($data.address)
 
+
+
+                let id = null
+                $('#myTable tbody').on('click', '.btn-edit', function (e) {
+                    const id =  table.row( $(this).parents('tr') ).data().id;
+                    axios.get(`employee/${id}`)
+                    .then(function (response){
+                        const data = response.data[0][0];
+                        const companies = response.data[1]
+                        const selectOption= $("#select-edit")
+                        $('#name').val(data.name)
+                        $('#position').val(data.position)
+                        $('#dob').val(data.dob)
+                        $('#email').val(data.email)
+                        $('#phone').val(data.phone)
+                        $('#address').val(data.address)
+                        selectOption.append(`<option value="${data.company.id}" class="create-option" data-branch="${data.company.branch}" selected>${data.company.name}</option>`)
+                        companies.forEach((company) => {
+                            selectOption.append(`<option value="${company.id}" class="create-option" data-branch="${company.branch}">${company.name}</option>`)
+                        });
+                        $("#company-branch-edit").val(data.company.branch)
+                        $('#bank-id').val(data.bank_account.id)
+                        $('#beneficiary-name').val(data.bank_account.beneficiary_name)
+                        $('#bank-name').val(data.bank_account.bank_name)
+                        $('#bank-branch').val(data.bank_account.branch)
+                        $('#account-no').val(data.bank_account.account_no)
+                    });
                 });
 
                 $('#form-edit').submit(function(e){
                     e.preventDefault();
-                    let $dataSubmit = $('#form-edit').serialize()
-                    axios.patch(`employee/${$id}`, $dataSubmit )
+                    let dataSubmit = $('#form-edit').serialize()
+                    axios.patch(`employee/${id}`, dataSubmit )
                     .then(function (response){
                         $('#form-edit').trigger("reset");
                         $('#btn-modal-close-edit').click();

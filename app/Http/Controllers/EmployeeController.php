@@ -92,6 +92,12 @@ class EmployeeController extends Controller
         return response(200);
     }
 
+    public function edit(string $id){
+        $employee = Employee::with('bankAccount' , 'company')->where('id',$id)->get();
+        $companies = Company::all();
+        return Response::json([$employee , $companies]);
+    }
+
 
     public function update(Request $request , string $id){
 
