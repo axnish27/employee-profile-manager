@@ -88,9 +88,7 @@
                             <input type="text" class=" form-control m-2" id="address" name="address" placeholder="Address" required>
 
                             <label class="form-label m-2 fw-bold" >Company Details</label>
-                            <select class="form-select form-control m-2" id="select-edit" name="company_id" aria-label="Default select example">
-
-                            </select>
+                            <select class="form-select form-control m-2" id="select-edit" name="company_id" aria-label="Default select example"></select>
                             <input type="text" class=" form-control m-2" id="company-branch-edit" name="company_branch" placeholder="Branch" required disabled>
 
                             <label class="form-label m-2 fw-bold" >Bank Details</label>
@@ -175,18 +173,6 @@
                     });
                 });
 
-                $('#select-create').on('click' , function (e) {
-                    const selectedOption = $(this).find(':selected');
-                    $('#company-branch-create').val(selectedOption.data('branch'))
-                });
-
-                $('#select-edit').on('click' , function (e) {
-                    const selectedOption = $(this).find(':selected');
-                    $('#company-branch-edit').val(selectedOption.data('branch'))
-                });
-
-
-
                 //Store Employee Axios
                 $('#form-create').submit(function (e) {
                     e.preventDefault();
@@ -204,9 +190,6 @@
                 });
 
                 //Edit Employee
-
-
-
                 let id = null
                 $('#myTable tbody').on('click', '.btn-edit', function (e) {
                     id =  table.row( $(this).parents('tr') ).data().id;
@@ -248,11 +231,24 @@
                     });
                 });
 
+                // Clear Forms on Submit
                 $('.btn-close').click(function (e) {
                     $('.form-modal').trigger("reset");
 
                 });
 
+                // Set Branch on Selct
+                $('#select-create').on('click' , function (e) {
+                    const selectedOption = $(this).find(':selected');
+                    $('#company-branch-create').val(selectedOption.data('branch'))
+                });
+
+                $('#select-edit').on('click' , function (e) {
+                    const selectedOption = $(this).find(':selected');
+                    $('#company-branch-edit').val(selectedOption.data('branch'))
+                });
+
+                // Customer Error Alerts
                 function displayError(response , modal){
                     const errors = response.response.data.errors
                     const valErrorDiv = $('#validation-errors-'+ modal)
