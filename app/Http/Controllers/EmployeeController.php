@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BankAccount;
 use App\Models\Company;
 use App\Models\Employee;
 use Illuminate\Http\Request;
@@ -55,18 +56,30 @@ class EmployeeController extends Controller
 
     public function store(Request $request){
 
-        $validated = $request->validate([
+        #start here
+        #putt all validation under one then
+        #create empleye
+        #create bank acc with the employee_id
+
+        $validatedEmployee = $request->validate([
             'name' => 'required|max:50|',
             'position' => 'required|max:50|',
             'dob' => 'required|date',
             'email' => 'required|unique:employees|email',
             'phone' => 'required|max:13',
              'address' => 'required|max:255',
-             'employee_id' => 'required',
+             'company_id' => 'required',
+             'beneficiary_name' => 'required',
+             'bank_name' => 'required',
+             'branch' => 'required',
+             'account_no' => 'required|max:9',
             ]
         );
 
-        Employee::create($validated);
+
+        $employee = Employee::create($validatedEmployee);
+        $validatedBankAcc["employee_id"] =  $employee->id;
+        BankAccount::create($validatedBankAcc);
         return response(200);
     }
 

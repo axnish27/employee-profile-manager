@@ -40,7 +40,7 @@
                     <button type="button" id="btn-modal-close" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
                     <h3 class="text-center text-dark m-0" id="form-title">New Employee Details</h3>
                     <div class="modal-body m-0">
-                        <form id="modal-form" class="">
+                        <form id="form-create" class="form-modal">
                             @csrf
 
                             <label class="form-label m-2 fw-bold">Personal Details</label>
@@ -52,16 +52,16 @@
                             <input type="text" class=" form-control m-2" name="address" placeholder="Address" required>
 
                             <label class="form-label m-2 fw-bold" >Company Details</label>
-                            <select id="select-create" class="form-select form-control m-2 " aria-label="Default select example">
+                            <select id="select-create" name="company_id" class="form-select form-control m-2 " aria-label="Default select example">
                                 <option value="" disabled selected>Company</option>
                             </select>
                             <input type="text" class=" form-control m-2" id="company-branch" name="companyBranch" placeholder="Branch" required disabled>
 
                             <label class="form-label m-2 fw-bold" >Bank Details</label>
-                            <input type="text" class=" form-control m-2" id="beneficiary-name" name="beneficiaryName" placeholder="Beneficiary Name" required>
-                            <input type="text" class=" form-control m-2" name="bankName" placeholder="Bank Name" required>
-                            <input type="phone" class=" form-control m-2" name="bankBranch" placeholder="Branch" required>
-                            <input type="number" class=" form-control m-2" name="accountNo" placeholder="Account No" required>
+                            <input type="text" class=" form-control m-2" id="beneficiary-name" name="beneficiary_name" placeholder="Beneficiary Name" required>
+                            <input type="text" class=" form-control m-2" name="bank_name" placeholder="Bank Name" required>
+                            <input type="phone" class=" form-control m-2" name="branch" placeholder="Branch" required>
+                            <input type="number" class=" form-control m-2" name="account_no" placeholder="Account No" required>
 
                             <button type="submit" class="btn btn-primary m-2"> New Employee </button>
                         </form>
@@ -77,7 +77,7 @@
                     <button type="button" id="btn-modal-close-edit" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
                     <h3 class="text-center text-dark m-0"   id="form-title">Edit Employee</h3>
                     <div class="modal-body">
-                        <form id="modal-edit">
+                        <form id="form-edit" class="form-modal">
                             @csrf
                             <label class="form-label m-2 fw-bold">Personal Details</label>
                             <input type="text" class=" form-control m-2 " id="name" name="name" placeholder="Full Name" required>
@@ -94,14 +94,13 @@
                             </select>
                             <select id="editBranch" class="form-select form-control m-2" aria-label="Default select example">
                                 <option value="" disabled selected>Branch</option>
-
                             </select>
 
                             <label class="form-label m-2 fw-bold" >Bank Details</label>
-                            <input type="text" class=" form-control m-2" id="beneficiary-name" name="beneficiaryName" placeholder="Beneficiary Name" required>
-                            <input type="text" class=" form-control m-2" id="bank-name" name="bankName" placeholder="Bank Name" required>
-                            <input type="phone" class=" form-control m-2" id="bank-branch" name="bankBranch" placeholder="Branch" required>
-                            <input type="number" class=" form-control m-2" id="account-no" name="accountNo" placeholder="Account No" required>
+                            <input type="text" class=" form-control m-2" id="beneficiary-name" name="beneficiary_name" placeholder="Beneficiary Name" required>
+                            <input type="text" class=" form-control m-2" id="bank-name" name="bank_name" placeholder="Bank Name" required>
+                            <input type="phone" class=" form-control m-2" id="bank-branch" name="branch" placeholder="Branch" required>
+                            <input type="number" class=" form-control m-2" id="account-no" name="account_no" placeholder="Account No" required>
 
                             <button type="submit" class="btn btn-primary m-2"> Add </button>
                         </form>
@@ -183,19 +182,14 @@
                     $('#company-branch').val(selectedOption.data('branch'))
                 });
 
-
-
-
-
-
                 //Store Employee Axios
-                $('#modal-form').submit(function (e) {
+                $('#form-create').submit(function (e) {
                     e.preventDefault();
-                    let $data = $('#modal-form').serialize()
+                    let $data = $('#form-create').serialize()
 
                     axios.post('employee', $data )
                     .then(function (response){
-                        $('#modal-form').trigger("reset");
+                        $('#form-create').trigger("reset");
                         $('#btn-modal-close').click();
                         table.draw();
                     })
@@ -218,12 +212,12 @@
 
                 });
 
-                $('#modal-edit').submit(function(e){
+                $('#form-edit').submit(function(e){
                     e.preventDefault();
-                    let $dataSubmit = $('#modal-edit').serialize()
+                    let $dataSubmit = $('#form-edit').serialize()
                     axios.patch(`employee/${$id}`, $dataSubmit )
                     .then(function (response){
-                        $('#modal-edit').trigger("reset");
+                        $('#form-edit').trigger("reset");
                         $('#btn-modal-close-edit').click();
                         table.draw();
                     })
@@ -232,6 +226,10 @@
                     });
                 });
 
+                $('.btn-close').click(function (e) {
+                    $('.form-modal').trigger("reset");
+
+                });
 
                 function displayError(response , modal){
                     const errors = response.response.data.errors
