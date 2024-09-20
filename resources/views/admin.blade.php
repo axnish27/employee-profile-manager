@@ -54,8 +54,11 @@
                             <label class="form-label m-2 fw-bold" >Company Details</label>
                             <select id="select-create" name="company_id" class="form-select form-control m-2 " aria-label="Default select example">
                                 <option value="" disabled selected>Company</option>
+                                @foreach ( $companies  as $company )
+                                    <option value="{{ $company->id }}" class="create-option" data-branch="{{ $company->branch }}"> {{ $company->name }} </option>
+                                @endforeach
                             </select>
-                            <input type="text" class=" form-control m-2" id="company-branch" name="company_branch" placeholder="Branch" required disabled>
+                            <input type="text" class=" form-control m-2" id="company-branch-create" name="company_branch" placeholder="Branch" required disabled>
 
                             <label class="form-label m-2 fw-bold" >Bank Details</label>
                             <input type="text" class=" form-control m-2"  name="beneficiary_name" placeholder="Beneficiary Name" required>
@@ -114,7 +117,7 @@
                     serverSide: true,
                     processing: true,
                     ajax: {
-                        url: 'employee',
+                        url: 'employee/draw',
                     },
                     columns: [
                         { data: 'company.name', title:'Company' },
@@ -160,18 +163,6 @@
                         console.log("Delted");
                     });
                 }
-
-                //Create Employee Axios
-                $('#btn-add-employee').click(function (e) {
-                    axios.get('employee/create')
-                    .then(function (response){
-                        const companies = response.data
-                        const select = $('#select-create')
-                        companies.forEach(company => {
-                            select.append(`<option value="${company.id}" class="create-option" data-branch="${company.branch}">${company.name}</option>`)
-                        });
-                    });
-                });
 
                 //Store Employee Axios
                 $('#form-create').submit(function (e) {

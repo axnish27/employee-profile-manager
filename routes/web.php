@@ -3,9 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
-Route::get('/', function () {
-    return view('admin');
-})->name('index')->middleware('auth');
+// Route::get('/', function () {return view('admin');})->name('index')->middleware('auth');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
