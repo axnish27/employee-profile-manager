@@ -91,7 +91,12 @@
                             <input type="text" class=" form-control m-2" id="address" name="address" placeholder="Address" required>
 
                             <label class="form-label m-2 fw-bold" >Company Details</label>
-                            <select class="form-select form-control m-2" id="select-edit" name="company_id" aria-label="Default select example"></select>
+                            <select class="form-select form-control m-2" id="select-edit" name="company_id" aria-label="Default select example">
+                                <option value="" id="selected-option" selected></option>
+                                @foreach ( $companies  as $company )
+                                    <option value="{{ $company->id }}" class="create-option" data-branch="{{ $company->branch }}"> {{ $company->name }} </option>
+                                @endforeach
+                            </select>
                             <input type="text" class=" form-control m-2" id="company-branch-edit" name="company_branch" placeholder="Branch" required disabled>
 
                             <label class="form-label m-2 fw-bold" >Bank Details</label>
@@ -186,19 +191,15 @@
                     id =  table.row( $(this).parents('tr') ).data().id;
                     axios.get(`employee/${id}`)
                     .then(function (response){
-                        const data = response.data[0][0];
-                        const companies = response.data[1]
-                        const selectOption= $("#select-edit")
+                        const data = response.data[0];
+                        const selectOption= $("#selected-option")
                         $('#name').val(data.name)
                         $('#position').val(data.position)
                         $('#dob').val(data.dob)
                         $('#email').val(data.email)
                         $('#phone').val(data.phone)
                         $('#address').val(data.address)
-                        selectOption.append(`<option value="${data.company.id}" class="create-option" data-branch="${data.company.branch}" selected>${data.company.name}</option>`)
-                        companies.forEach((company) => {
-                            selectOption.append(`<option value="${company.id}" class="create-option" data-branch="${company.branch}">${company.name}</option>`)
-                        });
+                        selectOption.text(data.company.name).val(data.company.id).data('branch' , data.company.branch)
                         $("#company-branch-edit").val(data.company.branch)
                         $('#bank-id').val(data.bank_account.id)
                         $('#beneficiary-name').val(data.bank_account.beneficiary_name)

@@ -95,9 +95,7 @@ class EmployeeController extends Controller
 
     public function edit(string $id){
         $employee = Employee::with('bankAccount' , 'company')->where('id',$id)->get();
-        $emp = Employee::find(1);
-        $companies = Company::all();
-        return Response::json([$employee , $companies]);
+        return Response::json($employee);
     }
 
 
