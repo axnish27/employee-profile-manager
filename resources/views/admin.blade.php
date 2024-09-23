@@ -169,11 +169,11 @@
                         $('#email').val(data.email)
                         $('#phone').val(data.phone)
                         $('#address').val(data.address)
-                        $('#select').append($('<option>', {
-                            value: data.company.id,
-                            text: data.company.name,
-                            selected: "selected",
-                        }))
+                        $("#select option").each(function(){
+                            if ($(this).val() == data.company.id) {
+                                $(this).attr('selected', true)
+                            }
+                        });
                         $("#company-branch").val(data.company.branch)
                         $('#bank-id').val(data.bank_account.id)
                         $('#beneficiary-name').val(data.bank_account.beneficiary_name)
