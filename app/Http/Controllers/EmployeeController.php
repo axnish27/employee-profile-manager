@@ -59,40 +59,36 @@ class EmployeeController extends Controller
     public function store(Request $request){
         $errors = [];
 
-        $employeeValidator = Validator::make($request->all(), [
-            'name' => 'required|max:50|',
-            'position' => 'required|max:50|',
-            'dob' => 'required|date',
-            'email' => 'required|unique:employees|email',
-            'phone' => 'required|max:13',
-            'address' => 'required|max:255',
-            'company_id' => 'required',
+        try {
+            $employeeValidated = $request->validate([
+                'name' => 'required|max:50|',
+                'position' => 'required|max:50|',
+                'dob' => 'required|date',
+                'email' => 'required|unique:employees|email',
+                'phone' => 'required|max:13',
+                 'address' => 'required|max:255',
+                 'company_id' => 'required',
             ]);
-
-        if ($employeeValidator->fails()){
-            $errors['employee'] = $employeeValidator->errors();
+            $bankAccValidated = $request->validate([
+                'beneficiary_name' => 'required',
+                'bank_name' => 'required',
+                'branch' => 'required',
+                'account_no' => 'required|max:9',
+            ]);
+        } catch (Exception $e) {
+            $errors[] = $e->getMessage();
         }
 
-        $bankAccValidator = Validator::make($request->all(),[
-            'beneficiary_name' => 'required',
-            'bank_name' => 'required',
-            'branch' => 'required',
-            'account_no' => 'required|max:9',
-        ]);
-
-        if ($bankAccValidator->fails()){
-            $errors['BankAccount'] = $bankAccValidator->errors();
-        }
 
         if ($errors){
             return Response::json($errors , 422);
         }
 
-        $employee = Employee::create($employeeValidator->validated());
+        $employee = Employee::create($employeeValidated);
         $bankAccValidated['employee_id'] = $employee->id;
         BankAccount::create($bankAccValidated);
-
         return response(200);
+
     }
 
     public function edit(string $id){
@@ -101,44 +97,40 @@ class EmployeeController extends Controller
     }
 
     public function update(Request $request , string $id){
+
         $errors = [];
+        try {
+            $employeeValidated = $request->validate([
+                'name' => 'required|max:50',
+                'position' => 'required|max:50',
+                'dob' => 'required|date',
+                'email' => [
+                    'required',
+                    'email',
+                    Rule::unique('employees', 'email')->ignore($id),
+                ],
+                'phone' => 'required|max:13',
+                'address' => 'required|max:255',
+                'company_id' => 'required',
+            ]);
 
-        $employeeValidator = Validator::make($request->all(), [
-            'name' => 'required|max:50',
-            'position' => 'required|max:50',
-            'dob' => 'required|date',
-            'email' => [
-                'required',
-                'email',
-                Rule::unique('employees', 'email')->ignore($id),
-            ],
-            'phone' => 'required|max:13',
-            'address' => 'required|max:255',
-            'company_id' => 'required',
-        ]);
-
-        if ($employeeValidator->fails()){
-            $errors['employee'] = $employeeValidator->errors();
-        }
-
-        $bankAccValidator = Validator::make($request->all(), [
-            'beneficiary_name' => 'required',
-            'bank_name' => 'required',
-            'branch' => 'required',
-            'account_no' => 'required|max:9',
-            'bank_id' => 'required',
-        ]);
-        if ($bankAccValidator->fails()){
-            $errors['BankAccount'] = $bankAccValidator->errors();
+            $bankAccValidated = $request->validate([
+                'beneficiary_name' => 'required',
+                'bank_name' => 'required',
+                'branch' => 'required',
+                'account_no' => 'required|max:9',
+                'bank_id' => 'required',
+            ]);
+        } catch (Exception $e) {
+            $errors[] = $e->getMessage();
         }
 
         if ($errors){
             return Response::json($errors , 422);
         }
 
-        Employee::find($id)->update( $employeeValidator->validated());
+        Employee::find($id)->update( $employeeValidated);
 
-        $bankAccValidated = $bankAccValidator->validated();
         $bank_id = $bankAccValidated['bank_id'];
         unset($bankAccValidated['bank_id']);
         BankAccount::find($bank_id)->update($bankAccValidated);
