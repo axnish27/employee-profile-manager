@@ -79,7 +79,7 @@ class EmployeeController extends Controller
             $bankAccValidated = $request->validate([
                 'beneficiary_name' => 'required',
                 'bank_name' => 'required',
-                'bank_branch' => 'required',
+                'branch' => 'required',
                 'account_no' => 'required|max:9',
                 ]
             );
@@ -130,7 +130,7 @@ class EmployeeController extends Controller
             $bankAccValidated = $request->validate([
                 'beneficiary_name' => 'required',
                 'bank_name' => 'required',
-                'bank_branch' => 'required',
+                'branch' => 'required',
                 'account_no' => 'required|max:9',
                 'bank_id' => 'required',
                 ]

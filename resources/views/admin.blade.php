@@ -63,7 +63,7 @@
                             <label class="form-label m-2 fw-bold" >Bank Details</label>
                             <input type="text" class=" form-control m-2"  name="beneficiary_name" placeholder="Beneficiary Name" required>
                             <input type="text" class=" form-control m-2" name="bank_name" placeholder="Bank Name" required>
-                            <input type="phone" class=" form-control m-2" name="bank_branch" placeholder="Branch" required>
+                            <input type="phone" class=" form-control m-2" name="branch" placeholder="Branch" required>
                             <input type="number" class=" form-control m-2" name="account_no" placeholder="Account No" required>
 
                             <button type="submit" class="btn btn-primary m-2"> New Employee </button>
@@ -103,7 +103,7 @@
                             <input type="hidden" name="bank_id" id="bank-id">
                             <input type="text" class=" form-control m-2" id="beneficiary-name" name="beneficiary_name" required>
                             <input type="text" class=" form-control m-2" id="bank-name" name="bank_name" placeholder="Bank Name" required>
-                            <input type="phone" class=" form-control m-2" id="bank-branch" name="bank_branch" placeholder="Branch" required>
+                            <input type="phone" class=" form-control m-2" id="bank-branch" name="branch" placeholder="Branch" required>
                             <input type="number" class=" form-control m-2" id="account-no" name="account_no" placeholder="Account No" required>
 
                             <button type="submit" class="btn btn-primary m-2"> Add </button>
@@ -192,7 +192,7 @@
                     axios.get(`employee/${id}`)
                     .then(function (response){
                         const data = response.data[0];
-                        const selectOption= $("#selected-option")
+                        const selectOption = $("#selected-option")
                         $('#name').val(data.name)
                         $('#position').val(data.position)
                         $('#dob').val(data.dob)
