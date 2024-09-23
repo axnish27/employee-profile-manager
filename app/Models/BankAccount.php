@@ -9,6 +9,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class BankAccount extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'beneficiary_name',
+        'bank_name',
+        'branch',
+        'account_no',
+        'employee_id'
+    ];
 
     public function employee(): BelongsTo
     {
