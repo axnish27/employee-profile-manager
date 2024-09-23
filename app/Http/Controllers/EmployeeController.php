@@ -11,7 +11,6 @@ use Illuminate\Validation\Rule;
 
 class EmployeeController extends Controller
 {
-
     public function index(Request $request){
         $companies = Company::all();
         return view('admin' , [ 'companies' => $companies]);
@@ -57,7 +56,7 @@ class EmployeeController extends Controller
 
     public function store(Request $request){
 
-        $validated = $request->validate([
+        $employeeValidated = $request->validate([
             'name' => 'required|max:50|',
             'position' => 'required|max:50|',
             'dob' => 'required|date',
@@ -65,30 +64,20 @@ class EmployeeController extends Controller
             'phone' => 'required|max:13',
              'address' => 'required|max:255',
              'company_id' => 'required',
-             'beneficiary_name' => 'required',
-             'bank_name' => 'required',
-             'bank_branch' => 'required',
-             'account_no' => 'required|max:9',
             ]
         );
 
-        $employee = Employee::create([
-            'name' => $validated['name'],
-            'position' => $validated['position'],
-            'dob' => $validated['dob'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'],
-            'address' => $validated['address'],
-            'company_id' => $validated['company_id'],
-        ]);
+        $bankAccValidated = $request->validate([
+            'beneficiary_name' => 'required',
+            'bank_name' => 'required',
+            'bank_branch' => 'required',
+            'account_no' => 'required|max:9',
+            ]
+        );
 
-        BankAccount::create([
-            'beneficiary_name' => $validated['beneficiary_name'],
-            'bank_name' => $validated['bank_name'],
-            'branch' => $validated['bank_branch'],
-            'account_no' => $validated['account_no'],
-            'employee_id' => $employee->id
-        ]);
+        $employee = Employee::create($employeeValidated);
+        $bankAccValidated['employee_id'] = $employee->id;
+        BankAccount::create($bankAccValidated);
 
         return response(200);
     }
@@ -101,7 +90,7 @@ class EmployeeController extends Controller
 
     public function update(Request $request , string $id){
 
-        $validated = $request->validate([
+        $employeeValidated = $request->validate([
             'name' => 'required|max:50',
             'position' => 'required|max:50',
             'dob' => 'required|date',
@@ -113,29 +102,24 @@ class EmployeeController extends Controller
             'phone' => 'required|max:13',
             'address' => 'required|max:255',
             'company_id' => 'required',
+        ]);
+
+
+        $bankAccValidated = $request->validate([
             'beneficiary_name' => 'required',
             'bank_name' => 'required',
             'bank_branch' => 'required',
             'account_no' => 'required|max:9',
-            'bank_id' => 'required'
-        ]);
+            'bank_id' => 'required',
+            ]
+        );
 
-        Employee::find($id)->update([
-            'name' => $validated['name'],
-            'position' => $validated['position'],
-            'dob' => $validated['dob'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'],
-            'address' => $validated['address'],
-            'company_id' => $validated['company_id'],
-        ]);
+        Employee::find($id)->update( $employeeValidated);
+        
+        $bank_id = $bankAccValidated['bank_id'];
+        unset($bankAccValidated['bank_id']);
+        BankAccount::find($bank_id)->update($bankAccValidated);
 
-        BankAccount::find($validated['bank_id'])->update([
-            'beneficiary_name' => $validated['beneficiary_name'],
-            'bank_name' => $validated['bank_name'],
-            'branch' => $validated['bank_branch'],
-            'account_no' => $validated['account_no'],
-        ]);
         return response(200);
     }
 

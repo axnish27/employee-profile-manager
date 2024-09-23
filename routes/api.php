@@ -6,12 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
-Route::middleware('auth')->group(function () {
-    Route::get('/', [EmployeeController::class , 'index'])->middleware('auth:sanctum')->name('employee');
-    Route::get('/employee/draw', [EmployeeController::class , 'draw'])->middleware('auth:sanctum')->name('employee.draw');
-    Route::get('/employee/create', [EmployeeController::class , 'create'])->middleware('auth:sanctum')->name('employee.create');
-    Route::get('/employee/{id}', [EmployeeController::class , 'edit'])->middleware('auth:sanctum')->name('employee.create');
-    Route::post('/employee', [EmployeeController::class , 'store'])->middleware('auth:sanctum')->name('employee.store');
-    Route::patch('/employee/{id}', [EmployeeController::class , 'update'])->middleware('auth:sanctum')->name('employee.update');
-    Route::delete('/employee/{id}', [EmployeeController::class , 'destroy'])->middleware('auth:sanctum')->name('employee.destroy');
+Route::middleware(['auth' , 'auth:sanctum'])->group(function () {
+    Route::get('/', [EmployeeController::class , 'index'])->name('employee');
+    Route::get('/employee/draw', [EmployeeController::class , 'draw'])->name('employee.draw');
+    Route::get('/employee/create', [EmployeeController::class , 'create'])->name('employee.create');
+    Route::get('/employee/{id}', [EmployeeController::class , 'edit'])->name('employee.create');
+    Route::post('/employee', [EmployeeController::class , 'store'])->name('employee.store');
+    Route::patch('/employee/{id}', [EmployeeController::class , 'update'])->name('employee.update');
+    Route::delete('/employee/{id}', [EmployeeController::class , 'destroy'])->name('employee.destroy');
 });
+
+
+

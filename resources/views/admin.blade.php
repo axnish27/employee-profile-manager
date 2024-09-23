@@ -34,7 +34,7 @@
             </button>
 
             <div class="modal fade " id="modal-employee" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div id="validation-errors-create" style="display: none;" role="alert"></div>
+                <div id="validation-errors-create" style="display: none;" class="position-absolute top-0 end-0  w-25" role="alert"></div>
                 <div class="modal-dialog modal-dialog-centered ">
                   <div class="modal-content ">
                     <button type="button" id="btn-modal-close" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
