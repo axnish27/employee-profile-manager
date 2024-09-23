@@ -53,7 +53,7 @@
 
                             <label class="form-label m-2 fw-bold" >Company Details</label>
                             <select id="select-create" name="company_id" class="form-select form-control m-2 " aria-label="Default select example">
-                                <option value="" disabled selected>Company</option>
+                                <option hidden>Company</option>
                                 @foreach ( $companies  as $company )
                                     <option value="{{ $company->id }}" class="create-option" data-branch="{{ $company->branch }}"> {{ $company->name }} </option>
                                 @endforeach
