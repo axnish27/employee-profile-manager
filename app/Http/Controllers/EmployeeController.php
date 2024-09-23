@@ -81,7 +81,7 @@ class EmployeeController extends Controller
         ]);
 
         if ($bankAccValidator->fails()){
-            $errors['BankAccount'] = $employeeValidator->errors();
+            $errors['BankAccount'] = $bankAccValidator->errors();
         }
 
         if ($errors){
@@ -91,7 +91,7 @@ class EmployeeController extends Controller
         $employee = Employee::create($employeeValidator->validated());
         $bankAccValidated['employee_id'] = $employee->id;
         BankAccount::create($bankAccValidated);
-        
+
         return response(200);
     }
 
@@ -129,7 +129,7 @@ class EmployeeController extends Controller
             'bank_id' => 'required',
         ]);
         if ($bankAccValidator->fails()){
-            $errors['BankAccount'] = $employeeValidator->errors();
+            $errors['BankAccount'] = $bankAccValidator->errors();
         }
 
         if ($errors){

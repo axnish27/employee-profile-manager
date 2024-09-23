@@ -192,14 +192,13 @@
                     axios.get(`employee/${id}`)
                     .then(function (response){
                         const data = response.data[0];
-                        const selectOption = $("#selected-option")
                         $('#name').val(data.name)
                         $('#position').val(data.position)
                         $('#dob').val(data.dob)
                         $('#email').val(data.email)
                         $('#phone').val(data.phone)
                         $('#address').val(data.address)
-                        selectOption.text(data.company.name).val(data.company.id).data('branch' , data.company.branch)
+                        $("#selected-option").text(data.company.name).val(data.company.id).data('branch' , data.company.branch)
                         $("#company-branch-edit").val(data.company.branch)
                         $('#bank-id').val(data.bank_account.id)
                         $('#beneficiary-name').val(data.bank_account.beneficiary_name)
@@ -246,13 +245,16 @@
                     const valErrorDiv = $('#validation-errors-'+ modal)
                     valErrorDiv.empty();
 
-                    errors.forEach(error => {
-                            const alertDiv = $('<div></div>')
-                            alertDiv.addClass("alert alert-danger m-2")
-                            alertDiv.text(error);
-                            valErrorDiv.append(alertDiv);
-                    });
-
+                    for (let modal in errors) {
+                        for (let column in errors[modal]) {
+                            errors[modal][column].forEach(error => {
+                                const alertDiv = $('<div></div>')
+                                alertDiv.addClass("alert alert-danger m-2")
+                                alertDiv.text(error);
+                                valErrorDiv.append(alertDiv);
+                            });
+                        }
+                    }
                     valErrorDiv.fadeIn("slow").delay(5000).fadeOut("slow");
                 }
             });
