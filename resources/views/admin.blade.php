@@ -201,7 +201,6 @@
                 // Clear Forms
                 $('.btn-close').click(function (e) {
                     $('.form-modal').trigger("reset");
-
                 });
 
                 // Set Branch on Selct
@@ -214,19 +213,16 @@
                     const errors = response.response.data
                     const valErrorDiv = $('#validation-errors')
                     valErrorDiv.empty();
-
-                    for (let modal in errors) {
-                        for (let column in errors[modal]) {
-                            errors[modal][column].forEach(error => {
+                    for (const field in errors) {
+                            errors[field].forEach((error) => {
                                 const alertDiv = $('<div></div>')
                                 alertDiv.addClass("alert alert-danger m-2")
                                 alertDiv.text(error);
                                 valErrorDiv.append(alertDiv);
                             });
                         }
+                        valErrorDiv.fadeIn("slow").delay(5000).fadeOut("slow");
                     }
-                    valErrorDiv.fadeIn("slow").delay(5000).fadeOut("slow");
-                }
             });
         </script>
     </body>
