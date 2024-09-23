@@ -242,18 +242,17 @@
 
                 // Customer Error Alerts
                 function displayError(response , modal){
-                    const errors = response.response.data.errors
+                    const errors = response.response.data
                     const valErrorDiv = $('#validation-errors-'+ modal)
                     valErrorDiv.empty();
-                    for (const field in errors) {
-                        errors[field].forEach(error => {
+
+                    errors.forEach(error => {
                             const alertDiv = $('<div></div>')
                             alertDiv.addClass("alert alert-danger m-2")
                             alertDiv.text(error);
-                            console.log(error);
                             valErrorDiv.append(alertDiv);
-                        });
-                    }
+                    });
+
                     valErrorDiv.fadeIn("slow").delay(5000).fadeOut("slow");
                 }
             });
