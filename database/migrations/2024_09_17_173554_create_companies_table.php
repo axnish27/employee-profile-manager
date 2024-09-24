@@ -11,8 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('employees', function (Blueprint $table) {
-            $table->string('email');
+        Schema::create('companies', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('country');
+            $table->string('branch');
+            $table->string('address');
+            $table->timestamps();
+
         });
     }
 
@@ -21,8 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('employee', function (Blueprint $table) {
-            $table->dropColumn('email');
-        });
+        Schema::dropIfExists('companies');
     }
 };
