@@ -9,10 +9,11 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
 
-    <body class="container container.fluid w-100 " style="background-color: rgb(249, 249, 249) ">
+    <body class="container.fluid w-100 " style="background-color: rgb(249, 249, 249) ">
+
+      <x-nav-bar parent="admin" />
 
       <h1 class="h1 text-center">Company Manager </h1>
-
         <table id="myTable" class="table table-striped table-dark table-hover  " style="width: 100%"> </table>
 
 
