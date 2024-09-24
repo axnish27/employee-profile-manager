@@ -8,8 +8,8 @@ use App\Models\Employee;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class EmployeeController extends Controller
 {
@@ -57,8 +57,6 @@ class EmployeeController extends Controller
 
 
     public function store(Request $request){
-        $errors = [];
-
         try {
             $employeeValidated = $request->validate([
                 'name' => 'required|max:50|',
@@ -75,13 +73,8 @@ class EmployeeController extends Controller
                 'branch' => 'required',
                 'account_no' => 'required|max:9',
             ]);
-        } catch (Exception $e) {
-            $errors[] = $e->getMessage();
-        }
-
-
-        if ($errors){
-            return Response::json($errors , 422);
+        } catch (ValidationException $e) {
+            return Response::json($e->errors(), 422);
         }
 
         $employee = Employee::create($employeeValidated);
@@ -97,8 +90,6 @@ class EmployeeController extends Controller
     }
 
     public function update(Request $request , string $id){
-
-        $errors = [];
         try {
             $employeeValidated = $request->validate([
                 'name' => 'required|max:50',
@@ -121,12 +112,8 @@ class EmployeeController extends Controller
                 'account_no' => 'required|max:9',
                 'bank_id' => 'required',
             ]);
-        } catch (Exception $e) {
-            $errors[] = $e->getMessage();
-        }
-
-        if ($errors){
-            return Response::json($errors , 422);
+        } catch (ValidationException $e) {
+            return Response::json($e->errors(), 422);
         }
 
         Employee::find($id)->update( $employeeValidated);

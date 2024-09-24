@@ -52,10 +52,10 @@
                             <input type="text" class=" form-control m-2" id="address" name="address" placeholder="Address" required>
 
                             <label class="form-label m-2 fw-bold" >Company Details</label>
-                            <select id="select" id="company" name="company_id" class="form-select form-control m-2 " aria-label="Default select example">
+                            <select id="select" name="company_id" class="form-select form-control m-2 " aria-label="Default select example">
                                 <option hidden>Company</option>
                                 @foreach ( $companies  as $company )
-                                    <option value="{{ $company->id }}" class="create-option" data-branch="{{ $company->branch }}"> {{ $company->name }} </option>
+                                    <option value="{{ $company->id }}"  class="create-option" data-branch="{{ $company->branch }}"> {{ $company->name }} </option>
                                 @endforeach
                             </select>
                             <input type="text" class="form-control m-2" id="company-branch" name="company_branch" placeholder="Branch" required disabled>
@@ -169,12 +169,8 @@
                         $('#email').val(data.email)
                         $('#phone').val(data.phone)
                         $('#address').val(data.address)
-                        $('#select').append($('<option>', {
-                            value: data.company.id,
-                            text: data.company.name,
-                            selected: "selected",
-                        }))
-                        $("#company-branch").val(data.company.branch)
+                        $('#select').val(data.company.id)
+                        $('#company-branch').val(data.company.branch)
                         $('#bank-id').val(data.bank_account.id)
                         $('#beneficiary-name').val(data.bank_account.beneficiary_name)
                         $('#bank-name').val(data.bank_account.bank_name)
@@ -201,7 +197,6 @@
                 // Clear Forms
                 $('.btn-close').click(function (e) {
                     $('.form-modal').trigger("reset");
-
                 });
 
                 // Set Branch on Selct
@@ -214,19 +209,16 @@
                     const errors = response.response.data
                     const valErrorDiv = $('#validation-errors')
                     valErrorDiv.empty();
-
-                    for (let modal in errors) {
-                        for (let column in errors[modal]) {
-                            errors[modal][column].forEach(error => {
+                    for (const field in errors) {
+                            errors[field].forEach((error) => {
                                 const alertDiv = $('<div></div>')
                                 alertDiv.addClass("alert alert-danger m-2")
                                 alertDiv.text(error);
                                 valErrorDiv.append(alertDiv);
                             });
                         }
+                        valErrorDiv.fadeIn("slow").delay(5000).fadeOut("slow");
                     }
-                    valErrorDiv.fadeIn("slow").delay(5000).fadeOut("slow");
-                }
             });
         </script>
     </body>
