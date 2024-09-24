@@ -171,14 +171,13 @@
                 });
 
                 // Edit Employee
-                let id = null
                 $('#myTable tbody').on('click', '.btn-edit', function (e) {
 
                     $('.form-modal').attr("id","form-edit");
                     $('#form-title').text("Edit Employee Details");
                     $('#btn-submit').text("Update Employee");
 
-                    id = table.row( $(this).parents('tr') ).data().id;
+                    var id = table.row( $(this).parents('tr') ).data().id;
                     axios.get(`employee/${id}`)
                     .then(function (response){
                         const data = response.data[0];
