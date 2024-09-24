@@ -74,6 +74,26 @@
                 </div>
               </div>
 
+
+              <!-- Delete Modal -->
+              <div class="modal fade" id="deletConfirmation" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deletConfirmationLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="deletConfirmationLabel">Are You Sure to Delete the Employee?? </h1>
+                      <button type="button" class="btn-close btn-close-dlt" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      This Action wil Delete Employee and the records related to him Such as Bank Account of the employee
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" id="btn-dlt"  class="btn btn-danger btn-dlt">Delete</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             <table id="myTable" class="table table-striped table-dark table-hover  " style="width: 100%"></table>
         </main>
 
@@ -103,7 +123,7 @@
                                                 <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
                                             </svg>
                                           </button>
-                                           <button  id="btn-dlt-${row.id}" class="btn btn-dlt p-0 d-inline" data-id="${row.id}" >
+                                           <button class="btn btn-dlt-modal p-0 d-inline" data-id="${row.id}" data-bs-toggle="modal" data-bs-target="#deletConfirmation" >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-trash" viewBox="0 0 16 16">
                                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
                                                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
@@ -114,21 +134,20 @@
                     ],
                 });
 
-                // Delete Employee
-                $('#myTable tbody').on('click', '.btn-dlt', function (e) {
-                    let id = $(this).data('id');
-                    deleteEmployee(id)
-                    let $button = $(this)
-                    table.row($button.parents('tr') ).remove().draw();
 
+                $('#myTable tbody').on('click' , '.btn-dlt-modal' ,function (e) {
+                    $('#btn-dlt').text('Delete').attr('data-id' , table.row($(this).parents('tr')).data().id)
                 });
 
-                function deleteEmployee(id){
-                    axios.delete(`employee/${id}`)
+                $('#deletConfirmation .modal-footer').on('click' , '#btn-dlt' , function (e) {
+
+                    axios.delete(`employee/${$(this).attr('data-id')}`)
                     .then(function (response){
-                        console.log("Delted");
+                        console.log("Delted")
                     });
-                }
+                    table.draw(false);
+                    $('.btn-close-dlt').click();
+                })
 
                 //Store Employee Axios
                 $('#btn-add-employee').click(function (e) {
@@ -159,7 +178,7 @@
                     $('#form-title').text("Edit Employee Details");
                     $('#btn-submit').text("Update Employee");
 
-                    id =  table.row( $(this).parents('tr') ).data().id;
+                    id = table.row( $(this).parents('tr') ).data().id;
                     axios.get(`employee/${id}`)
                     .then(function (response){
                         const data = response.data[0];
