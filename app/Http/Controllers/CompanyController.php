@@ -19,28 +19,41 @@ class CompanyController extends Controller
 
     public function draw(Request $request){
         $search = $request->query('search')['value'];
-          $draw = $request->query('draw', 1);
-          $start = $request->query('start', 0);
-          $length = $request->query('length', 10);
-          $totalCompanys =   Company::count();
+        $draw = $request->query('draw', 1);
+        $start = $request->query('start', 0);
+        $length = $request->query('length', 10);
+        $totalCompanys =   Company::count();
 
-          $companys = Company::where('name' , 'like' , "%".$search."%")
-                              ->orWhere('country' ,'like' , "%".$search."%")
-                              ->orWhere('branch', 'like' , "%".$search."%")
-                              ->orWhere('address' ,'like' , "%".$search."%");
+        $companys = Company::where('name' , 'like' , "%".$search."%")
+                            ->orWhere('country' ,'like' , "%".$search."%")
+                            ->orWhere('branch', 'like' , "%".$search."%")
+                            ->orWhere('address' ,'like' , "%".$search."%");
 
-          $filteredCompanys = $search ? $companys->count() : $totalCompanys;
-          $companys = $companys->skip($start)
-                                  ->take($length)
-                                  ->get();
+                        //     ->orWhereHas('projects' ,
+                        //     function ($q) use ($search){
+                        //     $q->where('account_no', 'like', "%".$search."%")->select('branch');
 
-          $response = [
-              'draw' => intval($draw),
-              'recordsTotal' => intval($totalCompanys),
-              'recordsFiltered' => $filteredCompanys,
-              'data' => $companys
-          ];
-          return Response::json($response);
+                        // });
+
+        $filteredCompanys = $search ? $companys->count() : $totalCompanys;
+        $companys = $companys->skip($start)
+                                ->take($length)
+                                ->withCount('projects','employees')->get();
+
+
+
+        // $company = Company::find(3);
+        // $projects = $company->employees()->count();
+
+        $response = [
+            'draw' => intval($draw),
+            'recordsTotal' => intval($totalCompanys),
+            'recordsFiltered' => $filteredCompanys,
+            // 'project' => $projects,
+            'data' => $companys
+
+        ];
+        return Response::json($response);
 
     }
 

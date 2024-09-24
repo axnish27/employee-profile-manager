@@ -69,7 +69,9 @@
                         { data: 'name', title:'Company' },
                         { data: 'branch', title:'Branch'},
                         { data: 'country' , title: 'Country' ,},
-                        { data: 'address' , title:'address' },
+                        { data: 'address' , title:'Address' },
+                        { data: 'employees_count' , title:'Employees' },
+                        { data: 'projects_count' , title:'Projects' },
                         { data: null ,
                             render: function (data, type, row) {
                                 return `  <button class="d-inline btn  btn-edit p-0 " id="btn-edit-${row.id}" data-id="${row.id}" data-bs-toggle="modal" data-bs-target=".modal" >
