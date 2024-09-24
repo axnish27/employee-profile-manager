@@ -9,9 +9,6 @@ use Illuminate\Validation\ValidationException;
 
 class CompanyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $companys = Company::all();
@@ -30,45 +27,21 @@ class CompanyController extends Controller
                             ->orWhere('branch', 'like' , "%".$search."%")
                             ->orWhere('address' ,'like' , "%".$search."%");
 
-                        //     ->orWhereHas('projects' ,
-                        //     function ($q) use ($search){
-                        //     $q->where('account_no', 'like', "%".$search."%")->select('branch');
-
-                        // });
-
         $filteredCompanys = $search ? $companys->count() : $totalCompanys;
         $companys = $companys->skip($start)
                                 ->take($length)
                                 ->withCount('projects','employees')->get();
 
-
-
-        // $company = Company::find(3);
-        // $projects = $company->employees()->count();
-
         $response = [
             'draw' => intval($draw),
             'recordsTotal' => intval($totalCompanys),
             'recordsFiltered' => $filteredCompanys,
-            // 'project' => $projects,
             'data' => $companys
 
         ];
         return Response::json($response);
-
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         try{
@@ -87,9 +60,6 @@ class CompanyController extends Controller
         return response(200);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $company = Company::find($id);
@@ -97,9 +67,6 @@ class CompanyController extends Controller
         return view('company.show' , ['companyEmployees' => $companyEmployees , 'company' => $company ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $company = Company::find($id)
@@ -107,9 +74,6 @@ class CompanyController extends Controller
         return Response::json($company);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request)
     {
         try{
@@ -131,12 +95,9 @@ class CompanyController extends Controller
         return response(200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-      Company::destroy($id);
-      return Response::json("Company Deleted Succesfully");
+        Company::destroy($id);
+        return Response::json("Company Deleted Succesfully");
     }
 }
