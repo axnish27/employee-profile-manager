@@ -52,10 +52,10 @@
                             <input type="text" class=" form-control m-2" id="address" name="address" placeholder="Address" required>
 
                             <label class="form-label m-2 fw-bold" >Company Details</label>
-                            <select id="select" id="company" name="company_id" class="form-select form-control m-2 " aria-label="Default select example">
+                            <select id="select" name="company_id" class="form-select form-control m-2 " aria-label="Default select example">
                                 <option hidden>Company</option>
                                 @foreach ( $companies  as $company )
-                                    <option value="{{ $company->id }}" id="option-id-{{ $company->id }}" class="create-option" data-branch="{{ $company->branch }}"> {{ $company->name }} </option>
+                                    <option value="{{ $company->id }}"  class="create-option" data-branch="{{ $company->branch }}"> {{ $company->name }} </option>
                                 @endforeach
                             </select>
                             <input type="text" class="form-control m-2" id="company-branch" name="company_branch" placeholder="Branch" required disabled>
@@ -169,7 +169,7 @@
                         $('#email').val(data.email)
                         $('#phone').val(data.phone)
                         $('#address').val(data.address)
-                        $(`#option-id-${data.company.id}`).attr('selected', true);
+                        $(`#select option[value="${data.company.id}"]`).attr('selected', true);
                         $('#company-branch').val(data.company.branch)
                         $('#bank-id').val(data.bank_account.id)
                         $('#beneficiary-name').val(data.bank_account.beneficiary_name)
