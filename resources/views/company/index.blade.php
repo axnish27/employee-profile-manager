@@ -51,11 +51,11 @@
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="deletConfirmationLabel">Are You Sure to Delete the Employee?? </h1>
+                    <h1 class="modal-title fs-5" id="deletConfirmationLabel">Are You Sure to Delete the Company?? </h1>
                     <button type="button" class="btn-close btn-close-dlt" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    This Action wil Delete Employee and the records related to him Such as Bank Account of the employee
+                    This Action wil Delete Company and the records related to him Such as Employees and Projects
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
@@ -143,6 +143,21 @@
                     ],
                 });
 
+
+                // Delete Company
+                $('#myTable tbody').on('click' , '.btn-dlt-modal' ,function (e) {
+                    $('#btn-dlt').text('Delete').attr('data-id' , table.row($(this).parents('tr')).data().id)
+                });
+
+                $('#deletConfirmation .modal-footer').on('click' , '#btn-dlt' , function (e) {
+                    axios.delete(`companys/${$(this).attr('data-id')}`)
+                    .then(function (response){
+                        console.log("Delted")
+                    });
+                    table.draw(false);
+                    $('.btn-close-dlt').click();
+                })
+
                  //Store Company Axios
                  $('#btn-add-company').click(function (e) {
                     $('.form-modal').attr("id","form-create");
@@ -170,7 +185,7 @@
                 });
 
 
-                // Edit Employee
+                // Edit Company
                 let id = null
                 $('#myTable tbody').on('click', '.btn-edit', function (e) {
 
