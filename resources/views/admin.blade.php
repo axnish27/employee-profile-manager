@@ -11,19 +11,8 @@
     </head>
 
     <body class="container.fluid w-100 " style="background-color: whitesmoke">
-
-        <nav class="navbar bg-dark border-bottom border-body w-100 text-light py-0"  data-bs-theme="dark">
-            <div class="container">
-                <a class="navbar-brand" href="#"> Vista G </a>
-                <div class="nav navbar">
-                    <a class="nav-link active" aria-current="page" href="{{ route('companys.index') }}">Company</a>
-                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link">Logout</a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
-                </div>
-            </div>
-        </nav>
+        
+        <x-nav-bar parent="company" />
 
         <main class="container" >
             <h1 class="h1 text-center mt-4" >Manage Employee Profiles</h1>
