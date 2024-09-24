@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         for ($i=0; $i < 1000 ; $i++) {
-            DB::table('project_employee')->insert([
+            DB::table('employee_project')->insert([
                 'project_id' => fake()->numberBetween(1,60),
                 'employee_id' => fake()->numberBetween(1,200)
             ]);

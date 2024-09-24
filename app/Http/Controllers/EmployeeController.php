@@ -139,7 +139,7 @@ class EmployeeController extends Controller
     }
 
     public function destroy(string $id){
-        Employee::where('id',$id)->delete();
-        return response(200);
+        Employee::destroy($id);
+        return Response::json("Employee Deleted Successfully");
     }
 }
