@@ -169,7 +169,7 @@
                         $('#email').val(data.email)
                         $('#phone').val(data.phone)
                         $('#address').val(data.address)
-                        $(`#select option[value="${data.company.id}"]`).attr('selected', true);
+                        $('#select').val(data.company.id)
                         $('#company-branch').val(data.company.branch)
                         $('#bank-id').val(data.bank_account.id)
                         $('#beneficiary-name').val(data.bank_account.beneficiary_name)
