@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Validation\ValidationException;
 
 class CompanyController extends Controller
 {
@@ -62,7 +63,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        return view('company.create');
+
     }
 
     /**
@@ -70,6 +71,25 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
+
+        try {
+            $companyValidated = $request->validate([
+                'name' => 'required',
+                'branch' => 'required',
+                'country' => 'required',
+                'address' => 'required',
+
+            ]);
+        } catch (ValidationException $e) {
+            return Response::json($e->errors(), 422);
+        }
+
+        Company::create($companyValidated);
+        return response(200);
+
+
+
+
         Company::create([
             'name' => $request->name,
             'country' => $request->country,

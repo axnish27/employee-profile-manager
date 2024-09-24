@@ -13,10 +13,57 @@
 
       <x-nav-bar parent="admin" />
 
-      <h1 class="h1 text-center">Company Manager </h1>
+      <main class="container">
+          <h1 class="h1 text-center mt-4" >Manage Company Profiles</h1>
+          <button id="btn-add-company" class="btn btn-primary rounded-circle p-0 mt-2 mb-2 "  data-bs-toggle="modal" data-bs-target=".modal"  >
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                </svg>
+          </button>
+
+          <div class="modal fade"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div id="validation-errors" style="display: none;" class="position-absolute top-0 end-0  w-25" role="alert"></div>
+              <div class="modal-dialog modal-dialog-centered ">
+                <div class="modal-content ">
+                  <button type="button" id="btn-modal-close" class="btn-close m-1" data-bs-dismiss="modal" aria-label="Close"></button>
+                  <h3 class="text-center text-dark m-0" id="form-title"></h3>
+                  <div class="modal-body m-0">
+                      <form class="form-modal">
+                          @csrf
+                          <label class="form-label fw-bold">Company Details</label>
+                          <input type="text" class=" form-control m-2" id="name" name="name" placeholder="Name">
+                          <input type="text" class=" form-control m-2" id="branch" name="branch" placeholder="Branch">
+                          <input type="text" class=" form-control m-2" id="country" name="country" placeholder="Country">
+                          <input type="text" class=" form-control m-2" id="address" name="address" placeholder="Address">
+                          <button type="submit" class="btn btn-primary m-2" id="btn-submit">Create</button>
+                      </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- Delete Modal -->
+            <div class="modal fade" id="deletConfirmation" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deletConfirmationLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="deletConfirmationLabel">Are You Sure to Delete the Employee?? </h1>
+                    <button type="button" class="btn-close btn-close-dlt" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    This Action wil Delete Employee and the records related to him Such as Bank Account of the employee
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="btn-dlt"  class="btn btn-danger btn-dlt">Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
         <table id="myTable" class="table table-striped table-dark table-hover  " style="width: 100%"> </table>
-
-
+      </main>
 
 
         {{--
@@ -57,6 +104,7 @@
                 </li>
              @endforeach
         </ul> --}}
+
         <script type="module">
             $(function () {
 
@@ -91,6 +139,43 @@
                         },
                     ],
                 });
+
+                 //Store Employee Axios
+                 $('#btn-add-company').click(function (e) {
+                    $('.form-modal').attr("id","form-create");
+                    $('#form-title').text("New Company Details");
+                    $('#btn-submit').text("Add Company");
+                });
+
+                $('.modal-body').on('submit' , '#form-create', function (e){
+                    e.preventDefault();
+                    let $data = $('#form-create').serialize()
+                    axios.post('companys', $data )
+                    .then(function (response){
+                        $('#form-create').trigger("reset");
+                        $('#btn-modal-close').click();
+                        table.draw();
+                    })
+                    .catch(function (response){
+                        displayError(response)
+                    });
+                });
+
+                  // Customer Error Alerts
+                  function displayError(response){
+                    const errors = response.response.data
+                    const valErrorDiv = $('#validation-errors')
+                    valErrorDiv.empty();
+                    for (const field in errors) {
+                      errors[field].forEach((error) => {
+                                const alertDiv = $('<div></div>')
+                                alertDiv.addClass("alert alert-danger m-2")
+                                alertDiv.text(error);
+                                valErrorDiv.append(alertDiv);
+                        });
+                    }
+                    valErrorDiv.fadeIn("slow").delay(5000).fadeOut("slow");
+                  }
             });
         </script>
 
