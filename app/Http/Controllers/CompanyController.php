@@ -17,6 +17,33 @@ class CompanyController extends Controller
         return view('company.index', ['companys' => $companys]);
     }
 
+    public function draw(Request $request){
+        $search = $request->query('search')['value'];
+          $draw = $request->query('draw', 1);
+          $start = $request->query('start', 0);
+          $length = $request->query('length', 10);
+          $totalCompanys =   Company::count();
+
+          $companys = Company::where('name' , 'like' , "%".$search."%")
+                              ->orWhere('country' ,'like' , "%".$search."%")
+                              ->orWhere('branch', 'like' , "%".$search."%")
+                              ->orWhere('address' ,'like' , "%".$search."%");
+
+          $filteredCompanys = $search ? $companys->count() : $totalCompanys;
+          $companys = $companys->skip($start)
+                                  ->take($length)
+                                  ->get();
+
+          $response = [
+              'draw' => intval($draw),
+              'recordsTotal' => intval($totalCompanys),
+              'recordsFiltered' => $filteredCompanys,
+              'data' => $companys
+          ];
+          return Response::json($response);
+
+    }
+
     /**
      * Show the form for creating a new resource.
      */
