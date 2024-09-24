@@ -71,8 +71,7 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-
-        try {
+        try{
             $companyValidated = $request->validate([
                 'name' => 'required',
                 'branch' => 'required',
@@ -80,23 +79,12 @@ class CompanyController extends Controller
                 'address' => 'required',
 
             ]);
-        } catch (ValidationException $e) {
+        }catch (ValidationException $e) {
             return Response::json($e->errors(), 422);
         }
 
         Company::create($companyValidated);
         return response(200);
-
-
-
-
-        Company::create([
-            'name' => $request->name,
-            'country' => $request->country,
-            'branch' => $request->branch,
-            'address' => $request->address,
-        ]);
-        return redirect(route('companys.index'));
     }
 
     /**
@@ -114,22 +102,33 @@ class CompanyController extends Controller
      */
     public function edit(string $id)
     {
-        $company = Company::find($id);
-        return view('company.edit' , ['company' => $company] );
+        $company = Company::find($id)
+        ->withCount('projects' , 'employees')->get();
+        return Response::json($company);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        Company::find($id)->update([
-            'name' => $request->name,
-            'country' => $request->country,
-            'branch' => $request->branch,
-            'address' => $request->address,
-        ]);
-        return redirect(route('companys.index'));
+        try{
+            $companyValidated = $request->validate([
+                'name' => 'required',
+                'branch' => 'required',
+                'country' => 'required',
+                'address' => 'required',
+                'company_id' => 'required',
+
+            ]);
+        }catch (ValidationException $e) {
+            return Response::json($e->errors(), 422);
+        }
+
+        $company_id = $companyValidated['company_id'];
+        unset($companyValidated['company_id']);
+        Company::find($company_id)->update($companyValidated);
+        return response(200);
     }
 
     /**

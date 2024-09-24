@@ -31,11 +31,14 @@
                       <form class="form-modal">
                           @csrf
                           <label class="form-label fw-bold">Company Details</label>
-                          <input type="text" class=" form-control m-2" id="name" name="name" placeholder="Name">
-                          <input type="text" class=" form-control m-2" id="branch" name="branch" placeholder="Branch">
-                          <input type="text" class=" form-control m-2" id="country" name="country" placeholder="Country">
-                          <input type="text" class=" form-control m-2" id="address" name="address" placeholder="Address">
-                          <button type="submit" class="btn btn-primary m-2" id="btn-submit">Create</button>
+                          <input type="text" class=" form-control m-2" id="name" name="name" placeholder="Name" required>
+                          <input type="text" class=" form-control m-2" id="branch" name="branch" placeholder="Branch" required>
+                          <input type="text" class=" form-control m-2" id="country" name="country" placeholder="Country" required>
+                          <input type="text" class=" form-control m-2" id="address" name="address" placeholder="Address" required>
+                          <input type="hidden" class=" form-control m-2" id="company_id" name="company_id" required>
+                          <input type="hidden" class=" form-control m-2" id="projects" disabled>
+                          <input type="hidden" class=" form-control m-2" id="employees" disabled>
+                          <button type="submit" class="btn btn-primary m-2" id="btn-submit"></button>
                       </form>
                   </div>
                 </div>
@@ -140,7 +143,7 @@
                     ],
                 });
 
-                 //Store Employee Axios
+                 //Store Company Axios
                  $('#btn-add-company').click(function (e) {
                     $('.form-modal').attr("id","form-create");
                     $('#form-title').text("New Company Details");
@@ -161,7 +164,52 @@
                     });
                 });
 
-                  // Customer Error Alerts
+                   // Clear Forms
+                   $('.btn-close').click(function (e) {
+                    $('.form-modal').trigger("reset");
+                });
+
+
+                // Edit Employee
+                let id = null
+                $('#myTable tbody').on('click', '.btn-edit', function (e) {
+
+                    $('.form-modal').attr("id","form-edit");
+                    $('#form-title').text("Edit Company Details");
+                    $('#btn-submit').text("Update Company");
+
+                    id = table.row( $(this).parents('tr') ).data().id;
+                    axios.get(`companys/${id}/edit`)
+                    .then(function (response){
+                        const data = response.data[0];
+                        $('#name').val(data.name)
+                        $('#branch').val(data.branch)
+                        $('#country').val(data.country)
+                        $('#address').val(data.address)
+                        $('#company_id').val(data.id)
+                        $('#projects').val(data.projects_count).prop("type" , "text")
+                        $('#employees').val(data.employees_count).prop("type" , "text")
+
+                    });
+                });
+
+                $('.modal-body').on('submit' , '#form-edit', function (e){
+                    e.preventDefault();
+                    let dataSubmit = $('#form-edit').serialize()
+                    axios.patch(`companys/${id}`, dataSubmit )
+                    .then(function (response){
+                        $('#form-edit').trigger("reset");
+                        $('#btn-modal-close').click();
+                        table.draw();
+                    })
+                    .catch(function (response){
+                        displayError(response)
+                    });
+                });
+
+
+
+                  //Error Alerts
                   function displayError(response){
                     const errors = response.response.data
                     const valErrorDiv = $('#validation-errors')
