@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
+
+
 // Route::get('/', function () {return view('admin');})->name('index')->middleware('auth');
 
 Route::get('/dashboard', function () {
@@ -15,7 +17,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('companys', CompanyController::class)->middleware('auth');
+
+Route::middleware(['auth', 'auth:sanctum'])->group(function () {
+    Route::get('company/draw', [CompanyController::class, 'draw'])->name('company.draw');
+    Route::resource('companys', CompanyController::class);
+});
+
 
 
 require __DIR__.'/auth.php';
