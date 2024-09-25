@@ -52,12 +52,12 @@ class CompanyController extends Controller
                 'address' => 'required',
 
             ]);
+            Company::create($companyValidated);
+            return Response::json('New Company Details Added Successfully');
+
         }catch (ValidationException $e) {
             return Response::json($e->errors(), 422);
         }
-
-        Company::create($companyValidated);
-        return response(200);
     }
 
     public function show(string $id)
@@ -85,14 +85,14 @@ class CompanyController extends Controller
                 'company_id' => 'required',
 
             ]);
+
+            $company_id = $companyValidated['company_id'];
+            unset($companyValidated['company_id']);
+            Company::find($company_id)->update($companyValidated);
+            return Response::json('Company Details Updated Successfully');
         }catch (ValidationException $e) {
             return Response::json($e->errors(), 422);
         }
-
-        $company_id = $companyValidated['company_id'];
-        unset($companyValidated['company_id']);
-        Company::find($company_id)->update($companyValidated);
-        return response(200);
     }
 
     public function destroy(string $id)
