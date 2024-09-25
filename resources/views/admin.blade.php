@@ -11,7 +11,7 @@
     </head>
 
     <body class="container.fluid w-100 " style="background-color: whitesmoke">
-        
+
         <x-nav-bar parent="company" />
 
         <main class="container" >
@@ -153,9 +153,10 @@
                         $('#form-create').trigger("reset");
                         $('#btn-modal-close').click();
                         table.draw();
+
                     })
                     .catch(function (response){
-                        displayError(response , "create")
+                        displayError(response)
                     });
                 });
 
