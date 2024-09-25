@@ -31,11 +31,11 @@
                     <form class="form-modal">
                         @csrf
                         <label class="form-label fw-bold">Company Details</label>
-                        <input type="text" class=" form-control m-2" id="name" name="name" placeholder="Name" required>
-                        <input type="text" class=" form-control m-2" id="branch" name="branch" placeholder="Branch" required>
-                        <input type="text" class=" form-control m-2" id="country" name="country" placeholder="Country" required>
-                        <input type="text" class=" form-control m-2" id="address" name="address" placeholder="Address" required>
-                        <input type="hidden" class=" form-control m-2" id="company_id" name="company_id" required>
+                        <input type="text" class=" form-control m-2" id="name" name="name" placeholder="Name">
+                        <input type="text" class=" form-control m-2" id="branch" name="branch" placeholder="Branch">
+                        <input type="text" class=" form-control m-2" id="country" name="country" placeholder="Country">
+                        <input type="text" class=" form-control m-2" id="address" name="address" placeholder="Address">
+                        <input type="hidden" class=" form-control m-2" id="company_id" name="company_id">
                         <input type="hidden" class=" form-control m-2" id="projects" disabled>
                         <input type="hidden" class=" form-control m-2" id="employees" disabled>
                         <button type="submit" class="btn btn-primary m-2" id="btn-submit"></button>
@@ -122,11 +122,13 @@
               $('.form-modal').attr("id","form-create");
               $('#form-title').text("New Company Details");
               $('#btn-submit').text("Add Company");
+              $('#projects').prop("type" , "hidden")
+              $('#employees').prop("type" , "hidden")
             });
 
             $('.modal-body').on('submit' , '#form-create', function (e){
                 e.preventDefault();
-                let $data = $('#form-create').serialize()
+                let $data = new FormData(this)
                 axios.post('companys', $data )
                 .then(function (response){
                     $('#form-create').trigger("reset");
@@ -150,7 +152,7 @@
                 $('#form-title').text("Edit Company Details");
                 $('#btn-submit').text("Update Company");
 
-                var id = table.row( $(this).parents('tr') ).data().id;
+                id = table.row( $(this).parents('tr') ).data().id;
                 axios.get(`companys/${id}/edit`)
                 .then(function (response){
                     const data = response.data;
@@ -166,8 +168,10 @@
 
             $('.modal-body').on('submit' , '#form-edit', function (e){
                 e.preventDefault();
-                let dataSubmit = $('#form-edit').serialize()
-                axios.patch(`companys/${id}`, dataSubmit )
+                let dataSubmit = new FormData(this)
+                dataSubmit.append('_method', 'patch');
+                
+                axios.post( `companys/${id}` , dataSubmit)
                 .then(function (response){
                     $('#form-edit').trigger("reset");
                     $('#btn-modal-close').click();
@@ -175,7 +179,7 @@
                 })
                 .catch(function (response){
                     displayError(response)
-                });
+                })
             });
 
             //Error Alerts

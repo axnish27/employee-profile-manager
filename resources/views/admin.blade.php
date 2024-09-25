@@ -190,8 +190,10 @@
 
                 $('.modal-body').on('submit' , '#form-edit', function (e){
                     e.preventDefault();
-                    let dataSubmit = $('#form-edit').serialize()
-                    axios.patch(`employee/${id}`, dataSubmit )
+                    let dataSubmit = new FormData(this)
+                    dataSubmit.append('_method', 'patch');
+
+                    axios.post(`employee/${id}`, dataSubmit )
                     .then(function (response){
                         $('#form-edit').trigger("reset");
                         $('#btn-modal-close').click();
