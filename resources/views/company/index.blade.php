@@ -173,13 +173,12 @@
             });
 
             // Edit Company
-            let id = null
             $('#myTable tbody').on('click', '.btn-edit', function (e) {
                 $('.form-modal').attr("id","form-edit");
                 $('#form-title').text("Edit Company Details");
                 $('#btn-submit').text("Update Company");
 
-                id = table.row( $(this).parents('tr') ).data().id;
+                var id = table.row( $(this).parents('tr') ).data().id;
                 axios.get(`companys/${id}/edit`)
                 .then(function (response){
                     const data = response.data;
