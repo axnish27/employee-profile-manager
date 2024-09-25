@@ -152,7 +152,7 @@
                 var id = table.row( $(this).parents('tr') ).data().id;
                 axios.get(`companys/${id}/edit`)
                 .then(function (response){
-                    const data = response.data[0];
+                    const data = response.data;
                     $('#name').val(data.name)
                     $('#branch').val(data.branch)
                     $('#country').val(data.country)

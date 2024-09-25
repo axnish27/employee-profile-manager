@@ -69,8 +69,9 @@ class CompanyController extends Controller
 
     public function edit(string $id)
     {
-        $company = Company::find($id)
-        ->withCount('projects' , 'employees')->get();
+        $company = Company::find($id);
+        $company->projects_count = $company->projects()->count();
+        $company->employees_count = $company->employees()->count();
         return Response::json($company);
     }
 
