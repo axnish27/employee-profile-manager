@@ -144,6 +144,7 @@
             });
 
             // Edit Company
+            let id = null
             $('#myTable tbody').on('click', '.btn-edit', function (e) {
                 $('.form-modal').attr("id","form-edit");
                 $('#form-title').text("Edit Company Details");
