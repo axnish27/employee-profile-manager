@@ -138,7 +138,7 @@
             $('#deletConfirmation .modal-footer').on('click' , '#btn-dlt' , function (e) {
                 axios.delete(`companys/${$(this).attr('data-id')}`)
                 .then(function (response){
-                    console.log("Delted")
+                    displayToast(response , "success")
                 });
                 table.draw(false);
                 $('.btn-close-dlt').click();
@@ -198,7 +198,7 @@
                 e.preventDefault();
                 let dataSubmit = new FormData(this)
                 dataSubmit.append('_method', 'patch');
-                
+
                 axios.post( `companys/${id}` , dataSubmit)
                 .then(function (response){
                     displayToast(response , "success")

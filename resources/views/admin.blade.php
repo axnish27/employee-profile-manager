@@ -158,7 +158,7 @@
 
                     axios.delete(`employee/${$(this).attr('data-id')}`)
                     .then(function (response){
-                        console.log("Delted")
+                        displayToast(response , "success")
                     });
                     table.draw(false);
                     $('.btn-close-dlt').click();
