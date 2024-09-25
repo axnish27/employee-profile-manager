@@ -11,7 +11,7 @@
     </head>
 
     <body class="container.fluid w-100 " style="background-color: whitesmoke">
-        
+
         <x-nav-bar parent="company" />
 
         <main class="container" >
@@ -160,13 +160,14 @@
                 });
 
                 // Edit Employee
+                let id = null
                 $('#myTable tbody').on('click', '.btn-edit', function (e) {
 
                     $('.form-modal').attr("id","form-edit");
                     $('#form-title').text("Edit Employee Details");
                     $('#btn-submit').text("Update Employee");
 
-                    var id = table.row( $(this).parents('tr') ).data().id;
+                    id = table.row( $(this).parents('tr') ).data().id;
                     axios.get(`employee/${id}`)
                     .then(function (response){
                         const data = response.data[0];
@@ -189,8 +190,10 @@
 
                 $('.modal-body').on('submit' , '#form-edit', function (e){
                     e.preventDefault();
-                    let dataSubmit = $('#form-edit').serialize()
-                    axios.patch(`employee/${id}`, dataSubmit )
+                    let dataSubmit = new FormData(this)
+                    dataSubmit.append('_method', 'patch');
+
+                    axios.post(`employee/${id}`, dataSubmit )
                     .then(function (response){
                         $('#form-edit').trigger("reset");
                         $('#btn-modal-close').click();
