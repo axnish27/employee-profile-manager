@@ -73,15 +73,13 @@ class EmployeeController extends Controller
                 'branch' => 'required',
                 'account_no' => 'required|max:9',
             ]);
+            $employee = Employee::create($employeeValidated);
+            $bankAccValidated['employee_id'] = $employee->id;
+            BankAccount::create($bankAccValidated);
+            return Response::json('New Employee Details Added Successfully');
         } catch (ValidationException $e) {
             return Response::json($e->errors(), 422);
         }
-
-        $employee = Employee::create($employeeValidated);
-        $bankAccValidated['employee_id'] = $employee->id;
-        BankAccount::create($bankAccValidated);
-        return response(200);
-
     }
 
     public function edit(string $id){
@@ -112,17 +110,16 @@ class EmployeeController extends Controller
                 'account_no' => 'required|max:9',
                 'bank_id' => 'required',
             ]);
+
+            Employee::find($id)->update( $employeeValidated);
+            $bank_id = $bankAccValidated['bank_id'];
+            unset($bankAccValidated['bank_id']);
+            BankAccount::find($bank_id)->update($bankAccValidated);
+
+            return Response::json('Employee Details Updated Successfully');
         } catch (ValidationException $e) {
             return Response::json($e->errors(), 422);
         }
-
-        Employee::find($id)->update( $employeeValidated);
-
-        $bank_id = $bankAccValidated['bank_id'];
-        unset($bankAccValidated['bank_id']);
-        BankAccount::find($bank_id)->update($bankAccValidated);
-
-        return response(200);
     }
 
     public function destroy(string $id){
