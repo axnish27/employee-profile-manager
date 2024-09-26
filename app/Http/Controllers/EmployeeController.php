@@ -76,7 +76,7 @@ class EmployeeController extends Controller
             $employee = Employee::create($employeeValidated);
             $bankAccValidated['employee_id'] = $employee->id;
             BankAccount::create($bankAccValidated);
-            return Response::json('New Employee Details Added Successfully');
+            return Response::json('New '. $employee->name . ' Details Added');
         } catch (ValidationException $e) {
             return Response::json($e->errors(), 422);
         }
@@ -116,14 +116,15 @@ class EmployeeController extends Controller
             unset($bankAccValidated['bank_id']);
             BankAccount::find($bank_id)->update($bankAccValidated);
 
-            return Response::json('Employee Details Updated Successfully');
+            return Response::json('Employee '  . $employeeValidated['name'] . ' and related Bank Account Details Updated');
         } catch (ValidationException $e) {
             return Response::json($e->errors(), 422);
         }
     }
 
     public function destroy(string $id){
-            Employee::destroy($id);
-            return Response::json("Employee Deleted Successfully");
+        $employee = Employee::find($id);
+        Employee::destroy($id);
+        return Response::json( "Employee " . $employee->name . " and related Bank Account Records were Deleted");
     }
 }

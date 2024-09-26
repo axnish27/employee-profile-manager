@@ -53,7 +53,7 @@ class CompanyController extends Controller
 
             ]);
             Company::create($companyValidated);
-            return Response::json('New Company Details Added Successfully');
+            return Response::json("A New Company ". $companyValidated['name'] . " Recored Added");
 
         }catch (ValidationException $e) {
             return Response::json($e->errors(), 422);
@@ -90,7 +90,7 @@ class CompanyController extends Controller
             $company_id = $companyValidated['company_id'];
             unset($companyValidated['company_id']);
             Company::find($company_id)->update($companyValidated);
-            return Response::json('Company Details Updated Successfully');
+            return Response::json("Company ". $companyValidated['name'] . " Recored Updated");
         }catch (ValidationException $e) {
             return Response::json($e->errors(), 422);
         }
@@ -98,7 +98,10 @@ class CompanyController extends Controller
 
     public function destroy(string $id)
     {
+        $company = Company::find($id);
+        $projects = $company->projects()->count();
+        $employees = $company->employees()->count();
         Company::destroy($id);
-        return Response::json("Company Deleted Succesfully");
+        return Response::json( "The Company " . $company->name . ", and ". $projects ." related projects and ".$employees." Related employee Records Were Deleted");
     }
 }
