@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('branch');
             $table->string('address');
             $table->timestamps();
+            $table->softDeletes();
 
         });
     }

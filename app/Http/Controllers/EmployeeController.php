@@ -27,7 +27,10 @@ class EmployeeController extends Controller
           $length = $request->query('length', 10);
           $totalEmployees =   Employee::count();
 
-          $employees = Employee::with('bankAccount' , 'company')->where('name' , 'like' , "%".$search."%")
+          $employees = Employee::with(['bankAccount' , 'company' => function($query) {
+                                 $query->withTrashed();
+                                }])
+                              ->where('name' , 'like' , "%".$search."%")
                               ->orWhere('position' ,'like' , "%".$search."%")
                               ->orWhere('email', 'like' , "%".$search."%")
                               ->orWhere('address' ,'like' , "%".$search."%")
@@ -37,9 +40,10 @@ class EmployeeController extends Controller
                               function ($q) use ($search) {
                                   $q->where('account_no', 'like', "%".$search."%")->select('branch'); })
                               ->orWhereHas('company', function ($q) use ($search) {
-                                  $q->where('name', 'like', "%".$search."%"); })
-                              ->orWhereHas('company', function ($q) use ($search) {
-                                  $q->where('branch', 'like', "%".$search."%"); });
+                                  $q->withTrashed()
+                                  ->where('name', 'like', "%".$search."%")
+                                  ->orWhere('branch', 'like', "%".$search."%");
+                                });
 
           $filteredEmployees = $search ? $employees->count() : $totalEmployees;
           $employees = $employees->skip($start)
