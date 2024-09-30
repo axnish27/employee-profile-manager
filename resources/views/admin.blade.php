@@ -70,11 +70,7 @@
                             <select id="select" name="company_id" class="form-select form-control m-2 " aria-label="Default select example">
                                 <option hidden>Company</option>
                                 @foreach ( $companies  as $company )
-                                    @if ($company->trashed())
-                                        <option value="{{ $company->id }}"  class="create-option trash" data-branch="{{ $company->branch }}" > {{ $company->name }} </option>
-                                    @else
-                                        <option value="{{ $company->id }}"  class="create-option" data-branch="{{ $company->branch }}"  > {{ $company->name }} </option>
-                                    @endif
+                                    <option value="{{ $company->id }}"  class="create-option {{ is_null($company->deleted_at) ? '' : 'trash ' }}" data-branch="{{ $company->branch }}" > {{ $company->name }} </option>
                                 @endforeach
                             </select>
                             <input type="text" class="form-control m-2" id="company-branch" name="company_branch" placeholder="Branch" required disabled>
@@ -173,7 +169,7 @@
                     $('.form-modal').attr("id","form-create");
                     $('#form-title').text("New Employee Details");
                     $('#btn-submit').text("Add Employee");
-                    $('.trash').addClass("d-none");
+                    $('.trash').toggleClass("d-none" , true);
                 });
 
                 $('.modal-body').on('submit' , '#form-create', function (e){
@@ -198,7 +194,7 @@
                     $('.form-modal').attr("id","form-edit");
                     $('#form-title').text("Edit Employee Details");
                     $('#btn-submit').text("Update Employee");
-                    $('.trash').removeClass("d-none");
+                    $('.trash').toggleClass("d-none" , false);
 
                     id = table.row( $(this).parents('tr') ).data().id;
                     axios.get(`employee/${id}`)
