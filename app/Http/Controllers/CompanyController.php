@@ -100,8 +100,7 @@ class CompanyController extends Controller
     {
         $company = Company::find($id);
         $projects = $company->projects()->count();
-        $employees = $company->employees()->count();
         Company::destroy($id);
-        return Response::json( "The Company " . $company->name . ", and ". $projects ." related projects and ".$employees." Related employee Records Were Deleted");
+        return Response::json( "The Company " . $company->name . ", and ". $projects ." related project records Were Deleted");
     }
 }
