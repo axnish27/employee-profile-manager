@@ -14,7 +14,7 @@ use Illuminate\Validation\ValidationException;
 class EmployeeController extends Controller
 {
     public function index(Request $request){
-        $companies = Company::all();
+        $companies = Company::withTrashed()->get();
         return view('admin' , [ 'companies' => $companies]);
     }
 
@@ -87,7 +87,10 @@ class EmployeeController extends Controller
     }
 
     public function edit(string $id){
-        $employee = Employee::with('bankAccount' , 'company')->where('id',$id)->get();
+        $employee = Employee::with(['bankAccount' , 'company' => function($query) {
+            $query->withTrashed();
+           }])
+           ->where('id',$id)->get();
         return Response::json($employee);
     }
 
