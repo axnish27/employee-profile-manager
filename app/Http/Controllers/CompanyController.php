@@ -52,12 +52,12 @@ class CompanyController extends Controller
                 'address' => 'required',
 
             ]);
+            Company::create($companyValidated);
+            return Response::json("A New Company ". $companyValidated['name'] . " Recored Added");
+
         }catch (ValidationException $e) {
             return Response::json($e->errors(), 422);
         }
-
-        Company::create($companyValidated);
-        return response(200);
     }
 
     public function show(string $id)
@@ -69,8 +69,9 @@ class CompanyController extends Controller
 
     public function edit(string $id)
     {
-        $company = Company::find($id)
-        ->withCount('projects' , 'employees')->get();
+        $company = Company::find($id);
+        $company->projects_count = $company->projects()->count();
+        $company->employees_count = $company->employees()->count();
         return Response::json($company);
     }
 
@@ -85,19 +86,21 @@ class CompanyController extends Controller
                 'company_id' => 'required',
 
             ]);
+
+            $company_id = $companyValidated['company_id'];
+            unset($companyValidated['company_id']);
+            Company::find($company_id)->update($companyValidated);
+            return Response::json("Company ". $companyValidated['name'] . " Recored Updated");
         }catch (ValidationException $e) {
             return Response::json($e->errors(), 422);
         }
-
-        $company_id = $companyValidated['company_id'];
-        unset($companyValidated['company_id']);
-        Company::find($company_id)->update($companyValidated);
-        return response(200);
     }
 
     public function destroy(string $id)
     {
+        $company = Company::find($id);
+        $projects = $company->projects()->count();
         Company::destroy($id);
-        return Response::json("Company Deleted Succesfully");
+        return Response::json( "The Company " . $company->name . ", and ". $projects ." related project records Were Deleted");
     }
 }
