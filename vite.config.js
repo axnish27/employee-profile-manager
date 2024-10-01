@@ -8,6 +8,7 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/css/custom.sign-in.css',
                 'resources/js/app.js',
+                'resources/css/custom.data-table.css',
             ],
             refresh: true,
         }),
