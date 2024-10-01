@@ -158,13 +158,13 @@
                 <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
                 <div class="form-floating">
-                <input type="email" class="form-control floatingInput" id="email" name="email" placeholder="name@example.com" required autofocus autocomplete="username" >
-                <label for="email">Email address</label>
+                <input type="email" class="form-control floatingInput" id="email" name="email" placeholder="name@example.com" required autofocus autocomplete="username"  value="{{ env('APP_ENV') == 'local' ? 'admin@example.com' : '' }}">
+                <label for="email">Email</label>
                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
 
                 <div class="form-floating">
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password"  required autocomplete="current-password" >
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password"  required autocomplete="current-password" value="{{ env('APP_ENV') == 'local' ? 'password' : '' }}" >
                     <label for="password">Password</label>
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
