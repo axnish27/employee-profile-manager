@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone', 12);
             $table->string('address');
-            $table->foreignId('company_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('company_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });
     }

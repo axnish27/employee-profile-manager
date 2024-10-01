@@ -70,7 +70,7 @@
                             <select id="select" name="company_id" class="form-select form-control m-2 " aria-label="Default select example">
                                 <option hidden>Company</option>
                                 @foreach ( $companies  as $company )
-                                    <option value="{{ $company->id }}"  class="create-option" data-branch="{{ $company->branch }}"> {{ $company->name }} </option>
+                                    <option value="{{ $company->id }}"  class="create-option {{ is_null($company->deleted_at) ? '' : 'trash' }}" data-branch="{{ $company->branch }}" > {{ $company->name }} </option>
                                 @endforeach
                             </select>
                             <input type="text" class="form-control m-2" id="company-branch" name="company_branch" placeholder="Branch" required disabled>
@@ -169,6 +169,7 @@
                     $('.form-modal').attr("id","form-create");
                     $('#form-title').text("New Employee Details");
                     $('#btn-submit').text("Add Employee");
+                    $('.trash').toggleClass("d-none" , true);
                 });
 
                 $('.modal-body').on('submit' , '#form-create', function (e){
@@ -189,10 +190,10 @@
                 // Edit Employee
                 let id = null
                 $('#myTable tbody').on('click', '.btn-edit', function (e) {
-
                     $('.form-modal').attr("id","form-edit");
                     $('#form-title').text("Edit Employee Details");
                     $('#btn-submit').text("Update Employee");
+                    $('.trash').toggleClass("d-none" , true);
 
                     id = table.row( $(this).parents('tr') ).data().id;
                     axios.get(`employee/${id}`)
@@ -205,6 +206,7 @@
                         $('#phone').val(data.phone)
                         $('#address').val(data.address)
                         $('#select').val(data.company.id)
+                        $('#select option:selected').toggleClass('d-none' , false)
                         $('#company-branch').val(data.company.branch)
                         $('#bank-id').val(data.bank_account.id)
                         $('#beneficiary-name').val(data.bank_account.beneficiary_name)
