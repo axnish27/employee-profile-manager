@@ -108,7 +108,7 @@
 
         <script type="module">
             $(function(){
-                let table= $('#myTable').dataTable({
+                let table= $('#myTable').DataTable({
                     layout: {
                         topStart: null,
                         topEnd: null,
@@ -124,7 +124,7 @@
                             buttons: [{
                                 text: '<i class="bi bi-plus-lg"></i> ',
                                 attr: {
-                                    id: 'btn-add-employee',
+                                    id: 'btn-add-record',
                                     'data-bs-toggle': 'modal',
                                     'data-bs-target': '.modal'
                                 },
