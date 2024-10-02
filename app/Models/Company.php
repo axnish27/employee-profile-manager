@@ -18,7 +18,7 @@ class Company extends Model
         'address'
     ];
 
-    protected $dates = ['w'];
+    protected $dates = ['deleted_at'];
 
     public function employees(): HasMany
     {
