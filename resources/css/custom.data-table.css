@@ -21,3 +21,20 @@
 .dt-scroll-head{
     height: 40px;
 }
+
+
+#myTable td {
+
+    padding: 4px;
+
+}
+
+
+th {
+    white-space: nowrap;
+}
+
+.dt-scroll{
+    max-width: 100% !important;
+    white-space: nowrap;
+}

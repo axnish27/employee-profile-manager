@@ -113,9 +113,6 @@
                     fixedColumns: true,
                     scrollCollapse: true,
                     scrollY: 550,
-                    scrollX: true,
-                    responsive: true,
-                    columnDefs: [{ width: '6%', targets: 0 }],
                     layout: {
                         topStart: null,
                         topEnd: null,
@@ -165,17 +162,17 @@
                                                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
                                             </svg>
                                         </button> `
-                            }
+                            }, width: '5%'
                         },
-                        { data: 'company.name', title:'Company' },
-                        { data: 'company.branch', title:'Branch'},
-                        { data: 'name' , title: 'Name' ,},
-                        { data: 'position' ,title:'Position' },
-                        { data: 'dob', title:'DOB' },
-                        { data: 'email' , title:'Email'},
-                        { data: 'phone', title:'Phone' },
-                        { data: 'address' , title:'Address'},
-                        { data: 'bank_account.account_no', title:'Bank Acc' },
+                        { data: 'company.name', title:'Company' , width:'8%' },
+                        { data: 'company.branch', title:'Branch'  , width:'8%'},
+                        { data: 'name' , title: 'Name' , width:'8%'},
+                        { data: 'position' ,title:'Position' , width:'8%'},
+                        { data: 'dob', title:'DOB' , width:'8%'},
+                        { data: 'email' , title:'Email', width:'8%'},
+                        { data: 'phone', title:'Phone' , width:'8%'},
+                        { data: 'address' , title:'Address', width:'16%'},
+                        { data: 'bank_account.account_no', title:'Bank Acc', width:'5%' },
 
                     ],
                 });
