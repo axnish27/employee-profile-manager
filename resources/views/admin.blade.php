@@ -114,7 +114,8 @@
                     scrollCollapse: true,
                     scrollY: 550,
                     scrollX: true,
-                    columnDefs: [{ width: '5%', targets: 0 }],
+                    responsive: true,
+                    columnDefs: [{ width: '6%', targets: 0 }],
                     layout: {
                         topStart: null,
                         topEnd: null,
@@ -128,7 +129,7 @@
                         },
                         top1End:{
                             buttons: [{
-                                text: '<i class="bi bi-plus-lg"></i> ',
+                                text: '<i class="bi bi-plus-lg"></i> New',
                                 attr: {
                                     id: 'btn-add-record',
                                     'data-bs-toggle': 'modal',

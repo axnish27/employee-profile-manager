@@ -10,4 +10,4 @@ import DataTable from 'datatables.net-bs5';
 import 'datatables.net-fixedcolumns-bs5';
 import 'datatables.net-buttons';
 import 'datatables.net-buttons-bs5';
-
+import 'datatables.net-responsive-bs5';
