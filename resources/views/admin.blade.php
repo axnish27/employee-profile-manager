@@ -8,6 +8,7 @@
 
 
         @vite([ 'resources/css/app.css', 'resources/js/app.js',  'resources/css/custom.data-table.css', ])
+
     </head>
 
     <body class="container.fluid w-100 m-0" style="background-color: whitesmoke">
@@ -109,6 +110,11 @@
         <script type="module">
             $(function(){
                 let table= $('#myTable').DataTable({
+                    fixedColumns: true,
+                    scrollCollapse: true,
+                    scrollY: 550,
+                    scrollX: true,
+                    columnDefs: [{ width: '5%', targets: 0 }],
                     layout: {
                         topStart: null,
                         topEnd: null,
