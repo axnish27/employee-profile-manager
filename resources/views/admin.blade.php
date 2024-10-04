@@ -112,10 +112,9 @@
                 let table= $('#myTable').DataTable({
                     fixedColumns: true,
                     scrollCollapse: true,
-                    scrollY: 550,
+                    scrollY: 500,
                     scrollX: true,
                     responsive: true,
-                    columnDefs: [{ width: '6%', targets: 0 }],
                     layout: {
                         topStart: null,
                         topEnd: null,
@@ -129,11 +128,12 @@
                         },
                         top1End:{
                             buttons: [{
-                                text: '<i class="bi bi-plus-lg"></i> New',
+                                text: '<i class="bi bi-plus-lg" ></i> New',
                                 attr: {
                                     id: 'btn-add-record',
                                     'data-bs-toggle': 'modal',
-                                    'data-bs-target': '.modal'
+                                    'data-bs-target': '.modal',
+
                                 },
                                 action: function (e, dt, node, config, cb) {
                                     storeEmployee()
@@ -165,19 +165,52 @@
                                                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
                                             </svg>
                                         </button> `
-                            }
+                            },
+                            width: '6%',
                         },
                         { data: 'company.name', title:'Company' },
                         { data: 'company.branch', title:'Branch'},
                         { data: 'name' , title: 'Name' ,},
-                        { data: 'position' ,title:'Position' },
-                        { data: 'dob', title:'DOB' },
+                        { data: 'position' ,title:'Position'},
+                        { data: 'dob', title:'DOB' , width: '6%'},
                         { data: 'email' , title:'Email'},
                         { data: 'phone', title:'Phone' },
                         { data: 'address' , title:'Address'},
                         { data: 'bank_account.account_no', title:'Bank Acc' },
 
                     ],
+                    columnDefs: [
+                        {
+                            targets:1,
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                hideLongText(td , cellData , 26)
+                            }
+                        },
+                        {
+                            targets: 2,
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                hideLongText(td , cellData , 15)
+                            }
+                        },
+                        {
+                            targets: 3,
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                hideLongText(td , cellData , 26)
+                            }
+                        },
+                        {
+                            targets: 4,
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                hideLongText(td , cellData , 20)
+                            }
+                        },
+                        {
+                            targets: 8,
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                hideLongText(td , cellData , 50)
+                            }
+                        },
+                    ]
                 });
 
                 $('#myTable tbody').on('click' , '.btn-dlt-modal' ,function (e) {
@@ -193,6 +226,16 @@
                     table.draw(false);
                     $('.btn-close-dlt').click();
                 })
+
+                //hideLongText
+                function hideLongText(td , cellData , charLength) {
+                    if (cellData.length > charLength){
+                        $(td).attr('title', cellData);
+                        $(td).text(cellData.substring(0 , charLength));
+                    }else{
+                        $(td).attr('title', cellData);
+                    }
+                }
 
                 //Store Employee Axios
                 function storeEmployee(){
