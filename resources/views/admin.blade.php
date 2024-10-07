@@ -110,6 +110,9 @@
         <script type="module">
             $(function(){
                 let table= $('#myTable').DataTable({
+                    drawCallback: function (settings) {
+                        ellipsis()
+                    },
                     fixedColumns: true,
                     scrollCollapse: true,
                     scrollY: 500,
@@ -133,7 +136,6 @@
                                     id: 'btn-add-record',
                                     'data-bs-toggle': 'modal',
                                     'data-bs-target': '.modal',
-
                                 },
                                 action: function (e, dt, node, config, cb) {
                                     storeEmployee()
@@ -168,49 +170,16 @@
                             },
                             width: '6%',
                         },
-                        { data: 'company.name', title:'Company' },
-                        { data: 'company.branch', title:'Branch'},
-                        { data: 'name' , title: 'Name' ,},
-                        { data: 'position' ,title:'Position'},
-                        { data: 'dob', title:'DOB' , width: '6%'},
-                        { data: 'email' , title:'Email'},
-                        { data: 'phone', title:'Phone' },
-                        { data: 'address' , title:'Address'},
-                        { data: 'bank_account.account_no', title:'Bank Acc' },
-
+                        {data: 'company.name', title:'Company' , className: 'column-company'},
+                        { data: 'company.branch', title:'Branch' , className: 'column-branch'},
+                        { data: 'name' , title: 'Name' , className: 'column-name'},
+                        { data: 'position' ,title:'Position' , className: 'column-position'},
+                        { data: 'dob', title:'DOB' , width: '6%' , className: 'column-dob'},
+                        { data: 'email' , title:'Email' , className: 'column-email'},
+                        { data: 'phone', title:'Phone' , className: 'column-phone'},
+                        { data: 'address' , title:'Address' , className: 'column-address' },
+                        { data: 'bank_account.account_no', title:'Bank Acc' , className: 'column-bank-acc' },
                     ],
-                    columnDefs: [
-                        {
-                            targets:1,
-                            createdCell: function (td, cellData, rowData, row, col) {
-                                hideLongText(td , cellData , 26)
-                            }
-                        },
-                        {
-                            targets: 2,
-                            createdCell: function (td, cellData, rowData, row, col) {
-                                hideLongText(td , cellData , 15)
-                            }
-                        },
-                        {
-                            targets: 3,
-                            createdCell: function (td, cellData, rowData, row, col) {
-                                hideLongText(td , cellData , 26)
-                            }
-                        },
-                        {
-                            targets: 4,
-                            createdCell: function (td, cellData, rowData, row, col) {
-                                hideLongText(td , cellData , 20)
-                            }
-                        },
-                        {
-                            targets: 8,
-                            createdCell: function (td, cellData, rowData, row, col) {
-                                hideLongText(td , cellData , 50)
-                            }
-                        },
-                    ]
                 });
 
                 $('#myTable tbody').on('click' , '.btn-dlt-modal' ,function (e) {
@@ -225,9 +194,24 @@
                     });
                     table.draw(false);
                     $('.btn-close-dlt').click();
-                })
+                });
 
                 //hideLongText
+                function ellipsis(){
+                    truncateColumns('column-company' , 26)
+                    truncateColumns('column-branch' , 15)
+                    truncateColumns('column-name' , 26)
+                    truncateColumns('column-position' , 20)
+                    truncateColumns('column-address' , 50)
+                }
+
+                function truncateColumns(columnName , charLimit){
+                    const cells = table.column(`.${columnName}`).nodes();
+                    cells.each(function (element) {
+                        hideLongText(element , element.textContent , charLimit)
+                    });
+                }
+
                 function hideLongText(td , cellData , charLength) {
                     if (cellData.length > charLength){
                         $(td).attr('title', cellData);
