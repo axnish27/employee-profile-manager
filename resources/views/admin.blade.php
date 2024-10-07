@@ -111,7 +111,11 @@
             $(function(){
                 let table= $('#myTable').DataTable({
                     drawCallback: function (settings) {
-                        ellipsis()
+                        hideLongText('column-company' , 26)
+                        hideLongText('column-branch' , 15)
+                        hideLongText('column-name' , 26)
+                        hideLongText('column-position' , 20)
+                        hideLongText('column-address' , 50)
                     },
                     fixedColumns: true,
                     scrollCollapse: true,
@@ -197,28 +201,16 @@
                 });
 
                 //hideLongText
-                function ellipsis(){
-                    truncateColumns('column-company' , 26)
-                    truncateColumns('column-branch' , 15)
-                    truncateColumns('column-name' , 26)
-                    truncateColumns('column-position' , 20)
-                    truncateColumns('column-address' , 50)
-                }
-
-                function truncateColumns(columnName , charLimit){
+                function hideLongText(columnName , charLength){
                     const cells = table.column(`.${columnName}`).nodes();
-                    cells.each(function (element) {
-                        hideLongText(element , element.textContent , charLimit)
+                    cells.each(function (cell) {
+                        if (cell.textContent.length > charLength){
+                            $(cell).attr('title', cell.textContent);
+                            $(cell).text(cell.textContent.substring(0 , charLength));
+                        }else{
+                            $(cell).attr('title', cell.textContent);
+                        }
                     });
-                }
-
-                function hideLongText(td , cellData , charLength) {
-                    if (cellData.length > charLength){
-                        $(td).attr('title', cellData);
-                        $(td).text(cellData.substring(0 , charLength));
-                    }else{
-                        $(td).attr('title', cellData);
-                    }
                 }
 
                 //Store Employee Axios
