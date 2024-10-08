@@ -223,12 +223,6 @@
                             className: 'column-bank-acc'
                         },
                     ],
-                    columnDefs: [{
-                        targets: '_all',
-                        createdCell: function (td, cellData, rowData, row, col) {
-                            $(td).attr('title', cellData);
-                        }
-                    }]
                 });
 
                 $('#myTable tbody').on('click' , '.btn-dlt-modal' ,function (e) {

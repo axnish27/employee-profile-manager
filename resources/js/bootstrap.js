@@ -13,11 +13,4 @@ import 'datatables.net-fixedcolumns-bs5';
 import 'datatables.net-buttons';
 import 'datatables.net-buttons-bs5';
 import 'datatables.net-responsive-bs5';
-
-DataTable.render.ellipsis = function (maxLen) {
-    return function ( data, type, row ) {
-        return type === 'display' && data.length > maxLen ?
-        data.substr( 0, maxLen ) +'…' :
-        data;
-    }
-};
+import 'datatables.net-plugins/dataRender/ellipsis.mjs';
