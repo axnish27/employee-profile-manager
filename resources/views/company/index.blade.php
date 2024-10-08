@@ -217,7 +217,7 @@
                   displayToast(response , "success")
                   $('#form-create').trigger("reset");
                   $('#btn-modal-close').click();
-                  table.draw();
+                  table.draw(false);
                 })
                 .catch(function (response){
                   displayToast(response , "error")
@@ -260,7 +260,7 @@
                     displayToast(response , "success")
                     $('#form-edit').trigger("reset");
                     $('#btn-modal-close').click();
-                    table.draw();
+                    table.draw(false);
                 })
                 .catch(function (response){
                     displayToast(response , "error")
