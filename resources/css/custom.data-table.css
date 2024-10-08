@@ -1,0 +1,32 @@
+#myTable_wrapper > .row{
+    margin: 0;
+}
+
+#btn-add-record{
+    background-color: dodgerblue;
+    height: 30px;
+    text-align: right;
+    border-style: hidden;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    padding: 0 20px;
+    margin-top: 20px;
+
+}
+
+#myTable > thead {
+    display: none;
+}
+
+.dt-scroll-head{
+    height: 40px;
+}
+
+#myTable  tr td{
+    padding: 5px;
+}
+
+.dt-scroll{
+    width: 100%;
+}
+

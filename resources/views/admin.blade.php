@@ -7,10 +7,11 @@
         <title>Employee Manager</title>
 
 
-        @vite([ 'resources/css/app.css', 'resources/js/app.js', ])
+        @vite([ 'resources/css/app.css', 'resources/js/app.js',  'resources/css/custom.data-table.css', ])
+
     </head>
 
-    <body class="container.fluid w-100 " style="background-color: whitesmoke">
+    <body class="container.fluid w-100 m-0" style="background-color: whitesmoke">
 
         <x-nav-bar parent="company" />
 
@@ -40,13 +41,8 @@
 
         </div>
 
-        <main class="container" >
+        <main class="container.fluid" >
             <h1 class="h1 text-center mt-4" >Manage Employee Profiles</h1>
-            <button id="btn-add-employee" class="btn btn-primary rounded-circle p-0 mt-2 mb-2 "  data-bs-toggle="modal" data-bs-target=".modal"  >
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-                  </svg>
-            </button>
 
             <div class="modal fade"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div id="validation-errors" style="display: none;" class="position-absolute top-0 end-0  w-25" role="alert"></div>
@@ -89,7 +85,6 @@
                 </div>
               </div>
 
-
               <!-- Delete Modal -->
               <div class="modal fade" id="deletConfirmation" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deletConfirmationLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -109,28 +104,55 @@
                 </div>
               </div>
 
-            <table id="myTable" class="table table-striped table-dark table-hover  " style="width: 100%"></table>
+            <table id="myTable" class="table table-striped table-dark table-hover " style="width: 100%" data-turbolinks="false"></table>
         </main>
 
         <script type="module">
             $(function(){
                 let table= $('#myTable').DataTable({
+                    fixedColumns: true,
+                    scrollCollapse: true,
+                    scrollY: 500,
+                    scrollX: true,
+                    responsive: true,
+                    layout: {
+                        topStart: null,
+                        topEnd: null,
+                        top1Start:{
+                            pageLength: {
+                            placeholder: 'Filter'
+                            },
+                            search: {
+                                placeholder: 'Type search here'
+                            },
+                        },
+                        top1End:{
+                            buttons: [{
+                                text: '<i class="bi bi-plus-lg" ></i> New',
+                                attr: {
+                                    id: 'btn-add-record',
+                                    'data-bs-toggle': 'modal',
+                                    'data-bs-target': '.modal',
+                                },
+                                action: function (e, dt, node, config, cb) {
+                                    storeEmployee()
+                                }
+                            }]
+                        }
+                    },
+                    language: {
+                        lengthMenu:  ' _MENU_',
+                        search: ' '
+                    },
                     serverSide: true,
                     processing: true,
                     ajax: {
                         url: 'employee/draw',
                     },
                     columns: [
-                        { data: 'company.name', title:'Company' },
-                        { data: 'company.branch', title:'Branch'},
-                        { data: 'name' , title: 'Name' ,},
-                        { data: 'position' ,title:'Position' },
-                        { data: 'dob', title:'DOB' },
-                        { data: 'email' , title:'Email'},
-                        { data: 'phone', title:'Phone' },
-                        { data: 'address' , title:'Address'},
-                        { data: 'bank_account.account_no', title:'Bank Acc' },
-                        { data: null ,
+                        {
+                            data: null ,
+                            title: "Actions",
                             render: function (data, type, row) {
                                 return `  <button class="d-inline btn  btn-edit p-0 " id="btn-edit-${row.id}" data-id="${row.id}" data-bs-toggle="modal" data-bs-target=".modal" >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="dodgerblue" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -144,11 +166,55 @@
                                                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
                                             </svg>
                                         </button> `
-                            }
+                            },
+                            width: '6%',
+                        },
+                        {
+                            data: 'company.name',
+                            title:'Company' ,
+                            render: DataTable.render.ellipsis( 26 )
+
+                        },
+                        {
+                            data: 'company.branch',
+                            title:'Branch' ,
+                            render: DataTable.render.ellipsis( 20 )
+
+                        },
+                        {
+                            data: 'name' ,
+                            title: 'Name' ,
+                            render: DataTable.render.ellipsis( 26 )
+                        },
+                        {
+                            data: 'position' ,
+                            title:'Position' ,
+                            render: DataTable.render.ellipsis( 15 )
+                        },
+                        {
+                            data: 'dob',
+                            title:'DOB' ,
+                            width: '6%' ,
+                        },
+                        {
+                            data: 'email' ,
+                            title:'Email' ,
+                        },
+                        {
+                            data: 'phone',
+                            title:'Phone' ,
+                        },
+                        {
+                            data: 'address' ,
+                            title:'Address' ,
+                            render: DataTable.render.ellipsis( 26 )
+                        },
+                        {
+                            data: 'bank_account.account_no',
+                            title:'Bank Acc' ,
                         },
                     ],
                 });
-
 
                 $('#myTable tbody').on('click' , '.btn-dlt-modal' ,function (e) {
                     $('#btn-dlt').text('Delete').attr('data-id' , table.row($(this).parents('tr')).data().id)
@@ -162,15 +228,15 @@
                     });
                     table.draw(false);
                     $('.btn-close-dlt').click();
-                })
+                });
 
                 //Store Employee Axios
-                $('#btn-add-employee').click(function (e) {
+                function storeEmployee(){
                     $('.form-modal').attr("id","form-create");
                     $('#form-title').text("New Employee Details");
                     $('#btn-submit').text("Add Employee");
                     $('.trash').toggleClass("d-none" , true);
-                });
+                };
 
                 $('.modal-body').on('submit' , '#form-create', function (e){
                     e.preventDefault();
@@ -215,7 +281,6 @@
                         $('#account-no').val(data.bank_account.account_no)
                     });
                 });
-
 
                 $('.modal-body').on('submit' , '#form-edit', function (e){
                     e.preventDefault();
