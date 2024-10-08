@@ -172,55 +172,46 @@
                         {
                             data: 'company.name',
                             title:'Company' ,
-                            className: 'column-company' ,
                             render: DataTable.render.ellipsis( 26 )
 
                         },
                         {
                             data: 'company.branch',
                             title:'Branch' ,
-                            className: 'column-branch',
                             render: DataTable.render.ellipsis( 20 )
 
                         },
                         {
                             data: 'name' ,
                             title: 'Name' ,
-                            className: 'column-name',
                             render: DataTable.render.ellipsis( 26 )
                         },
                         {
                             data: 'position' ,
                             title:'Position' ,
-                            className: 'column-position',
                             render: DataTable.render.ellipsis( 15 )
                         },
                         {
                             data: 'dob',
                             title:'DOB' ,
                             width: '6%' ,
-                            className: 'column-dob'
                         },
                         {
                             data: 'email' ,
                             title:'Email' ,
-                            className: 'column-email'
                         },
                         {
                             data: 'phone',
                             title:'Phone' ,
-                            className: 'column-phone'
                         },
                         {
                             data: 'address' ,
                             title:'Address' ,
-                            className: 'column-address',
                             render: DataTable.render.ellipsis( 26 )
                         },
                         {
                             data: 'bank_account.account_no',
                             title:'Bank Acc' ,
-                            className: 'column-bank-acc'
                         },
                     ],
                 });
