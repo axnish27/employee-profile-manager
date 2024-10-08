@@ -245,7 +245,7 @@
                     .then(function (response){
                         $('#form-create').trigger("reset");
                         $('#btn-modal-close').click();
-                        table.draw();
+                        table.draw(false);
                         displayToast(response , "success")
                     })
                     .catch(function (response){
@@ -291,7 +291,7 @@
                     .then(function (response){
                         $('#form-edit').trigger("reset");
                         $('#btn-modal-close').click();
-                        table.draw();
+                        table.draw(false);
                         displayToast(response , "success")
                     })
                     .catch(function (response){
