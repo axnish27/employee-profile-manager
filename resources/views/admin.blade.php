@@ -110,13 +110,6 @@
         <script type="module">
             $(function(){
                 let table= $('#myTable').DataTable({
-                    drawCallback: function (settings) {
-                        hideLongText('column-company' , 26)
-                        hideLongText('column-branch' , 15)
-                        hideLongText('column-name' , 26)
-                        hideLongText('column-position' , 20)
-                        hideLongText('column-address' , 50)
-                    },
                     fixedColumns: true,
                     scrollCollapse: true,
                     scrollY: 500,
@@ -157,7 +150,9 @@
                         url: 'employee/draw',
                     },
                     columns: [
-                        { data: null , title: "Actions",
+                        {
+                            data: null ,
+                            title: "Actions",
                             render: function (data, type, row) {
                                 return `  <button class="d-inline btn  btn-edit p-0 " id="btn-edit-${row.id}" data-id="${row.id}" data-bs-toggle="modal" data-bs-target=".modal" >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="dodgerblue" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -174,16 +169,66 @@
                             },
                             width: '6%',
                         },
-                        {data: 'company.name', title:'Company' , className: 'column-company'},
-                        { data: 'company.branch', title:'Branch' , className: 'column-branch'},
-                        { data: 'name' , title: 'Name' , className: 'column-name'},
-                        { data: 'position' ,title:'Position' , className: 'column-position'},
-                        { data: 'dob', title:'DOB' , width: '6%' , className: 'column-dob'},
-                        { data: 'email' , title:'Email' , className: 'column-email'},
-                        { data: 'phone', title:'Phone' , className: 'column-phone'},
-                        { data: 'address' , title:'Address' , className: 'column-address' },
-                        { data: 'bank_account.account_no', title:'Bank Acc' , className: 'column-bank-acc' },
+                        {
+                            data: 'company.name',
+                            title:'Company' ,
+                            className: 'column-company' ,
+                            render: DataTable.render.ellipsis( 26 )
+
+                        },
+                        {
+                            data: 'company.branch',
+                            title:'Branch' ,
+                            className: 'column-branch',
+                            render: DataTable.render.ellipsis( 20 )
+
+                        },
+                        {
+                            data: 'name' ,
+                            title: 'Name' ,
+                            className: 'column-name',
+                            render: DataTable.render.ellipsis( 26 )
+                        },
+                        {
+                            data: 'position' ,
+                            title:'Position' ,
+                            className: 'column-position',
+                            render: DataTable.render.ellipsis( 15 )
+                        },
+                        {
+                            data: 'dob',
+                            title:'DOB' ,
+                            width: '6%' ,
+                            className: 'column-dob'
+                        },
+                        {
+                            data: 'email' ,
+                            title:'Email' ,
+                            className: 'column-email'
+                        },
+                        {
+                            data: 'phone',
+                            title:'Phone' ,
+                            className: 'column-phone'
+                        },
+                        {
+                            data: 'address' ,
+                            title:'Address' ,
+                            className: 'column-address',
+                            render: DataTable.render.ellipsis( 26 )
+                        },
+                        {
+                            data: 'bank_account.account_no',
+                            title:'Bank Acc' ,
+                            className: 'column-bank-acc'
+                        },
                     ],
+                    columnDefs: [{
+                        targets: '_all',
+                        createdCell: function (td, cellData, rowData, row, col) {
+                            $(td).attr('title', cellData);
+                        }
+                    }]
                 });
 
                 $('#myTable tbody').on('click' , '.btn-dlt-modal' ,function (e) {
@@ -199,19 +244,6 @@
                     table.draw(false);
                     $('.btn-close-dlt').click();
                 });
-
-                //hideLongText
-                function hideLongText(columnName , charLength){
-                    const cells = table.column(`.${columnName}`).nodes();
-                    cells.each(function (cell) {
-                        if (cell.textContent.length > charLength){
-                            $(cell).attr('title', cell.textContent);
-                            $(cell).text(cell.textContent.substring(0 , charLength));
-                        }else{
-                            $(cell).attr('title', cell.textContent);
-                        }
-                    });
-                }
 
                 //Store Employee Axios
                 function storeEmployee(){
