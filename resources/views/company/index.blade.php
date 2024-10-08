@@ -6,7 +6,8 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite([ 'resources/css/app.css', 'resources/js/app.js',  'resources/css/custom.data-table.css', ])
+
     </head>
 
     <body class="container.fluid w-100 " style="background-color: rgb(249, 249, 249) ">
@@ -40,14 +41,8 @@
       </div>
 
 
-      <main class="container">
+      <main class="containe.fluid">
         <h1 class="h1 text-center mt-4" >Manage Company Profiles</h1>
-        <button id="btn-add-company" class="btn btn-primary rounded-circle p-0 mt-2 mb-2 "  data-bs-toggle="modal" data-bs-target=".modal"  >
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-              </svg>
-        </button>
-
         <div class="modal fade"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div id="validation-errors" style="display: none;" class="position-absolute top-0 end-0  w-25" role="alert"></div>
             <div class="modal-dialog modal-dialog-centered ">
@@ -99,19 +94,45 @@
         $(function () {
 
           let table= $('#myTable').DataTable({
+            layout: {
+                        topStart: null,
+                        topEnd: null,
+                        top1Start:{
+                            pageLength: {
+                            placeholder: 'Filter'
+                            },
+                            search: {
+                                placeholder: 'Type search here'
+                            },
+                        },
+                        top1End:{
+                            buttons: [{
+                                text: '<i class="bi bi-plus-lg"></i> ',
+                                attr: {
+                                    id: 'btn-add-record',
+                                    'data-bs-toggle': 'modal',
+                                    'data-bs-target': '.modal'
+                                },
+                                action: function (e, dt, node, config, cb) {
+                                    storeCompany()
+                                }
+                            }]
+                        }
+                    },
+                    language: {
+                        lengthMenu:  ' _MENU_',
+                        search: ' '
+                    },
+
+
+
                 serverSide: true,
                 processing: true,
                 ajax: {
                     url: 'company/draw',
                 },
                 columns: [
-                    { data: 'name', title:'Company' },
-                    { data: 'branch', title:'Branch'},
-                    { data: 'country' , title: 'Country' ,},
-                    { data: 'address' , title:'Address' },
-                    { data: 'employees_count' , title:'Employees' },
-                    { data: 'projects_count' , title:'Projects' },
-                    { data: null ,
+                  { data: null , title: 'Actions',
                         render: function (data, type, row) {
                             return `  <button class="d-inline btn  btn-edit p-0 " id="btn-edit-${row.id}" data-id="${row.id}" data-bs-toggle="modal" data-bs-target=".modal" >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="dodgerblue" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -127,6 +148,12 @@
                                     </button> `
                         }
                     },
+                    { data: 'name', title:'Company' },
+                    { data: 'branch', title:'Branch'},
+                    { data: 'country' , title: 'Country' ,},
+                    { data: 'address' , title:'Address' },
+                    { data: 'employees_count' , title:'Employees' },
+                    { data: 'projects_count' , title:'Projects' },
                 ],
             });
 
@@ -145,13 +172,13 @@
             })
 
             //Store Company Axios
-            $('#btn-add-company').click(function (e) {
+            function storeCompany(){
               $('.form-modal').attr("id","form-create");
               $('#form-title').text("New Company Details");
               $('#btn-submit').text("Add Company");
               $('#projects').prop("type" , "hidden")
               $('#employees').prop("type" , "hidden")
-            });
+            }
 
             $('.modal-body').on('submit' , '#form-create', function (e){
                 e.preventDefault();
