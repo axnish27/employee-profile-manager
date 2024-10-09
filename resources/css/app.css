@@ -1,13 +1,11 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
 @import "bootstrap";
 
-
 .grid-container{
     display: grid;
     grid-template-columns: 60px calc(100vw - 60px) ;
     grid-template-rows: 60px calc(100vh - 60px);
 }
-
 
 .sidebar , .offcanvas{
     grid-column: 1;
@@ -19,7 +17,6 @@
     padding-top: 20px;
 
 }
-
 
 nav{
     grid-row: 1;
@@ -33,7 +30,6 @@ main{
 
 .offcanvas {
     width: 200px !important;
-
 }
 .offcanvas > a{
     margin: 0 5px 5px ;
