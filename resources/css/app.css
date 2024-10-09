@@ -1,3 +1,43 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
 @import "bootstrap";
 
+
+.grid-container{
+    display: grid;
+    grid-template-columns: 60px calc(100vw - 60px) ;
+    grid-template-rows: 60px calc(100vh - 60px);
+}
+
+
+.sidebar , .offcanvas{
+    grid-column: 1;
+    grid-row: 1/-1;
+    background-color: #212529;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+
+}
+
+
+nav{
+    grid-row: 1;
+    grid-column: 2;
+}
+
+main{
+    grid-column: 2;
+    grid-row: 2 /-1;
+}
+
+.offcanvas {
+    width: 200px !important;
+
+}
+.offcanvas > a{
+    margin: 0 5px 5px ;
+    font-size: 1.2rem;
+}
+
+

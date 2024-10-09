@@ -13,7 +13,13 @@
 
     <body class="container.fluid w-100 m-0" style="background-color: whitesmoke">
 
-        <x-nav-bar parent="company" />
+        <div class="grid-container">
+
+        <x-sidebar/>
+
+        <x-offcanvas-sidebar/>
+
+        <x-nav-bar/>
 
         <div class="toast-container position-absolute top-0 end-0  m-2">
             <div id="success-toast" class="toast success-toast align-items-center bg-success-subtle  shadow-sm " role="alert" aria-live="assertive" aria-atomic="true">
@@ -253,6 +259,17 @@
                         },
                     ],
                 });
+
+                $('.sidebar').hover(function () {
+                        $('.offcanvas').toggleClass('show' ,true)
+                    },
+                );
+
+                $('.offcanvas').hover(function () {
+                    }, function () {
+                        $('.offcanvas').toggleClass('show' , false)
+                    }
+                );
 
                 $('#myTable tbody').on('click' , '.btn-dlt-modal' ,function (e) {
                     $('#btn-dlt').text('Delete').attr('data-id' , table.row($(this).parents('tr')).data().id)
