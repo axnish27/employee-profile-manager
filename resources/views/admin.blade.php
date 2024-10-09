@@ -44,41 +44,79 @@
         <main class="container.fluid" >
             <h1 class="h1 text-center mt-4" >Manage Employee Profiles</h1>
 
-            <div class="modal fade"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal fade modal-lg"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div id="validation-errors" style="display: none;" class="position-absolute top-0 end-0  w-25" role="alert"></div>
                 <div class="modal-dialog modal-dialog-centered ">
-                  <div class="modal-content ">
-                    <button type="button" id="btn-modal-close" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <h3 class="text-center text-dark m-0" id="form-title"></h3>
+                  <div class="modal-content text-light" style="background-color: #212529 ; width: auto;">
+                    <button type="button" id="btn-modal-close" class="btn-close m-2 text-bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h3 class="text-center m-0" id="form-title"></h3>
                     <div class="modal-body m-0">
-                        <form class="form-modal">
+                        <form class="form-modal row  p-3">
                             @csrf
+                            <div class="mb-2 col-12">
+                                <label for="name" class="form-label">Name:</label>
+                                <input type="text" class=" form-control " id="name" name="name" placeholder="Full Name" required>
+                            </div>
+                            <div class=" mb-2 col-6">
+                                <label class="form-label" for="position">Position:</label>
+                                <input type="text" class=" form-control " id="position" name="position" placeholder="Position" required>
+                            </div>
+                            <div class="mb-2 col-6" >
+                                <label class="form-label" for="dob">DOB:</label>
+                                <input type="date" class=" form-control " id="dob" name="dob" placeholder="DOB" required>
+                            </div>
+                            <div class=" mb-2 col-6">
+                                <label class="form-label" for="email">Email:</label>
+                                <input type="email" class=" form-control " id="email" name="email" placeholder="Email" required>
 
-                            <label class="form-label m-2 fw-bold">Personal Details</label>
-                            <input type="text" class=" form-control m-2" id="name" name="name" placeholder="Full Name" required>
-                            <input type="text" class=" form-control m-2" id="position" name="position" placeholder="Position" required>
-                            <input type="date" class=" form-control m-2" id="dob" name="dob" placeholder="DOB" required>
-                            <input type="email" class=" form-control m-2" id="email" name="email" placeholder="Email" required>
-                            <input type="phone" class=" form-control m-2" id="phone" name="phone" placeholder="Phone" required>
-                            <input type="text" class=" form-control m-2" id="address" name="address" placeholder="Address" required>
+                            </div>
+                            <div class=" mb-2 col-6">
+                                <label class="form-label" for="phone">Phone:</label>
+                                <input type="phone" class=" form-control " id="phone" name="phone" placeholder="Phone" required>
 
-                            <label class="form-label m-2 fw-bold" >Company Details</label>
-                            <select id="select" name="company_id" class="form-select form-control m-2 " aria-label="Default select example">
-                                <option hidden>Company</option>
-                                @foreach ( $companies  as $company )
-                                    <option value="{{ $company->id }}"  class="create-option {{ is_null($company->deleted_at) ? '' : 'trash' }}" data-branch="{{ $company->branch }}" > {{ $company->name }} </option>
-                                @endforeach
-                            </select>
-                            <input type="text" class="form-control m-2" id="company-branch" name="company_branch" placeholder="Branch" required disabled>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" for="address">Address:</label>
+                                <input type="text" class=" form-control " id="address" name="address" placeholder="Address" required>
+                            </div>
 
-                            <label class="form-label m-2 fw-bold" >Bank Details</label>
+                            <div class="mt-4 mb-2 col-6 d-inline">
+                                <label class="form-label" for="select">Choose Company: </label>
+                                <select id="select" name="company_id" class="form-select form-control  " aria-label="Default select example">
+                                    <option hidden>Company</option>
+                                    @foreach ( $companies  as $company )
+                                        <option value="{{ $company->id }}"  class="create-option {{ is_null($company->deleted_at) ? '' : 'trash' }}" data-branch="{{ $company->branch }}" > {{ $company->name }} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mt-4 mb-2 col-6">
+                                <label class="form-label" for="company-branch">Branch:</label>
+                                <input type="text" class="form-control " id="company-branch" name="company_branch" placeholder="Branch" required disabled>
+                            </div>
+
                             <input type="hidden" name="bank_id" id="bank-id">
-                            <input type="text" class=" form-control m-2"  id="beneficiary-name" name="beneficiary_name" placeholder="Beneficiary Name" required>
-                            <input type="text" class=" form-control m-2" id="bank-name" name="bank_name" placeholder="Bank Name" required>
-                            <input type="phone" class=" form-control m-2" id="bank-branch" name="branch" placeholder="Branch" required>
-                            <input type="number" class=" form-control m-2" id="account-no" name="account_no" placeholder="Account No" required>
 
-                            <button type="submit" class="btn btn-primary m-2" id="btn-submit"></button>
+                            <div class="mt-4 mb-2 col-12">
+                                <label class="form-label" for="beneficiary-name">Beneficiary Name:</label>
+                                <input type="text" class=" form-control "  id="beneficiary-name" name="beneficiary_name" placeholder="Beneficiary Name" required>
+                            </div>
+
+                            <div class="mb-2 col-6">
+                                <label class="form-label" for="bank-name">Bank Name</label>
+                                <input type="text" class=" form-control " id="bank-name" name="bank_name" placeholder="Bank Name" required>
+                            </div>
+
+                            <div class="mb-2 col-6">
+                                <label class="form-label" for="bank-branch">Branch</label>
+                                <input type="phone" class=" form-control " id="bank-branch" name="branch" placeholder="Branch" required>
+                            </div>
+
+                            <div class="mb-2 col-12">
+                                <label class="form-label" for="account-no">Account No:</label>
+                                <input type="number" class=" form-control " id="account-no" name="account_no" placeholder="Account No" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary  ms-2 mt-4 p-0 border-0 " style="height: 40px ; width: 98%" id="btn-submit"></button>
                         </form>
                     </div>
                   </div>
