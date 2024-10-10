@@ -10,16 +10,13 @@
 
     </head>
 
-    <body class="container.fluid w-100 " style="background-color: rgb(249, 249, 249) ">
-      <div class="grid-container">
+    <body class="container.fluid w-100 d-flex " style="background-color: rgb(249, 249, 249) ">
 
-        <x-sidebar/>
+      <x-sidebar/>
 
-        <x-offcanvas-sidebar/>
-
-        <x-nav-bar/>
-
-        <div class="toast-container position-absolute top-0 end-0  m-2">
+  <div class="content w-100">
+          <x-nav-bar/>
+          <div class="toast-container position-absolute top-0 end-0  m-2">
           <div id="success-toast" class="toast success-toast align-items-center bg-success-subtle  shadow-sm " role="alert" aria-live="assertive" aria-atomic="true">
               <div class="d-flex">
                 <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-check-lg p-0 mx-1 mt-2 mb-2" viewBox="0 0 16 16">
@@ -87,205 +84,206 @@
             </div>
             <table id="myTable" class="table table-striped table-dark table-hover  " style="width: 100%"> </table>
         </main>
-        <script type="module">
-          $(function () {
-            let table= $('#myTable').DataTable({
-                  fixedColumns: true,
-                  scrollCollapse: true,
-                  scrollY: 500,
-                  scrollX: true,
-                  responsive: true,
-                  layout: {
-                    topStart: null,
-                    topEnd: null,
-                    top1Start:{
-                        pageLength: {
-                        placeholder: 'Filter'
-                        },
-                        search: {
-                            placeholder: 'Type search here'
-                        },
+</div>
+      <script type="module">
+        $(function () {
+          let table= $('#myTable').DataTable({
+                fixedColumns: true,
+                scrollCollapse: true,
+                scrollY: 500,
+                scrollX: true,
+                responsive: true,
+                layout: {
+                  topStart: null,
+                  topEnd: null,
+                  top1Start:{
+                      pageLength: {
+                      placeholder: 'Filter'
+                      },
+                      search: {
+                          placeholder: 'Type search here'
+                      },
+                  },
+                  top1End:{
+                      buttons: [{
+                          text: '<i class="bi bi-plus-lg"></i> New',
+                          attr: {
+                              id: 'btn-add-record',
+                              'data-bs-toggle': 'modal',
+                              'data-bs-target': '.modal'
+                          },
+                          action: function (e, dt, node, config, cb) {
+                              storeCompany()
+                          }
+                      }]
+                  }
+              },
+              language: {
+                  lengthMenu:  ' _MENU_',
+                  search: ' '
+              },
+              serverSide: true,
+              processing: true,
+              ajax: {
+                  url: 'company/draw',
+              },
+              columns: [
+                {
+                  data: null ,
+                  title: 'Actions',
+                  render: function (data, type, row) {
+                      return `  <button class="d-inline btn  btn-edit p-0 " id="btn-edit-${row.id}" data-id="${row.id}" data-bs-toggle="modal" data-bs-target=".modal" >
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="dodgerblue" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                      <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                      <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                  </svg>
+                                </button>
+                                  <button class="btn btn-dlt-modal p-0 d-inline" data-id="${row.id}" data-bs-toggle="modal" data-bs-target="#deletConfirmation" >
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-trash" viewBox="0 0 16 16">
+                                      <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                      <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                  </svg>
+                              </button> `
                     },
-                    top1End:{
-                        buttons: [{
-                            text: '<i class="bi bi-plus-lg"></i> New',
-                            attr: {
-                                id: 'btn-add-record',
-                                'data-bs-toggle': 'modal',
-                                'data-bs-target': '.modal'
-                            },
-                            action: function (e, dt, node, config, cb) {
-                                storeCompany()
-                            }
-                        }]
+                    width: '6%',
+                },
+                {
+                  data: 'name',
+                  title:'Company',
+                  render: DataTable.render.ellipsis( 50 )
+                },
+                {
+                  data: 'branch',
+                  title:'Branch',
+                  render: DataTable.render.ellipsis( 26 )
+                },
+                {
+                  data: 'country' ,
+                  title: 'Country' ,
+                  render: DataTable.render.ellipsis( 26 )
+                },
+                {
+                  data: 'address' ,
+                  title:'Address',
+                  render: DataTable.render.ellipsis( 100 )
+                },
+                {
+                  data: 'employees_count' ,
+                  title:'Employees',
+                  className: 'dt-center'
+                },
+                {
+                  data: 'projects_count',
+                  title:'Projects',
+                  className: 'dt-center'
+                },
+              ],
+             });
+
+             $('.sidebar').hover(function () {
+                        $('.sidebar a').toggleClass('expand')
+                        $('.sidebar a .sidebar-btn-txt').toggleClass('d-none' , false).fadeIn("slow");
+                    },function () {
+                        $('.sidebar a').toggleClass('expand')
+                        $('.sidebar a .sidebar-btn-txt').toggleClass('d-none' , true).fadeOut("slow");
                     }
-                },
-                language: {
-                    lengthMenu:  ' _MENU_',
-                    search: ' '
-                },
-                serverSide: true,
-                processing: true,
-                ajax: {
-                    url: 'company/draw',
-                },
-                columns: [
-                  {
-                    data: null ,
-                    title: 'Actions',
-                    render: function (data, type, row) {
-                        return `  <button class="d-inline btn  btn-edit p-0 " id="btn-edit-${row.id}" data-id="${row.id}" data-bs-toggle="modal" data-bs-target=".modal" >
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="dodgerblue" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                                    </svg>
-                                  </button>
-                                    <button class="btn btn-dlt-modal p-0 d-inline" data-id="${row.id}" data-bs-toggle="modal" data-bs-target="#deletConfirmation" >
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-trash" viewBox="0 0 16 16">
-                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-                                    </svg>
-                                </button> `
-                      },
-                      width: '6%',
-                  },
-                  {
-                    data: 'name',
-                    title:'Company',
-                    render: DataTable.render.ellipsis( 50 )
-                  },
-                  {
-                    data: 'branch',
-                    title:'Branch',
-                    render: DataTable.render.ellipsis( 26 )
-                  },
-                  {
-                    data: 'country' ,
-                    title: 'Country' ,
-                    render: DataTable.render.ellipsis( 26 )
-                  },
-                  {
-                    data: 'address' ,
-                    title:'Address',
-                    render: DataTable.render.ellipsis( 100 )
-                  },
-                  {
-                    data: 'employees_count' ,
-                    title:'Employees',
-                    className: 'dt-center'
-                  },
-                  {
-                    data: 'projects_count',
-                    title:'Projects',
-                    className: 'dt-center'
-                  },
-                ],
-               });
-               $('.sidebar').hover(function () {
-                          $('.offcanvas').toggleClass('show' ,true)
-                      },
-                  );
-                $('.offcanvas').hover(function () {
-                      }, function () {
-                          $('.offcanvas').toggleClass('show' , false)
-                      }
-                );
-              // Delete Company
-              $('#myTable tbody').on('click' , '.btn-dlt-modal' ,function (e) {
-                  $('#btn-dlt').text('Delete').attr('data-id' , table.row($(this).parents('tr')).data().id)
-              });
-              $('#deletConfirmation .modal-footer').on('click' , '#btn-dlt' , function (e) {
-                  axios.delete(`companys/${$(this).attr('data-id')}`)
-                  .then(function (response){
-                      displayToast(response , "success")
-                  });
-                  table.draw(false);
-                  $('.btn-close-dlt').click();
-              })
-              //Store Company Axios
-              function storeCompany(){
-                $('.form-modal').attr("id","form-create");
-                $('#form-title').text("New Company Details");
-                $('#btn-submit').text("Add Company");
-                $('#projects').prop("type" , "hidden")
-                $('#employees').prop("type" , "hidden")
-              }
-              $('.modal-body').on('submit' , '#form-create', function (e){
-                  e.preventDefault();
-                  let $data = new FormData(this)
-                  axios.post('companys', $data )
-                  .then(function (response){
+            );
+            
+            // Delete Company
+            $('#myTable tbody').on('click' , '.btn-dlt-modal' ,function (e) {
+                $('#btn-dlt').text('Delete').attr('data-id' , table.row($(this).parents('tr')).data().id)
+            });
+            $('#deletConfirmation .modal-footer').on('click' , '#btn-dlt' , function (e) {
+                axios.delete(`companys/${$(this).attr('data-id')}`)
+                .then(function (response){
                     displayToast(response , "success")
-                    $('#form-create').trigger("reset");
+                });
+                table.draw(false);
+                $('.btn-close-dlt').click();
+            })
+            //Store Company Axios
+            function storeCompany(){
+              $('.form-modal').attr("id","form-create");
+              $('#form-title').text("New Company Details");
+              $('#btn-submit').text("Add Company");
+              $('#projects').prop("type" , "hidden")
+              $('#employees').prop("type" , "hidden")
+            }
+            $('.modal-body').on('submit' , '#form-create', function (e){
+                e.preventDefault();
+                let $data = new FormData(this)
+                axios.post('companys', $data )
+                .then(function (response){
+                  displayToast(response , "success")
+                  $('#form-create').trigger("reset");
+                  $('#btn-modal-close').click();
+                  table.draw(false);
+                })
+                .catch(function (response){
+                  displayToast(response , "error")
+                });
+            });
+            // Clear Forms
+            $('.btn-close').click(function (e) {
+              $('.form-modal').trigger("reset");
+            });
+            // Edit Company
+            let id = null
+            $('#myTable tbody').on('click', '.btn-edit', function (e) {
+                $('.form-modal').attr("id","form-edit");
+                $('#form-title').text("Edit Company Details");
+                $('#btn-submit').text("Update Company");
+                id = table.row( $(this).parents('tr') ).data().id;
+                axios.get(`companys/${id}/edit`)
+                .then(function (response){
+                    const data = response.data;
+                    $('#name').val(data.name)
+                    $('#branch').val(data.branch)
+                    $('#country').val(data.country)
+                    $('#address').val(data.address)
+                    $('#company_id').val(data.id)
+                    $('#projects').val(data.projects_count).prop("type" , "text")
+                    $('#employees').val(data.employees_count).prop("type" , "text")
+                });
+            });
+            $('.modal-body').on('submit' , '#form-edit', function (e){
+                e.preventDefault();
+                let dataSubmit = new FormData(this)
+                dataSubmit.append('_method', 'patch');
+                axios.post( `companys/${id}` , dataSubmit)
+                .then(function (response){
+                    displayToast(response , "success")
+                    $('#form-edit').trigger("reset");
                     $('#btn-modal-close').click();
                     table.draw(false);
-                  })
-                  .catch(function (response){
+                })
+                .catch(function (response){
                     displayToast(response , "error")
-                  });
-              });
-              // Clear Forms
-              $('.btn-close').click(function (e) {
-                $('.form-modal').trigger("reset");
-              });
-              // Edit Company
-              let id = null
-              $('#myTable tbody').on('click', '.btn-edit', function (e) {
-                  $('.form-modal').attr("id","form-edit");
-                  $('#form-title').text("Edit Company Details");
-                  $('#btn-submit').text("Update Company");
-                  id = table.row( $(this).parents('tr') ).data().id;
-                  axios.get(`companys/${id}/edit`)
-                  .then(function (response){
-                      const data = response.data;
-                      $('#name').val(data.name)
-                      $('#branch').val(data.branch)
-                      $('#country').val(data.country)
-                      $('#address').val(data.address)
-                      $('#company_id').val(data.id)
-                      $('#projects').val(data.projects_count).prop("type" , "text")
-                      $('#employees').val(data.employees_count).prop("type" , "text")
-                  });
-              });
-              $('.modal-body').on('submit' , '#form-edit', function (e){
-                  e.preventDefault();
-                  let dataSubmit = new FormData(this)
-                  dataSubmit.append('_method', 'patch');
-                  axios.post( `companys/${id}` , dataSubmit)
-                  .then(function (response){
-                      displayToast(response , "success")
-                      $('#form-edit').trigger("reset");
-                      $('#btn-modal-close').click();
-                      table.draw(false);
-                  })
-                  .catch(function (response){
-                      displayToast(response , "error")
-                  });
-              });
-              //Toast Alerts
-              function displayToast(response , type){
-                const valErrorDiv = $('.toast-container')
-                valErrorDiv.find('.show').remove();
-                if (type == "error") {
-                  const errors = response.response.data
-                  for (const field in errors) {
-                    errors[field].forEach((error) => {
-                        let clone = $('#error-toast').clone();
-                        clone.addClass('show');
-                        clone.find('.toast-body').text(error)
-                        valErrorDiv.append(clone);
-                      });
-                  }
-                } else {
-                  let clone = $('#success-toast').clone();
-                  clone.addClass('show');
-                  clone.find('.toast-body').text(response.data)
-                  valErrorDiv.append(clone);
+                });
+            });
+            //Toast Alerts
+            function displayToast(response , type){
+              const valErrorDiv = $('.toast-container')
+              valErrorDiv.find('.show').remove();
+              if (type == "error") {
+                const errors = response.response.data
+                for (const field in errors) {
+                  errors[field].forEach((error) => {
+                      let clone = $('#error-toast').clone();
+                      clone.addClass('show');
+                      clone.find('.toast-body').text(error)
+                      valErrorDiv.append(clone);
+                    });
                 }
-                valErrorDiv.fadeIn("slow").delay(5000).fadeOut("slow");
+              } else {
+                let clone = $('#success-toast').clone();
+                clone.addClass('show');
+                clone.find('.toast-body').text(response.data)
+                valErrorDiv.append(clone);
               }
-          });
-        </script>
-      </div>
+              valErrorDiv.fadeIn("slow").delay(5000).fadeOut("slow");
+            }
+        });
+      </script>
     </body>
 </html>
