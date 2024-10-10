@@ -33,3 +33,7 @@
 .dt-center{
     text-align: center;
 }
+
+.dt-scroll-headInner, .table{
+    width: 100% !important
+  }

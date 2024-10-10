@@ -11,139 +11,144 @@
 
     </head>
 
-    <body class="container.fluid w-100 m-0" style="background-color: whitesmoke">
+    <body class="container.fluid w-100 m-0 d-flex  " style="background-color: whitesmoke">
 
-        <x-nav-bar parent="company" />
+        <x-sidebar/>
+        <div class="content w-100">
 
-        <div class="toast-container position-absolute top-0 end-0  m-2">
-            <div id="success-toast" class="toast success-toast align-items-center bg-success-subtle  shadow-sm " role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="d-flex">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-check-lg p-0 mx-1 mt-2 mb-2" viewBox="0 0 16 16">
-                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
-                  </svg>
-                  <div class="toast-body">
+
+            <x-nav-bar/>
+
+            <div class="toast-container position-absolute top-0 end-0  m-2">
+                <div id="success-toast" class="toast success-toast align-items-center bg-success-subtle  shadow-sm " role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-check-lg p-0 mx-1 mt-2 mb-2" viewBox="0 0 16 16">
+                        <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
+                      </svg>
+                      <div class="toast-body">
+                      </div>
+                      <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+
+                <div id="error-toast"  class="toast error-toast align-items-center bg-warning-subtle shadow-sm top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true">
+                  <div class="d-flex">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-info-circle p-0 mx-1 mt-2 mb-2 " viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                      <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                    </svg>
+                    <div class="toast-body">
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                   </div>
-                  <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
+
             </div>
 
-            <div id="error-toast"  class="toast error-toast align-items-center bg-warning-subtle shadow-sm top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true">
-              <div class="d-flex">
-                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-info-circle p-0 mx-1 mt-2 mb-2 " viewBox="0 0 16 16">
-                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                  <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
-                </svg>
-                <div class="toast-body">
-                </div>
-                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-              </div>
-            </div>
+            <main class="container.fluid" >
+                <h1 class="h1 text-center mt-4" >Manage Employee Profiles</h1>
 
+                <div class="modal fade modal-lg"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div id="validation-errors" style="display: none;" class="position-absolute top-0 end-0  w-25" role="alert"></div>
+                    <div class="modal-dialog modal-dialog-centered ">
+                      <div class="modal-content text-light" style="background-color: #212529 ; width: auto;">
+                        <button type="button" id="btn-modal-close" class="btn-close m-2 text-bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h3 class="text-center m-0" id="form-title"></h3>
+                        <div class="modal-body m-0">
+                            <form class="form-modal row  p-3">
+                                @csrf
+                                <div class="mb-2 col-12">
+                                    <label for="name" class="form-label">Name:</label>
+                                    <input type="text" class=" form-control " id="name" name="name" placeholder="Full Name" required>
+                                </div>
+                                <div class=" mb-2 col-6">
+                                    <label class="form-label" for="position">Position:</label>
+                                    <input type="text" class=" form-control " id="position" name="position" placeholder="Position" required>
+                                </div>
+                                <div class="mb-2 col-6" >
+                                    <label class="form-label" for="dob">DOB:</label>
+                                    <input type="date" class=" form-control " id="dob" name="dob" placeholder="DOB" required>
+                                </div>
+                                <div class=" mb-2 col-6">
+                                    <label class="form-label" for="email">Email:</label>
+                                    <input type="email" class=" form-control " id="email" name="email" placeholder="Email" required>
+
+                                </div>
+                                <div class=" mb-2 col-6">
+                                    <label class="form-label" for="phone">Phone:</label>
+                                    <input type="phone" class=" form-control " id="phone" name="phone" placeholder="Phone" required>
+
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label" for="address">Address:</label>
+                                    <input type="text" class=" form-control " id="address" name="address" placeholder="Address" required>
+                                </div>
+
+                                <div class="mt-4 mb-2 col-6 d-inline">
+                                    <label class="form-label" for="select">Choose Company: </label>
+                                    <select id="select" name="company_id" class="form-select form-control  " aria-label="Default select example">
+                                        <option hidden>Company</option>
+                                        @foreach ( $companies  as $company )
+                                            <option value="{{ $company->id }}"  class="create-option {{ is_null($company->deleted_at) ? '' : 'trash' }}" data-branch="{{ $company->branch }}" > {{ $company->name }} </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="mt-4 mb-2 col-6">
+                                    <label class="form-label" for="company-branch">Branch:</label>
+                                    <input type="text" class="form-control " id="company-branch" name="company_branch" placeholder="Branch" required disabled>
+                                </div>
+
+                                <input type="hidden" name="bank_id" id="bank-id">
+
+                                <div class="mt-4 mb-2 col-12">
+                                    <label class="form-label" for="beneficiary-name">Beneficiary Name:</label>
+                                    <input type="text" class=" form-control "  id="beneficiary-name" name="beneficiary_name" placeholder="Beneficiary Name" required>
+                                </div>
+
+                                <div class="mb-2 col-6">
+                                    <label class="form-label" for="bank-name">Bank Name</label>
+                                    <input type="text" class=" form-control " id="bank-name" name="bank_name" placeholder="Bank Name" required>
+                                </div>
+
+                                <div class="mb-2 col-6">
+                                    <label class="form-label" for="bank-branch">Branch</label>
+                                    <input type="phone" class=" form-control " id="bank-branch" name="branch" placeholder="Branch" required>
+                                </div>
+
+                                <div class="mb-2 col-12">
+                                    <label class="form-label" for="account-no">Account No:</label>
+                                    <input type="number" class=" form-control " id="account-no" name="account_no" placeholder="Account No" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary  ms-2 mt-4 p-0 border-0 " style="height: 40px ; width: 98%" id="btn-submit"></button>
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Delete Modal -->
+                  <div class="modal fade" id="deletConfirmation" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deletConfirmationLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="deletConfirmationLabel">Are You Sure to Delete the Employee?? </h1>
+                          <button type="button" class="btn-close btn-close-dlt" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          This Action wil Delete Employee and the records related to him Such as Bank Account of the employee
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                          <button type="button" id="btn-dlt"  class="btn btn-danger btn-dlt">Delete</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                <table id="myTable" class="table table-striped table-dark table-hover " style="width: 100%" data-turbolinks="false"></table>
+            </main>
         </div>
-
-        <main class="container.fluid" >
-            <h1 class="h1 text-center mt-4" >Manage Employee Profiles</h1>
-
-            <div class="modal fade modal-lg"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div id="validation-errors" style="display: none;" class="position-absolute top-0 end-0  w-25" role="alert"></div>
-                <div class="modal-dialog modal-dialog-centered ">
-                  <div class="modal-content text-light" style="background-color: #212529 ; width: auto;">
-                    <button type="button" id="btn-modal-close" class="btn-close m-2 text-bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <h3 class="text-center m-0" id="form-title"></h3>
-                    <div class="modal-body m-0">
-                        <form class="form-modal row  p-3">
-                            @csrf
-                            <div class="mb-2 col-12">
-                                <label for="name" class="form-label">Name:</label>
-                                <input type="text" class=" form-control " id="name" name="name" placeholder="Full Name" required>
-                            </div>
-                            <div class=" mb-2 col-6">
-                                <label class="form-label" for="position">Position:</label>
-                                <input type="text" class=" form-control " id="position" name="position" placeholder="Position" required>
-                            </div>
-                            <div class="mb-2 col-6" >
-                                <label class="form-label" for="dob">DOB:</label>
-                                <input type="date" class=" form-control " id="dob" name="dob" placeholder="DOB" required>
-                            </div>
-                            <div class=" mb-2 col-6">
-                                <label class="form-label" for="email">Email:</label>
-                                <input type="email" class=" form-control " id="email" name="email" placeholder="Email" required>
-
-                            </div>
-                            <div class=" mb-2 col-6">
-                                <label class="form-label" for="phone">Phone:</label>
-                                <input type="phone" class=" form-control " id="phone" name="phone" placeholder="Phone" required>
-
-                            </div>
-                            <div class="col-12">
-                                <label class="form-label" for="address">Address:</label>
-                                <input type="text" class=" form-control " id="address" name="address" placeholder="Address" required>
-                            </div>
-
-                            <div class="mt-4 mb-2 col-6 d-inline">
-                                <label class="form-label" for="select">Choose Company: </label>
-                                <select id="select" name="company_id" class="form-select form-control  " aria-label="Default select example">
-                                    <option hidden>Company</option>
-                                    @foreach ( $companies  as $company )
-                                        <option value="{{ $company->id }}"  class="create-option {{ is_null($company->deleted_at) ? '' : 'trash' }}" data-branch="{{ $company->branch }}" > {{ $company->name }} </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="mt-4 mb-2 col-6">
-                                <label class="form-label" for="company-branch">Branch:</label>
-                                <input type="text" class="form-control " id="company-branch" name="company_branch" placeholder="Branch" required disabled>
-                            </div>
-
-                            <input type="hidden" name="bank_id" id="bank-id">
-
-                            <div class="mt-4 mb-2 col-12">
-                                <label class="form-label" for="beneficiary-name">Beneficiary Name:</label>
-                                <input type="text" class=" form-control "  id="beneficiary-name" name="beneficiary_name" placeholder="Beneficiary Name" required>
-                            </div>
-
-                            <div class="mb-2 col-6">
-                                <label class="form-label" for="bank-name">Bank Name</label>
-                                <input type="text" class=" form-control " id="bank-name" name="bank_name" placeholder="Bank Name" required>
-                            </div>
-
-                            <div class="mb-2 col-6">
-                                <label class="form-label" for="bank-branch">Branch</label>
-                                <input type="phone" class=" form-control " id="bank-branch" name="branch" placeholder="Branch" required>
-                            </div>
-
-                            <div class="mb-2 col-12">
-                                <label class="form-label" for="account-no">Account No:</label>
-                                <input type="number" class=" form-control " id="account-no" name="account_no" placeholder="Account No" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary  ms-2 mt-4 p-0 border-0 " style="height: 40px ; width: 98%" id="btn-submit"></button>
-                        </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Delete Modal -->
-              <div class="modal fade" id="deletConfirmation" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deletConfirmationLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="deletConfirmationLabel">Are You Sure to Delete the Employee?? </h1>
-                      <button type="button" class="btn-close btn-close-dlt" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      This Action wil Delete Employee and the records related to him Such as Bank Account of the employee
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                      <button type="button" id="btn-dlt"  class="btn btn-danger btn-dlt">Delete</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            <table id="myTable" class="table table-striped table-dark table-hover " style="width: 100%" data-turbolinks="false"></table>
-        </main>
 
         <script type="module">
             $(function(){
@@ -254,12 +259,20 @@
                     ],
                 });
 
+                $('.sidebar').hover(function () {
+                        $('.sidebar a').toggleClass('expand')
+                        $('.sidebar a .sidebar-btn-txt').toggleClass('d-none' , false).fadeIn("slow");
+                    },function () {
+                        $('.sidebar a').toggleClass('expand')
+                        $('.sidebar a .sidebar-btn-txt').toggleClass('d-none' , true).fadeOut("slow");
+                    }
+                );
+
                 $('#myTable tbody').on('click' , '.btn-dlt-modal' ,function (e) {
                     $('#btn-dlt').text('Delete').attr('data-id' , table.row($(this).parents('tr')).data().id)
                 });
 
                 $('#deletConfirmation .modal-footer').on('click' , '#btn-dlt' , function (e) {
-
                     axios.delete(`employee/${$(this).attr('data-id')}`)
                     .then(function (response){
                         displayToast(response , "success")
